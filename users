@@ -1,0 +1,48 @@
+Docs
+	adduser man page
+
+Utilities:
+	Modify user and groups 
+		adduser
+			adduser <username> <groupname>
+				may use to add an existing user to a group
+				Debian: officially recommended over useradd
+		addgroup
+		usermod
+		groupmod
+		userdel
+		groupdel
+    Display & Change Groups
+        id [user] - see info page
+            id -nG  = print user's groups with names (no ids) - same as groups cmd.
+        newgrp, sg
+			change effect group ID.  Should be member of group to change to.
+			See man pages for differences
+		gpasswd
+			check this out re assigning group administrators
+
+PAM
+	read Debian docs in libpam-doc package
+
+
+Usergroup writable directories
+	add users to group
+	set group-id permission on dir
+	users have umask 002
+
+Umask
+	subtracts permissions
+	set in /etc/login.defs
+		e.g.
+		files
+			umask 022 on files:
+			default file rw-rw-rw- (666)
+			umask (----w--w-)	(022)
+			renders rw-r--r--	(644)
+		dirs
+			default directory permissions 777
+			umask 022
+			777-022=755	rwxr-xr-x
+
+
+

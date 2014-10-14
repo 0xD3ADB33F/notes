@@ -1,0 +1,31 @@
+
+From http://www.turnkeylinux.org/blog/invoking-debugger
+
+import pdb; pdb.set_trace();
+
+* Other libraries
+ipdb
+pdbpp (pip install)
+
+* Manual setup with no import
+try:
+    line_that_causes_exception()
+except:
+    while True:
+        exec(raw_input('>>> '))
+
+
+* No change to source:
+Create a file named .pdbrc (leading period) and enter this into it:
+
+break awesome.py:15
+
+Then run this:
+
+python -m pdb awesome.py #this will launch the debugger
+
+Even more useful, assuming you only want to break under certain conditions, you can add a statement that evaluates to a boolean:
+
+break awesome.py:15, x < 5
+
+

@@ -1,0 +1,46 @@
+Resources
+http://www.virtualenv.org/en/latest/index.html
+http://www.doughellmann.com/projects/virtualenvwrapper/
+file:///usr/share/doc/virtualenvwrapper/en/html/install.html#workon-home
+http://www.pip-installer.org/en/latest/
+
+General Install
+
+Methods:
+
+1) Debian Packages:
+Install python-pip, python-virtualenv, and optional virtualenvwrapper
+
+VirtualEnv Wrapper: Also could install with pip with optional install to .local
+pip install virtualenvwrapper --install-option="--user"
+
+
+
+2) Manual System Wide install
+# Gets Distribute
+ curl -O http://python-distribute.org/distribute_setup.py
+$ python distribute_setup.py
+
+# Gets Pip
+$ curl -O https://github.com/pypa/pip/raw/master/contrib/get-pip.py
+$ python get-pip.py
+
+Still need Setup Tools and Pkg Resources 
+
+3) Create single environment:
+Untested, from http://www.pip-installer.org/en/latest/:
+$ curl -O https://github.com/pypa/virtualenv/raw/master/virtualenv.py
+$ python virtualenv.py my_new_env
+$ . my_new_env/bin/activate
+(my_new_env)$ pip install ..
+
+4) Pythonbrew
+Install with pip from existing py install
+Dependencies: 
+libssl-dev
+libreadline-dev
+libsqlite3-dev - for ipython history
+libbz2? 
+libzlib1g-dev ?
+
+If wrong source installed when switching between Py versions, delete pip cache in /tmp

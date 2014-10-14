@@ -1,0 +1,71 @@
+
+Setups
+    on a bootable CD
+        leaf.sourceforge.net - runs in 16-32 M Ram off CD or floppies.
+    on harddisk
+        to reduce noise, might be possible to make disk access virtual 
+        by running proxies, etc in a chroot jail in RAM disk.
+
+Hardware
+    Compact Flash card with IDE adapter - looks like a hd so could boot from 
+    it.  Could run Bering Leaf firewall too.
+
+Utils
+	Firestarter
+		End User firewall like ZoneAlarm
+
+VPNs
+    do IP encrypting vs. SSH or SSL which do TCP tunnelling, require 
+    preconfiguration, and aren't as universal/low-level and so can't 
+    do some services (FTP is hard to tunnel).
+    
+    SSH/SSL can tunnel IP via PPP but this is slow
+
+    CIPE - Crypo IP Encapsulation
+        www.pycs.net/
+        - not standardized but better performance than IPsec because 
+        lightweight, probably good on a Pentium 1.
+        - for building encrypting IP routers on win, Linux, like IPsec
+        VPN.
+        - funny Python article www.pycs.net/lateral/stories/5.html
+
+    FreeSwan
+        backported Debian woody packages at:
+            people.debian.org/~nobse/deprecated/backported/freeswan
+
+	 tinc - Virtual Private Network daemon
+		tinc is a daemon with which you can create a virtual private network
+		(VPN). One daemon can handle multiple connections, so you can create an
+		entire (moderately sized) VPN with only one daemon per participating
+		computer.	
+	
+	vtun
+		 vtun - Virtual Tunnel over TCP/IP Networks
+		 VTun is the easiest way to create Virtual Tunnels over TCP/IP networks with traffic shaping and compression.
+
+		 It supports IP, PPP, SLIP, Ethernet and other tunnel types.
+
+		 VTun is easily and highly configurable, it can be used for various network tasks.
+
+		 VTun requires the Universal TUN/TAP kernel module which can be found
+		 at http://vtun.sourceforge.net/tun/index.html or in the 2.4 series
+		 linux kernel.
+
+	tunnelv
+		 tunnelv - Encrypted network connection within a TCP/IP connection
+		 Tunnel Vision creates a "virtual" TCP/IP network (VPN) between two
+		 Tunnel Vision-capable sites on the internet. It uses the strongest
+		 encryption that's actually useful (1024-bit RSA and 128-bit Blowfish)
+		 to protect your data along the way. This connection between two TV
+		 servers is called a "tunnel."
+
+		 Tunnel Vision is usually used on a router or gateway machine. When
+		 someone on your network wants to send data to someone on the other
+		 side of the tunnel, it sends through the default gateway (the TV
+		 server) like it normally would. You configure the TV server to send
+		 data through the tunnel instead of just forwarding it onto the
+		 internet.
+
+		 Tunnel Vision requires Linux 2.1.122 or higher with the ethertap and
+		 netlink devices.
+

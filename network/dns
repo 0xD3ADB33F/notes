@@ -1,0 +1,8 @@
+
+
+
+
+DNS records
+	A-record or AName		Main record pointing to a machine
+	C-record or CName		Additional records/names - any number
+	dig util - Debian - in dnsutils package

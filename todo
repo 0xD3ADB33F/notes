@@ -1,0 +1,33 @@
+
+community colocation startup
+
+X copy paste
+	terms
+		primary selection
+			whatever selected in a standard X app but not in Mozilla
+			meant to immediate paste
+		cut buffers
+			added by an explicit copy command
+			xlipboard will add after each copy
+	utilities
+		xcb
+		xclipboard *
+		xcutsel *
+	tips
+		Middle-click in Mozilla - loads a URL in the X Primary
+
+
+Firewall
+	Masquerade HOWTO
+	http://www.tldp.org/HOWTO/Masquerading-Simple-HOWTO/
+
+	checkout shorewall, floppyfw, sentry CD
+
+	Snort HOWTO at linux mag
+	http://www.linux-mag.com/2003-05/guru_02.html
+
+
+
+xml links
+
+http://webservices.xml.com/pub/a/ws/2004/01/20/salz.html

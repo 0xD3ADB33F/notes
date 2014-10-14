@@ -1,0 +1,192 @@
+Docs {{{2
+
+KVM howtos
+	http://www.linux-kvm.org/page/HOWTO
+
+
+Setup {{{2
+
+For accelerator support, add user to kvm group
+
+Options {{{2
+
+Boot from CD or iso
+	-boot d
+	-cdrom 	path to CD device or file
+
+Allow graphical installer, e.g. Ubuntu: option -std-vga
+
+
+
+Usage
+	qemu-img create xp.raw 3G
+	qemu -hda xp.raw -cdrom /dev/cdrom -boot d -net user -m 256
+	run the image as follows :
+	qemu -hda xp.raw -cdrom /dev/cdrom -boot c -net user -m 256
+
+Test a bootable USB drive
+	qemu -usb /dev/sdb
+
+
+Convert an image file to a block device => big files
+	qemu-img convert root.qcow2 -O raw /dev/sdb
+
+Backup an image file - size is < 1/3
+	tar c --sparse -f img.bak.tar img.img 
+
+
+
+console/serial {{{2
+
+	1. In guest enable serial console in /etc/inittab and in /boot/grub/menu.lst
+		menu.lst
+			serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1
+			terminal --timeout=10 serial console
+			Add to kopt: console=ttyS0,115200n8 console=tty0
+
+	2. Run qemu with -nographic option
+
+	In -nographic, Ctrl-a c to toggle monitor
+
+Remote qemu:
+	option: append "console=ttyS0 root=/dev/hda1 ro"
+	in guest /etc/inittab: s1:12345:respawn:/sbin/agetty -L ttyS0 9600 vt100 
+
+Installing Debian
+	At install prompt
+		install console=ttyS0,9600,n8
+		show serial console - ^+M+3
+
+
+Monitor commands {{{2
+
+Display monitor
+	-monitor stdio
+
+Access monitor		Ctrl+Alt 2
+Back to guest		Ctrl+Alt 1
+
+Versioning {{{2
+
+http://www.linux-kvm.com/content/how-you-can-use-qemukvm-base-images-be-more-productive-part-1
+
+Base image method {{{3
+
+Create clone from base img
+ qemu-img create -b <base img> -f <outformat> clone.img
+Now boot from clone img
+Commit changes back to base
+	qemu-img commit clone.img
+Convert clone to be a base
+	qemu-img convert clone.img -O qcow2 newclone.img
+
+Snapshots {{{3
+	run with -snapshot
+	in monitor
+		info snapshots
+		commit (all | device)
+
+Versioning
+	base_image
+		qemu-img create -b <base-img> <out-file>
+		base-image is not modified until 'commit' in monitor
+
+	snapshot
+		run qemu with -snapshot option
+		changes written to temp files
+		write changes to image with 'C-a s'
+
+
+Networking {{{2
+
+overview
+	http://kvm.qumranet.com/kvmwiki/Networking
+
+Read this:
+1/10
+http://groups.google.ca/group/linux.debian.user/browse_frm/thread/9cb11244ffe6f695?hl=en#
+
+VNC
+	-vnc :0
+	Allow vnc access w/o password: -vnc 1
+
+Routing - allow instance to access net
+	-net nic -net user
+
+
+Route through tap interface {{{3
+ To  create  an  interface  for  use by a particular user, invoke tunctl
+       without the -d option:
+
+       #
+       tunctl -u someuser
+       Set ’tap0’ persistent and owned by ’someuser’
+
+       Then, configure the interface as normal:
+
+       #
+       ifconfig tap0 192.168.0.254 up
+       #
+       route add -host 192.168.0.253 dev tap0
+       #
+       bash -c ’echo 1 > /proc/sys/net/ipv4/conf/tap0/proxy_arp’
+       #
+       arp -Ds 192.168.0.253 eth0 pub
+
+       To delete the interface, use the -d option:
+
+       #
+       tunctl -d tap0
+       Set ’tap0’ nonpersistent
+
+SEE ALSO
+       The UserModeLinux-HOWTO  (link  to  URL  http://user-mode-linux.source‐
+       forge.net/UserModeLinux-HOWTO.html)
+
+Network bridge {{{2
+	http://compsoc.dur.ac.uk/~djw/qemu.html 
+
+Install
+ bridge-utils (for brctl, to manipulate bridges)
+ uml_utilities (for tunctl, to manipulate taps)
+
+- start qemu with "-net nic -net tap". If you run more than one guest,
+you will need to set distinct MAC addresses as in "-net nic,mac=XX:XX:XX:XX:XX:XX"
+- Iptables not needed
+
+Working bridge config:
+
+Command:
+qemu -k en-us -hda <img> -net nic -net tap,ifname=tap0,script=no
+
+guest configures nic with dhcp - /etc/qemu-ifup not needed
+
+interfaces file:
+	auto lo
+
+	iface lo inet loopback
+	iface eth0 inet manual
+
+	auto br0
+	iface br0 inet dhcp
+		hostname via
+	   pre-up /usr/sbin/tunctl -u andmalc -t tap0
+	   pre-up ifconfig tap0 up
+	   bridge_ports all tap0
+	   post-down ifconfig tap0 down
+	   post-down tunctl -d tap0
+
+
+Network boot {{{3
+
+http://alien.slackbook.org/dokuwiki/doku.php?id=slackware:qemu
+
+
+
+USB {{{2
+
+Use USB devices
+	usb_add in monitor
+		info usbhost
+		usb_add host:<device id as shown in previous>
+

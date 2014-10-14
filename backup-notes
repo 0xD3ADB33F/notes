@@ -1,0 +1,94 @@
+Archiveless tar copy
+	(cd dir1 && tar cf - . ) | (cd dir2 && tar xvfp -) 
+
+Same with cpio (faster?)
+	cd dir1 && find -depth | cpio -pdmv dir2
+
+tar archived input to gpg
+	gpg compresses its input
+		tar -c *.jpg | gpg -ear douggorley > files.tar.gz.asc
+
+tar stdout to zip
+	 tar cf - . | zip - - | dd of=/dev/nrst
+            
+tar stdout to ssh
+	tar czvf - . | ssh user@host "cat > file.tgz"
+	
+unison
+	best for synchronizing if both roots are changed.
+
+scp
+	must give options -p (preserve permissions) & -r (recurse)
+	no way to exclude files
+
+more tar/ssh examples
+send:
+tar cf - myfiles | ssh remotehost " ( cd /destination/path tar cf - desiredfiles ) " | tar xf -
+
+get:
+ssh remotehost "( cd /source/path; tar cf - desiredfiles ) " | tar xf -
+
+
+send through:
+tar cf - myfiles | ssh remotehost1 " ssh remotehost2 \" ( cd /destination/path tar cf - desiredfiles ) \" " | tar xf -
+
+get through:
+ssh remotehost1 " ssh remotehost2 \"( cd /source/path; tar cf - desiredfiles ) \" " | tar xf - 
+
+Note that 'tar cf' and 'tar xf' can be replaced with 'tar czf' and 'tar xzf' for gzip compression. Or, for bzip2 compression: 'tar 'cjf' and 'tar xjf'. 
+
+
+
+Include & Exclude data
+	Include:
+			mozilla-firebird (from faq)
+			bookmarks.html, prefs.js, chrome
+			Username/pw data: 8digit#.s
+			Form data: 8digit#.w
+			Junk Mail filters: training.dat 
+			Extensions & customizations: chrome dir
+		Mail/news
+			Mail boxes w/o extension eg INBOX. (where?)
+			News group info hostinfo.dat (where?)
+			Address book(s) all .mab files - main abook.mab
+	Exclude:
+		mozilla-firebird (from faq)
+			xul.mfl, xul.mfasl, or XUL FastLoad File, localstore.rdf 
+			chrome/*.jar (custom theme files)
+		SSH
+			.ssh dir 
+
+		zsh
+			tar czvf backup/andmalc-1219.tgz andmalc/*~andmalc/backup~andmalc/tmp
+
+pax
+    basic backup
+        -wf home.pax .
+        -wfz /dev/device .  compressed backup, but can't do compression to a 
+                            floppy
+    list [verbosely/long] contents
+        -f[v] paxfile.pax | less
+    append to existing archive
+        -a
+    restore 
+		need to manually add z if archive is compressed.  
+		use 'file name' to check this.
+        do from destination dir:
+			-rvf <paxfile>      
+			-i  interactive
+    directory copy
+        -rw <source dir | .> <dest dir>
+        remember to set ownership of destination dir before copying
+        add -i to interactively copy
+    time spec
+        -T 
+    exclusion
+        -c <file pattern>
+    inclusion
+        -n <file pattern>
+
+
+Firefox/mozilla files to backup
+	http://forums.mozillazine.org/search.php?mode=results
+
+

@@ -1,0 +1,31 @@
+blah
+
+Show running containers
+docker run -d -p 22 /fedora-ssh
+
+Run with exposed port
+docker run -d -p 22 /fedora-ssh
+
+Show container IP
+docker inspect | grep IP
+
+
+Dockerfile
+
+FROM mattdm/fedora
+MAINTAINER Praveen Kumar "kumarpraveen.nitdgp@gmail.com"
+
+RUN yum -y update
+RUN yum -y install openssh-server
+RUN yum -y install supervisor
+
+RUN mkdir -p /var/run/sshd
+RUN mkdir -p /var/run/supervisord
+RUN echo "root:password" | chpasswd
+
+EXPOSE 22
+ENTRYPOINT ["/usr/bin/supervisord", "-n"]
+
+Execute: docker build -rm -t /fedora-ssh
+rm - Remove intermediate containers
+t - Build tag

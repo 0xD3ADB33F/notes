@@ -1,0 +1,87 @@
+ROLE OF SHELL
+
+Interactive		Entering commands
+Script Interpreter/Processor	Invoked by script's #!
+
+Other Shells:
+cmd.exe		Invoke NT shell from bash:
+			alias dir='cmd.exe /c "dir /on"'
+			or just shell out with 'cmd'
+
+python shell
+
+
+LOGIN
+
+'profile' rc files only read for login shells, bashrc only for interactive shells
+
+user's profile is checked for default shell and shell is invoked 
+
+shell type flag
+	log sets a flag to indicate that the current shell is a login shell.
+	( ...) 	Is a subshell - no initialization
+
+.bashrc 
+    should not generate output.
+    is usually sources by .bash_profile
+    is a good place for aliases.
+    could source /etc/bashrc which is not a standard bash file but can be used to hold common settings.
+
+Example sourcing code:
+[ -f ~/.bashrc ] && . ~/.bashrc
+
+Root Shell environment
+	make alias in /etc/profile.local: su='su -l' - invoke login simulation
+
+	become daemon type user (like 'ftp') 
+		these have no password and shell is disallowed ('*' in /etc/passwd)
+		su to root
+		su -s /bin/bash <user>
+
+
+Job Control
+	suspend command puts shell in background, but can't suspend a login shell
+
+
+Terminal Control
+	\[     begin a sequence of non-printing characters, which could be used to embed a terminal con­ trol sequence into the prompt
+	\]     end a sequence of non-printing characters
+
+	Dynamically Changing Xterm Title
+		echo -ne "\033]2;TitleString\007"
+		echo -ne "\033]2;TitleString: ${USER}\007
+		in script
+			echo -ne "\033]2;$1\007"
+
+	stty 
+		commands for changing size, colours, correcting hung terms .
+		-a				List control characters
+		cols/rows #		Change width/height of terminal
+		sane Ctrl+J		Reset hung terminal
+
+	setterm	 Control colors, power saving etc.
+	xset	 Similar, in x
+
+Terminal command keys
+	^V + control char	send contro char + sequence to driver literally			
+	^V ^[			Start a terminal command (xterm or 'linux' console)	
+	^C			interrupt
+	^D			end of file
+	^W			kill (erase) word
+	^U			kill (erase) line
+    ^s          Stop output
+    ^q          Resume output
+
+
+	set -o vi	Bash vi-mode (put in .bashrc)
+
+
+Virtual Terminals (tty's)
+	S Pg up & Pg down	Screen up and down in terminal screen
+	Left M+ lr arrow keys	Cycle through virtual terminals
+	kbd_mode -a		Reset keyboard for all consoles to ASCII mode
+
+Secondary Prompts
+	shown after delete newline (\), open quote (' or "), or a pipe (|)
+
+

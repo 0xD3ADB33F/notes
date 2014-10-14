@@ -1,0 +1,73 @@
+Manual
+	http://www.gnupg.org/gph/en/manual.html
+Tutorials
+	http://www.somacon.com/p107.php
+	http://dudu.dyn.2-h.org/nist/gpg-enigmail-howto.php#t1.1
+
+Sites
+	keysigning coordination
+		http://biglumber.com/
+	keysigning HOWTO
+		http://www.cryptnet.net/fdp/crypto/gpg-party.html
+	some gpg & CACert info
+		http://www.pollinger.org.uk/
+
+Encrypt a document
+	conventional or symetric, w/o public key
+		gpg -c <filename>
+	for specific user
+		gpg --output doc.gpg --encrypt --recipient name@dom.com doc
+	Tar & encrypt
+		tar -c /var /etc | gpg -r EEC775E3 -e -o /tmp/backup.tar.gpg
+Decrypt a document
+	gpg <filename>
+	needed: private key to which doc was encrypted
+		gpg --output doc --decypt doc.gpg
+
+Sign documents
+	gpg --output doc.sig --sign doc   #doc is compressed and signed
+	gpg --output doc.sig --detach-sig doc  #detached compressed signuture file created.
+	gpg --clearsign doc #clearsigned - creates doc.asc in two part body + signature format
+	
+Verifying signatures - validates the origin and verifies the integrity of document
+Verify a detached signature
+	gpgv file.sig
+		prints ID of signing key and attempts to check
+		against key in keyring.
+		If key not available, retreive from keyserver:
+	gpg --keyserver pgp.mit.edu --recv-keys 621CC013
+		now gpgv will verify that pubkey in chain signed this file
+		To verify that this key is genuine, check user home page or search web for key and name to find matches or see if signed by known good signatures.
+
+Manage keys in keychain
+	Master key is for creating signatures and collects signatures of others who have confirmed my identity.  
+	gpg --edit-key name
+	uid <name>
+		select a uid for editing
+		> sign
+		> check
+
+Key types (left column in --edit-key display)
+    pub     Public Master signing key
+    sub     Public subordinate key
+    sec     Private master private key
+    sbb     Private subordinate key
+
+    May add multiple User IDs for signing.
+    Change subordinate keys (used to do encryptions) occasionally - if broken, all data encrypted with it is exposed and key must be revoked.  Avoid changing public master since this is how key is identified. 
+
+    Certificate - a pub key signed to verify origin and defeat tampering
+        Subkeys and User IDs automatically signed
+
+    Validating other keys
+
+
+
+#Multiple file input.  GPG compresses it's input:
+tar -c comNotes | gpg -ear douggorley > comNotes.tar.gz.asc
+
+Create message without saving to file (end with C-d)
+gpg --output encrypted_file -e -r User
+
+
+

@@ -1,0 +1,221 @@
+IProute2 reference http://www.policyrouting.org/iproute2.doc.html
+
+Networking theory {{{1
+	tutorial: http://linux-ip.net/html/index.html
+
+IP addresses basics {{{2
+	utility to help visualize: ipcalc
+
+	32 bytes divided into 4x8 bytes for readability
+	comprises network and host/interface parts
+	host address of all 0's/1's indicate a network # / broadcast address
+	network classes determines how many bytes allocated to network/host parts
+		A: network: 1 byte, hosts: 3 bytes
+		B: network: 2 bytes, hosts: 2 bytes
+		C: network: 3 bytes, hosts: 2 bytes
+
+	network masks (for subnetting)
+		gen
+			splits an address so it can be used on multiple local connected networks
+			also used to split up a network
+			interpreted by interfaces on local segment
+			all network bits set to 1, host bits set to 0
+				11111111.11111111.11111111.00000000 = 255.255.255.0
+		subnet size
+			essentials
+				1 network #, 1 broadcast #
+				1 router address
+				host addresses
+			examples - subnet a Class C network
+				bits 	#nets	#hosts	netmask
+				1		2		126		255.255.255.128
+				2		4		62		255.255.255.192
+				3		8		30		255.255.255.224
+				4		16		
+	
+Network Conf - files {{{1
+	host.conf
+		indicates order of name resolution
+	/etc/hosts
+		address & name for local host and loopback interface and for other 
+		hosts if no nameserver is used.  Must be kept up to date with actual 
+		name & address. Need at least an entry: '127.0.0.1 localhost 
+		<hostname>' 
+			format: ip_address canonical_name aliases
+	resolv.conf:
+		specifies local domain name, other domains to search for a host name,
+		and the address of the nameserver
+
+	/etc/udev/rules.d
+		Name adapter (new syntax for Squeeze)
+			SUBSYSTEM=="net", DRIVERS=="?*", ATTR{address}=="00:11:22:33:44:55", NAME="eth0"
+
+Inferface config  {{{1
+
+ip link
+	set, s
+		up/down dev <name>
+		name <new name>
+
+ip address - protocol address management
+	add
+		ip addr add 192.168.1.1/24 dev eth0
+	del
+	show,list,ls,l
+
+ip neighbour - neighbour/arp table management
+	establish bindings between protocol addresses and link layer addresses for hosts sharing the same physical link.
+	abbreviateions: neigh, n
+	add, change, replace, delete, flush, show
+
+
+Display/Add/Remove Routes {{{1
+
+ip route - routing table management
+	add
+		ip route add 10.0.0/24 via 193.233.7.65
+	add NAT 
+		NAT the address 192.203.80.144 to 193.233.7.83 before forwarding
+		ip route add nat 192.203.80.142 via 193.233.7.83
+	chg
+		ip route add 10.0.0/24 via 193.233.7.65 dev eth1
+	del
+	show, list, ls
+		all - list all tables
+		ip route ls all 
+	flush, f
+
+using Route command {{{2
+		route add|del IP-Address
+			-n	show IP addresses instead of symbolic/host names
+		route add -net 192.168.0.0 netmask 255.255.255.0 eth0
+		route add -host 192.168.0.3 ...  
+		route del default
+	Route to Localhost (via Loopback)	
+		Add route with either 'route add 127.0.0.1' or 'route add localhost'.
+	Default Gateway
+		route add default gw <gw host name>
+		IP address will appear as 0.0.0.0
+using IP command {{{2
+	ip route - shows route
+	ip route del <paste entire route line from above>
+	ip route add default via <gateway IP> - set default gw
+
+
+Host config {{{1
+	hostname command
+		runs /etc/init.d/hostname.sh script that sets hostname to name in
+		/etc/hostname.
+		/etc/hostname should contain just the base name, not the FQDN
+	host <name>
+		lookup IP address by name
+
+
+
+Monitoring - Commands {{{1
+	netstat
+		show all running sessions and daemons
+		netstat -anput  
+
+Configuration - Procedures 
+
+	Loopback (Dummy) Interface
+		Should be present on all machines
+		Always has IP address 127.0.0.1 - 'ifconfig lo 127.0.0.1' to
+		add Lookback network address will usually have an entry in
+		/etc/networks: 'loopback 127.0.0.0'.  (Alias to name
+		'localhost' should be created in /etc/hosts on initial network
+		installation -add if not present.)  
+
+	
+	Local machine is a gateway
+		Need two configured network connections.  Entries in /etc/hosts may look like:
+			<IP address>	mymachine.domain1.com mymachineA
+			<IP address>	mymachine.domain2.net mymachineB
+					(last column is interface name)
+
+		ifconfig command to relate interface names to device names:
+			ifconfig eth0 mymachineA
+			ifconfig eth1 mymachineB
+
+		
+Debian-specific
+	see
+		Network Configuration chapter in the Deb Reference
+		/usr/share/doc/ifupdown/examples/network-interfaces.gz
+		man ifup
+
+	Interface config
+        interfaces file
+            auto <physical if>
+                networking init script calls ifup to bring up
+            allow-hotplug <physical if>
+                allow udev managed hotpluging to run ifup for this 
+                an alternative to the networking init script 
+                
+
+		packages involved:
+			ppp, dhcpcd | pump | dhcp3-client, ifupdown (optionally controlled by laptop-net)
+		DNS caches:
+		   dnsmasq, bind9
+		coordinating updating of resolve.conf
+			resolveconf - read README.gz
+				for this to work, must ensure that other packages (such as
+				dchcp clients dhcpcd and udhcpc and ifupdown) not overwriting resolv.conf
+			static interfaces must have dns-nameservers 
+		hotplug + ifplug will use ifup to bring up interfaces on newly inserted hw
+		resolvconf requires dhcpcd
+			ensure dhcpcd configured to send client hostname with request
+			dhcpcd run at boot by dhcp entry in interfaces
+
+dnsmasq
+	articles
+		http://networking.earthweb.com/netos/article.php/3377351
+	main purpose
+		be a local, caching, nameserver & DHCP server
+		any PC on network can do this
+	config
+		nameserver server
+			resolv.conf
+				on nameserver machine, leave "nameserver <IP#>" entries pointing to DNS of ISP
+			if Debian package resolvconf is installed
+				nameservers should be listed in
+					/var/run/dnsmasq/resolv.conf
+				/etc/resolv.conf should contain only 127.0.0.1
+			/etc/dnsmasq.conf
+					expand-hosts
+					domain=test.net (use your own domain here, of course)
+					dhcp-range=192.168.1.100,192.168.1.150,168h
+				168h - 168 hour lease
+			/etc/hosts
+				add entries for all hosts on LAN like:
+					127.0.0.1	localhost
+					192.168.0.100	<other machine>	
+					...
+
+wireless config {{{1
+
+iwconfig
+	freq/channel
+		# < 1k indicates channel
+		freq: e.g. 2.46G
+		channel # or auto
+	mode
+		Managed, Ad-Hoc, Monitor, Auto
+	ap <mac addr>
+		connect to ap with mac addr
+
+W/l interface on bridge - uses ebtables
+	http://wiki.debian.org/BridgeNetworkConnections
+
+
+WEP
+iface wlan0 inet dhcp
+        wireless-essid thestudio (case sensitive)
+        wireless-key 2F8486B4FB
+
+WPA
+iface wlan0 inet dhcp
+        wpa-ssid alphabits
+        wpa-psk coffee552
+

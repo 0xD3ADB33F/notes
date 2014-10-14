@@ -1,0 +1,91 @@
+Local Install 
+	http://forcecarrier.wordpress.com/2013/07/26/installing-pip-virutalenv-in-sudo-free-way/
+	wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+	curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+	pip install --user virtualenv
+
+
+Pip
+	http://pypi.python.org/pypi/pip
+	replaces easy_install
+	Installed as dep of python-virtualenv and pip is installed into a virtualenv
+	Install
+		Debian package, as root: 
+			Deb package python-pip then upgrade with sudo pip install pip --upgrade
+		No Debian, no root:
+			Must start with setuptools installed
+				 curl http://python-distribute.org/distribute_setup.py | python
+			Install pip as part of virtualenv & only avail inside of a virtualenv
+				curl -O https://raw.github.com/pypa/virtualenv/master/virtualenv.py
+			Run
+				python virtualenv.py my_new_env
+			
+	config:
+		automatically use current ENV
+			export PIP_RESPECT_VIRTUALENV=true
+		only run in virtualenv
+			export PIP_REQUIRE_VIRTUALENV=true
+	installing packages
+		If python is local, will install to .local or use --user
+		Install to virtualenv -E
+	
+Virtualenv
+	Changes $PATH to include ENV/bin
+	Changes module site.py to add module search path add ENV/lib/python-x.x/site-packages
+	Newly installed modules go there too.
+
+virtualenvwrapper
+	http://www.doughellmann.com/projects/virtualenvwrapper/
+	debian: virtualenvwrapper
+	Relacement for virtualenvwrapper under zsh - virtualenv-sh
+	
+	config:
+		export WORKON_HOME=~/Envs
+		export VIRTUALENVWRAPPER_LOG_DIR="$WORKON_HOME"
+		export VIRTUALENVWRAPPER_HOOK_DIR="$WORKON_HOME"
+		source ~/.local/bin/virtualenvwrapper.sh
+		export PIP_VIRTUALENV_BASE=$WORKON_HOME
+		export PIP_RESPECT_VIRTUALENV=true
+
+	~/Envs/postmkvirtualenv
+		auto run after a virtualenv created, e.g.
+			pip install xxxxx
+			export PYTHONPATH=
+	~/Envs/postactivate
+		auto run after virtualenv activated
+	
+	Commands
+		workon [environment name] - 
+		to activate an environment
+		deactivate - to deactivate an environment
+		workon - to list all environments
+		lssitepackage - to list all installed packages for an environment
+		rmvirtualenv - to remove a virtual environment
+		cdvirtualenv - to cd to a virtualenv
+		cdsitepackages - 
+		to cd to a virtualenv site packages directory
+		toggleglobalsitepackages  - 
+		to turn global site packages on/off in python's path
+		python-stdeb
+		convert Py modules to Debian packages
+		pypi-install <module> - downloads & installs from PyPi
+		py2dsc - create a template for making Debian packages from module source
+
+Pythonbrew
+	http://www.ken-far.com/2013/03/installing-python-with-pythonbrew.html#more
+	Build Dependencies libreadline-dev libncurses5-dev libssl-dev zlib1g-dev libbz2-dev libsqlite3-dev
+
+supervisor
+	auto-start programs, like sys-v-init
+
+web test
+	http://blog.ianbicking.org/2010/04/02/webtest-http-testing/
+
+Vim
+	http://blog.sontek.net/2008/05/11/python-with-a-modular-ide-vim/
+
+
+Data mining including record linkage
+	http://datamining.anu.edu.au/projects/linkage.html#prototype_software
+
+

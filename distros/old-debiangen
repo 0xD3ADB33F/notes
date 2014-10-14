@@ -1,0 +1,262 @@
+General Docs
+    Deb Reference page: http://www.debian.org/doc/manuals/apt-howto/ch-apt-get.en.html
+    User Guide http://cafecomputer.com/guide/users-guide.en.html#contents
+    DistroWatch Series with general package management comparison intro and 
+    lots of config tips: http://www.distrowatch.com/dwres.php?resource=review-debian
+
+Advocacy
+	Why Debian
+		: Here is an argument for community based as opposed to business model
+		: based distributions:
+		:
+		: Red Hat is abandoning its old business model because that model
+		: wasn't working for its investors. You (and everyone else) can expect
+		: other distributions that have a business model basis to also fail
+		: for the same reasons.  Whatever those reasons are, they were not
+		: peculiar to Red Hat.  If you want to avoid going through the
+		: transition from one distribution to another, again, you should
+		: choose a community based distribution this time.  By doing so, you
+		: avoid the inevitable 'churn' in the business marketplace.  
+
+Repositories and CD's
+	Docs
+		Repository HOWTO: 
+			http://www.debian.org/doc/manuals/repository-howto/repository-howto.html
+	Packages
+		mini-dinstall
+			build personal repositories
+		apt-move
+			synchronize downloaded packages in apt/cache with a local ftp repository
+		dpkg-scanpackages
+			- for making a source of a local dir, e.g.
+			dpkg-scanpackages /usr/local/debian /dev/null | \
+				   gzip - > /usr/local/debian/Packages.gz
+			echo "deb file:/usr/local/debian ./" >> /etc/apt/sources.list
+		apt-get autoclean
+			clean out old debs that are no longer available for download
+
+    Jigdo Debian Mini HOWTO:
+        http://www.dirac.org/linux/debian/jigdo/debian-jigdo-mini-howto.html
+	Procedures:
+        Jigdo CD Refresh:
+            In jigdo data dir (/src/linux/debian ?)
+                delete *.template files
+            Download new .jigdo files from
+                ftp://ftp.fsn.hu/pub/CDROM-Images/debian-unofficial/sid/jigdo
+                http://qluck.debian.org/cdimage/testing/jigdo-area/
+            Mount existing iso file on 'sidiso' mtpoint
+                Run jigdo-lite, pointing it to 'iso'
+                Run 'apt-cdrom -m -d <full path to mtpoint> add' 
+
+Installation
+
+Install from USB stick 
+http://www.us.debian.org/releases/stable/i386/ch04s03.html.en
+
+	Installing from a running Unix/Linux system
+		docs
+			Install manual
+				www.debian.org/releases/stable/i386/ch-preparing.en.html#s-linux-upgrade
+			Linuxmagau.org on Debian Package Caching: Updating Multiple Machines
+				Big article
+					http://tinyurl.com/vn1k
+					http://articles.linmagau.org/modules.php?op=modload&name=Sections&file=index&req=viewarticle&artid=451 		
+					debootstrap
+			doesn't use apt so might work with Knoppix
+			docs
+				Big chroot install HOWTO:
+					HOWTO - Install Debian Onto a Remote Linux System
+						http://trilldev.sourceforge.net/files/remotedeb.html
+				Karsten Self's http://twiki.iwethey.org/Main/DebianChrootInstall
+					some of this may be included in reference manual chroot chapter #8 
+			command
+				/usr/sbin/debootstrap --arch i386 sid /mnt/hda5/debian http://toad:9999/mirror
+		Knoppix module selection, transfer modules list to new debian installation:
+			(echo -e "# Knoppix modules\n";\
+			awk '{print $1}' /proc/modules >> /mnt/debinst/etc/modules
+			Later build kernel with these modules.  Also, copy Knoppix XF86Config-4
+			- does installing 'discover' provide this?
+	Thin Client
+		Several wiki entries at bottom of
+			http://wiki.debian.net/index.cgi?DebianInstaller
+	Automated or multiple deployments
+		http://lists.debian.org/debian-user/2003/debian-user-200304/msg00002.html
+		re: apt-proxy, cron-apt, systemimager, fully automated install (fai),
+		partition image (partimage)
+	Recovery
+		Debian ref tips for recovering passwords, lost files, and an unbootable system.
+			http://www.debian.org/doc/manuals/reference/ch-tips.en.html
+	Booting installation
+		util
+			mkrboot
+				make install boot floppies
+	Install from 100MB Zip disk (if no network)
+		1)  Make the ZIP-Disk bootable from windows.
+		2)  Copy the loadlin.exe onto the ZIP-Disk
+		3)  Copy the desired rescue.bin, root.bin and drivers.tgz onto it
+		4)  Use the file install.bat and rename it to autoexec.bat
+		5)  correct the path to the files in it.
+		6)  Boot your computer with the ZIP-Disk.
+		
+
+Config
+	utils
+		update-xx   utilities
+		configure-debian
+			menu of configurable services & packages
+		set Locale 
+			locales - generate or remove locales
+			restore keyboard
+				dpkg-reconfigure --priority=low console-data # console		
+				dpkg-reconfigure --priority=low xserver-xfree86
+			Knoppix:
+				edit /etc/sysconfig/i18n to:
+				LANG="en_US"
+				COUNTRY="US"
+				LANG="en_US"
+				LANGUAGE="en"
+				CHARSET="iso8859-1"
+				XMODIFIERS="" 
+		rcconf
+			control deamons
+	modules
+		update 1/05: make changes in /etc/modprobe.d/
+		Loading modules at boot: 
+			(Old?) /etc/modules.conf is control script but is auto-gnerated from data
+			files in /etc/modutils and run at boot by script in /etc/init.d/modutils
+		update-modules 
+			run after updating /etc/modules.conf (2.4) or /etc/modprobe.conf (2.6 but deprecated)
+	Hardware detection utilities
+		discover -- hardware identification system
+        mdetect -- mouse device autodetection tool
+        read-edid -- hardware information-gathering tool for VESA PnP monitors
+		isapnptools
+			detect IO ports of ISA cards, though if card is PnP, look at /proc/isapnp if compiled into kernel
+	kernel
+		bf2.4 kernel is for installation only - do apt-cache search kernel-image
+		and install one for cpu type.
+		2.4.20 - must compile with gcc 2.95 - not above
+		dmesg to see kernel boot messages about missing modules
+	pcmcia
+		pcmcia-cs only needed for 16-bit cards - add isa-pnp to /etc/modules?
+		if using Cardbus only - kernel 2.4 + hotplug
+		install pcmcia-cs after installation
+			http://libranet.com/support/view.cgi?version=2.8&item=0375.html
+	Power Management
+		auto power off when shut down
+			in /etc/modules: apm power_off=1
+		cpufreq & cpufreqd
+			interface with kernel support
+			lower cpu & hd power.
+			hd spindown even on journaled fs
+		cpudyn
+			increase cpu speed when needed
+		acpid
+			don't run at same time as apmd
+			need to pass acpi=on to kernel (2.4 kernels only?)
+	Networking
+		wireless
+			Libranet
+				install laptop package and wlan drivers
+					http://libranet.com/support/view.cgi?version=2.8&item=0302.html
+		etherconf (not in Libranet)
+			config networking with dpkg-reconfigure etherconf
+				- make backup of /etc/hosts
+				- If this fails, it is because the kernel doesn't recognize the
+				  card modconf - add module for card - adds to /etc/modules
+				  rerun dpkg-reconfigure etherconf and 'update-rc.d ethernet
+				  defaults'
+		iptables
+			admin tools for iptables
+			run scripts in /etc/networking/interfaces - up, pre-up, down,
+			post-down
+
+	Sound
+		package sndconfig
+		adduser <username> audio (must log out and in to take effect?)
+		volumne & mixing: package aumix		
+	XFree
+		first get hw detection utils above
+		xwininfo - info on adapter
+		apt-get install (for a reinstall) or dpkg-reconfigure xserver-xfree86
+		xvidtune
+			adjust screen settings with xvidtune (in xbase-clients)
+				will print mode lines.  Paste desired line into a ModeLines 
+				section in XF86Config-4 e.g.
+					Section "Modes"
+						Identifier    "Ulycom"
+						ModeLine    "800x600"      49.50    800  832  912 1056
+						600  601  604  625 +hsync +vsync
+					EndSection
+				and make corresponding entry for Monitor section:
+					Section "Monitor"
+						UseModes "Ulycom"
+						Identifier    "Generic Monitor"
+						HorizSync    28-50
+						VertRefresh    43-75
+						Option        "DPMS"
+					EndSection
+
+		Other X
+			X Server default config - disallows TCP connections in /etc/X11/xinit/xserverrc
+		Window Manager
+			Change Default WM
+					update-alternatives --config x-window-manager
+					default_display_manager file in /etc - gdm 'heeds' this settting
+					per init.d gdm script
+			under Libranet
+				When gdm is display manager, Xsession started with command in 
+				/etc/gdm/Sessions/Default - default is:
+					exec /etc/X11/Xsession /usr/bin/libranet-session
+				This references a bunch of possible things: wm as set by 
+				Adminmenu or overriden by .libranet/session.conf
+			icewm
+				investigate icewm-gnome - docs in share/doc
+				Can icewm use gnome menus/resource settings as icewm's are too 
+				hard to understand and sort of non-standard?
+
+
+Service Management
+	rcconf
+    update-rc.d - install & remove Sys-V sytle init links
+		said in Debian-User:
+			update-rc.d intended for use by package scripts
+			manual rm and ln -s of links better for user
+				e.g stopping a service
+					mv S20foo K80foo_originallyS20
+		example
+			update-rc.d <service> defaults (2345)
+			update-rc.d <service> start 99 2 3 4 5 . stop 99 2 3 4 5 .
+			update-rc.d -f remove <service>
+		Note remove option will remove all scripts, and so at next upgrade, 
+		defaults links will be reinstalled.  Therefore leave stop links in place  
+		Look into file-rc
+			create a local rc script
+			/etc/init.d/skeleton /etc/init.d/local
+			vi /etc/init.d/local
+			chmod 755 /etc/init.d/local
+			update-rc.d local defaults 80
+
+Packages
+	C, C++ compiliing
+		build-essential (?)
+		xlibs-dev - X headers
+		linux-kernel-headers
+		zlib - zlib1g-dev
+		g++ = c++ compiler
+		zip
+
+	For Kids
+		junior-writing (exclude emacs)
+	
+	Misc Utils
+		sysutils package
+			dos2unix
+				converts line endings (C-M's) in DOS file on unix
+
+	java
+		installation of non-native package
+			http://wiki.osuosl.org/display/DEV/Java+on+Debian
+		Be sure to add environment variables to /etc/profile (reboot?)
+
+vim: nowrap 

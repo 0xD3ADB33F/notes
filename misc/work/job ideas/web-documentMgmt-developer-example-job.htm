@@ -1,0 +1,434 @@
+
+<html><head>
+<script language="javascript">
+function doEmail(which)
+{
+window.open("email2friend.asp" + which + "" ,"Email","top=50,left=400,width=600,height=500,scrollbars=yes,resizable=yes,toolbar=no,location=no");
+}
+function doSearch1()
+	{
+	document.frmSearch.vol_searchoption.value = 2;
+	document.frmSearch.submit();
+	}
+
+
+function doSearch2()
+	{
+	document.frmSearch.vol_searchoption.value = 2;
+	document.frmSearch.submit();
+	}
+function addBC()
+{
+window.open("../../client/frm_volunteer/job_map.asp","addLogo","top=50,left=400,width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,location=no");
+}
+
+function addON()
+{
+
+window.open("../../client/frm_volunteer/job_mapON.asp","addLogo","top=50,left=400,width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,location=no");
+}
+
+
+function doAlert(which)
+{
+if (which == 1)
+	{
+		if (document.frmSearch.vol_alertname.value != '')
+			{	
+				document.frmSearch.vol_alertoption.value = 1;
+				document.frmSearch.submit();
+			}
+		if (document.frmSearch.vol_alertname.value == '')
+			{
+				alert('Before saving alert, please enter alert name');
+			}	
+			
+	}
+if (which == 2)
+	{
+		document.location = "alerts.asp";
+		
+	}	
+
+
+
+}
+function doHelp(which)
+{
+//alert(which);
+//if (which == 1)
+//	{
+	window.open("/cv/" + which + ".html","help","top=50,left=400,width=600,height=500,scrollbars=yes,resizable=yes,toolbar=no,location=no");
+//	}
+
+//if (which == 2)
+//	{
+//	window.open("help.asp","help","top=50,left=400,width=600,height=500,scrollbars=yes,resizable=yes,toolbar=no,location=no");
+//	}
+}
+function doPrint(whichtype,which)
+{	
+	if (whichtype == '1')
+	{
+		window.open("volunteer.asp?fn=view&g_varID=" + which + "&mode=print","print","top=50,left=400,width=600,height=500,scrollbars=yes,resizable=yes,toolbar=no,location=no");
+	}
+	if (whichtype == '2')
+	{
+		window.open("events.asp?fn=view&g_varID=" + which + "&mode=print","print","top=50,left=400,width=600,height=500,scrollbars=yes,resizable=yes,toolbar=no,location=no");
+	}
+	if (whichtype == '3')
+	{
+		window.open("jobs.asp?fn=view&g_varID=" + which + "&mode=print","print","top=50,left=400,width=600,height=500,scrollbars=yes,resizable=yes,toolbar=no,location=no");
+	}
+}
+</script>
+</head><body>
+<table width=100% border=0 valign="bottom" height="60" cellpadding=0>
+<tr><td>
+<img name="jobstop" src="http://www.charityvillage.com/cv/images/jobstop.gif" width="740" height="60" border="0" valign="bottom" usemap="#m_jobstop">
+<map name="m_jobstop">
+<area shape="poly" coords="640,38,680,38,680,59,640,59,640,38" href="/CV/faq/index.asp" title="FAQ" alt="FAQ" >
+<area shape="poly" coords="688,38,736,38,736,59,688,59,688,38" href="/CV/charityvillage/post.html" alt="Contact" >
+<area shape="poly" coords="675,16,739,16,739,37,675,37,675,16" href="/CV/charityvillage/guides.asp" alt="QuickGuides" >
+<area shape="poly" coords="590,38,634,38,634,59,590,59,590,38" href="/CV/charityvillage/search.asp" alt="Search" >
+<area shape="poly" coords="636,16,672,16,672,37,636,37,636,16" href="/CV/learn/index.asp" alt="Educational Opportunities" >
+<area shape="poly" coords="592,16,634,16,634,37,592,37,592,16" href="/CV/charityvillage/lib.asp" alt="Library" >
+<area shape="poly" coords="504,16,590,16,590,37,504,37,504,16" href="/applicant/volunteer.asp" alt="Volunteer & Donate" >
+<area shape="poly" coords="443,16,501,16,501,37,443,37,443,16" href="/CV/charityvillage/ires.asp" alt="Resources" >
+<area shape="poly" coords="388,16,442,16,442,37,388,37,388,16" href="/CV/marketplace/index.asp" alt="Marketplace" >
+<area shape="poly" coords="258,16,386,16,386,37,258,37,258,16" href="/CV/nonpr/index.asp" alt="Nonprofit Neighbourhood" >
+<area shape="poly" coords="148,16,182,16,182,37,148,37,148,16" href="/applicant/jobs.asp" alt="Jobs" >
+<area shape="poly" coords="183,16,255,16,255,37,183,37,183,16" href="/applicant/events.asp" alt="News & Events" >
+<area shape="poly" coords="52,16,88,16,88,37,52,37,52,16" href="/CV/main.asp" alt="Main" >
+<area shape="poly" coords="90,16,146,16,146,37,90,37,90,16" href="/client/index.asp" alt="Advertise" >
+</map></td></tr></table><table width=740 border=0><tr><td>
+<form name="surfing" method="post">
+
+<tr><td><table bgcolor="#ccffff" width=740 border=0><tr><td>
+<img name="seekernav" src="/images/seekernav2.gif" width="430" height="30" 
+border="0" usemap="#m_seekernav">
+<map name="m_seekernav">
+<area shape="rect" coords="383,1,425,27" href="/applicant/login.asp" 
+title="Log-in" alt="Log-in" >
+<area shape="rect" coords="323,1,381,27" 
+href="/applicant/register.asp" title="Register" alt="Register" >
+<area shape="rect" coords="229,1,322,28" 
+href="/applicant/events.asp?fn=searchform" title="Search Events" 
+alt="Search Events" >
+<area shape="rect" coords="122,1,228,28" 
+href="/applicant/volunteer.asp?fn=searchform" title="Search 
+Volunteer" alt="Search Volunteer" >
+<area shape="rect" coords="44,1,121,29" 
+href="/applicant/jobs.asp?fn=searchform" title="Search Jobs" 
+alt="Search Jobs" >
+</map></td><td><script language="JavaScript">
+							<!-- Hide the script from old browsers --
+							function surfto(form) {
+							var myindex=form.select1.selectedIndex
+							if (form.select1.options[myindex].value != "0") {
+							location=form.select1.options[myindex].value;}
+							}
+							//-->
+							</script>
+							<select name="select1" onChange="surfto(this.form)" size=1>
+								<option SELECTED value="0">Career Help & Information</option>
+								<option value="/cv/faq/faq_user.html">--User Help</option>
+								<option value="/cv/faq/faq_cc_user_14.html">--Career Assessment</option>
+								<option value="/cv/faq/faq_cc_user_15.html">--Job Search Help</option>
+								<option value="/cv/learn/index.asp">--Continuing Education </option>
+								</select>
+
+</select>
+</td></tr>
+</table>
+</td></tr>
+
+</table>
+</form>
+</table>
+	<link REL="STYLESHEET" TYPE="text/css" href="/includes/i_main.css" title="Admin">
+
+
+<span class="result"></span>
+<table border="0" cellspacing="5" cellpadding="0" width="100%">
+	<tr>
+		<td>
+		
+			
+<script language="javascript">
+function doProfile(which)
+{
+//window.open("profile.asp?pid=" + which + "","addLogo","top=50,left=250,width=750,height=500,scrollbars=yes,resizable=yes,toolbar=no,location=no");
+document.location = "jobs.asp?pid=" + which + "&fn=profile"
+}
+
+</script>
+
+
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%" bordercolor="black" align="center">
+
+
+
+	
+		<tr>
+			<td class="Heading" align="left" colspan="2"><font face="Arial" size=4>
+			<tr>
+			<td align="Left" colspan="2">
+			<font face="arial" size=4><br><br></font>
+			</font></td>
+		</tr>
+		<tr >
+		
+		
+		
+		
+		<td class="label" colspan="2" align="right">&nbsp;
+		
+		</td>
+	</tr>
+	<tr>
+		<td class="label" colspan="2" align="right">
+		<script language="javascript">
+		function doLanguage(which)
+			{
+			if (which == 1)
+				{
+				document.language_view.action = 'jobs.asp?lang=FR';
+				document.language_view.fn.value = 'view';
+				document.language_view.g_varID.value ='10736';
+				document.language_view.submit();
+				}
+			if (which == 2)
+				{
+				document.language_view.action = 'jobs.asp?lang=EN';
+				document.language_view.fn.value = 'view';
+				document.language_view.g_varID.value ='10736';
+				document.language_view.submit();
+				}	
+				
+			}
+			
+			
+		
+		</script>
+		</td></tr>
+		
+				
+		
+		
+		<tr><td class="label" colspan="2" align=middle>
+		
+				<img src="../../Logos/Bu347newlogo_small_Colourvertical.jpg">
+				<BR><BR>
+		</td>
+	</tr>
+	<tr align =center>
+			<td class="sectionTitle" colspan=2 align=center><h3>
+			
+			<u>Ontario Non-Profit Housing Association</u><BR><BR>
+			
+			</td></tr>	
+			
+				<tr align =center>
+				<td class="sectionTitle" colspan=2 align=center>Web Master</td> 
+				</tr>	
+				<tr>
+				<TD class="label"  width=50% align=left><STRONG>Position Type: </STRONG>Contract - Full Time</TD> 
+				<TD class="label"  width=50% align=left nowrap valign=top><STRONG>Date Ad Posted: </STRONG> 06/20/2003</TD>
+				</TR><tr align =center>
+				<TD class="label"  width=50% align=left wrap><STRONG>Job Region: </STRONG>ON - Metro Toronto Area</TD> 
+				<TD class="label"  width=50% align=left nowrap valign=top><STRONG>Application Deadline: </STRONG>07/09/2003</TD> 
+				</tr>
+				</TR>
+				
+				<tr align =center>
+				<TD class="label"  width=50% align=left><STRONG>Location(s): </STRONG>Toronto</TD> 
+				<TD class="label"  width=50% align=left></td>
+				</TR>
+				
+				<TR><TD class="label"  width=100% align=left colspan=2>
+				<BR>Web Master Position<BR>(Full Time, One Year Contract)<BR><BR>About Us:<BR>ONPHA is a non-profit organization established to build a strong non-profit housing sector in Ontario.  ONPHA represents more than 750 organizations that manage over 150,000 non-profit housing units for families, seniors, people with disabilities and the homeless.  With a staff complement of approximately twenty and an annual budget of over $2 million, ONPHA is a progressive organization with a reputation for excellence.<BR><BR>The Opportunity:<BR>This position is ideal for a new graduate or other individual with web expertise and hands-on experience, interested in maintaining content on a growing website in a non-profit environment. Job includes creating and updating HTML content, creating images in Adobe Photoshop, and transferring Word and Quark documents to web-friendly formats.<BR><BR>Requirements:<BR>The candidate must demonstrate thorough knowledge and ability in website design and maintenance, including:<BR>§	Demonstrated ability to create well-formed HTML code from scratch ‘by hand’ (not in “Frontpage” or “Dreamweaver”)<BR>§	Demonstrated ability to create/edit forms<BR>§	Some knowledge of Cascading Style Sheets<BR>§	Demonstrated ability to perform site maintenance basics (FTP)<BR>§	Ability to work with Photoshop to create web graphics<BR>§	Ability to create PDFs with Adobe Acrobat<BR>§	Proficiency in Microsoft Office<BR>§	Experience trouble-shooting web problems<BR><BR>Helpful but not Required:<BR>§	Ability to use Quark, Pagemaker<BR>§	Working knowledge of HTML 4.01 specifications<BR>§	Experience working with JavaScript, ASP, and VBScript<BR>§	Knowledge of web-browser limitations and code work-arounds<BR>§	Experience with design and layout<BR>§	Experience creating and managing web services beyond websites (eg. Message boards, broadcast e-mail)<BR><BR>What we are looking for:<BR>An organized, self-motivated, hard-working individual who pays attention to detail and is capable of working independently in a busy environment.<BR><BR>Salary Range:<BR>Commensurate with experience.<BR><BR>Location:<BR>Downtown Toronto<BR><BR>To Apply:<BR>Send résumé and cover letter to the attention of Robin Rowe, Communications and Marketing Manager by July 9 via lucas.rizoli@onpha.org or fax to (416) 927-8401.<BR><BR><BR></ul></li><BR><BR>  
+				</td>
+				</TR>
+				<TR>
+				<TD class="label"  width=50% align=left>Compensation Type: </td>
+				<TD class="label"  width=50% align=left>Contact by: 
+											Email, Fax
+				
+								</TD></TR>
+								<TR>
+								<TD class="label"  width=50% align=left>Amount: </td>
+								<TD class="label" width=50% align=left>
+								
+								</TD></TR>
+								<TR><td></td><td></td></tr>
+								<TR>
+								<TD class="label"  width=50% align=left></td>
+								<TD></TD></TR>
+								<tr align=left>
+									<td class="sectionTitle" colspan=2 align=left><STRONG><U>Job Contact Information</U></STRONG></td>
+								</tr>
+				
+								 
+									</TR>			
+									<tr>
+									<TD class="label"  colspan=2 align=left>
+									 
+									</td>
+									</tr>
+									
+									<tr>
+									<TD class="label"  colspan=2 align=left>
+									Ontario Non-Profit Housing Association
+									</td>
+									</tr>
+									
+									<tr>
+									<TD class="label"  colspan=2 align=left>
+									Fax: (416) 927-8401             
+									</td>
+									</tr>
+									
+									<tr>
+									<TD class="label"  colspan=2 align=left>
+									Email: <a href='mailto:lucas.rizoli@onpha.org'>lucas.rizoli@onpha.org</a>
+									</td>
+									</tr>
+									
+									<tr>
+									<TD class="label"  colspan=2 align=left>
+									For more information visit: <a href='http://www.onpha.on.ca'>http://www.onpha.on.ca</a>
+	</td>
+	</tr>
+	
+						
+</table>
+
+
+<form name="language_view" method="post">
+<input type="hidden" name="language" value="">
+<input type="hidden" name="fn" value="">
+<input type="hidden" name="g_varID">
+
+</form>
+ 
+			
+			<table width=100% align="center">
+			<tr>
+			<td class="label" align="center">
+			
+<font color=red><b>[Please mention that you saw this posting at CharityVillage.com]</b></font><BR>
+
+</td></tr>
+				<tr>
+					<td align="center" ><a name="test"><a href="javascript: doPrint('3','10736')">
+					<img src="../images/button_print_listing.gif" border=0></a>
+					&nbsp; &nbsp; &nbsp;&nbsp;
+					<a href="javascript: doEmail('?jobid=10736&suserid=&jobTitle=Web+Master&orgName=Ontario+Non%2DProfit+Housing+Association')"><img border=0 src="../images/button_send_listing.gif" border=0></a>
+					&nbsp;&nbsp;&nbsp;<a href="javascript: doHelp('1112')"><img src="../images/i_button.gif" border=0"></a>
+					<span class="Instruction">&nbsp;</span></td>
+				</tr>
+			
+				<tr>
+					<td align="center" ><a href="javascript: history.go(-1)">
+					<img src="../images/button_back_to_result.gif" border=0></a>
+					<span class="Instruction">&nbsp;</span></td>
+				</tr>
+				
+				
+			</table>
+		</td>
+	</tr>
+</table>
+<!-- begin footer -->
+<table border="0" cellspacing="0" cellpadding="0" width="100%" 
+bgcolor="#ffffcc">
+   <tr>
+     <td colspan="2">
+       <table border="0" cellpadding="0" cellspacing="0" width="100%">
+         <tr>
+           <td width="71" height="45" align="center" valign="middle" 
+bgcolor="#ffffcc" nowrap>
+             <a href="/cv/main.asp"><img 
+src="/CV/charityvillage/graphics/cvms.gif" width="70" height="53" 
+border="0" alt="main st."></a>
+           </td>
+           <td width="60%" align="left" valign="middle" 
+bgcolor="#ffffcc"> <font size="-1" face="Arial,Helvetica">
+             &nbsp; <a class="bottomnav1" href="/cv/main.asp">Main Street</a> |
+             <a class="bottomnav1" 
+href="/client/index.asp">Advertise</a> | <a class="bottomnav1" 
+href="/applicant/jobs.asp">Jobs</a>
+             | <a class="bottomnav1" 
+href="/applicant/events.asp">News/Events</a>
+             | <a class="bottomnav1" 
+href="/cv/nonpr/index.asp">Nonprofit Neighbourhood</a>
+             <br>
+             &nbsp; <a class="bottomnav1" 
+href="/cv/marketplace/index.asp">Suppliers</a>
+             | <a class="bottomnav1" 
+href="/cv/charityvillage/ires.asp">Resources</a>
+             | <a class="bottomnav1" 
+href="/applicant/volunteer.asp">Volunteer/Donate</a>
+             | <a class="bottomnav1" 
+href="/cv/charityvillage/lib.asp">Library</a>
+             <br>
+             &nbsp; <a class="bottomnav1" href="/cv/learn/index.asp">Learn</a>
+             | <a class="bottomnav1" href="/cv/charityvillage/guides.asp">Quick
+             Guides</a> | <a class="bottomnav1" 
+href="/cv/charityvillage/search.asp">Search</a>
+             | <a class="bottomnav1" href="/cv/charityvillage/post.html">Contact
+             Us</a> | <a class="bottomnav1" 
+href="/cv/faq/index.asp">Help</a></font>
+           </td>
+           <td valign=middle align=right width="30%">
+             <form name="QuickIndex">
+               <select size=1 name="URL" 
+onChange="if(options[selectedIndex].value) 
+window.location.href=(options[selectedIndex].value)">
+                 <option value="" selected>Go to page:</option>
+                 <option value="/cv/main.asp">Main Street</option>
+                 <option value="/client/index.asp">Advertise</option>
+                 <option value="/applicant/jobs.asp">Jobs</option>
+                 <option value="/applicant/events.asp">News/Events</option>
+                 <option value="/cv/nonpr/index.asp">Organizations</option>
+                 <option value="/cv/marketplace/index.asp">Suppliers</option>
+                 <option value="/cv/charityvillage/ires.asp">Resources</option>
+                 <option 
+value="/applicant/volunteer.asp">Volunteer/Donate</option>
+                 <option value="/cv/charityvillage/lib.asp">Library</option>
+                 <option value="/cv/learn/index.asp">Learn</option>
+                 <option value="/cv/charityvillage/guides.asp">Quick 
+Guides</option>
+                 <option value="/cv/charityvillage/search.asp">Search</option>
+                 <option value="/cv/faq/index.asp">Help</option>
+                 <option value="/cv/charityvillage/post.html">Contact 
+Us</option>
+               </select>
+               <noscript>
+               <input type=submit value="Go" name="submit">
+               </noscript>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             </form>
+           </td>
+         </tr>
+       </table>
+     </td>
+   </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" width="100%" height="12">
+   <tr>
+     <td width="100%" colspan="2" bgcolor="#FFFFFF" align="center" 
+valign="BOTTOM">
+       <br>
+       <font size="-1" face="Arial,Helvetica"> <a 
+href="/cv/charityvillage/mast.html">Copyright</a>
+       &#169; 1995-2003 CharityVillage Ltd. All rights reserved. <a 
+href="mailto:help@charityvillage.com">help@charityvillage.com</a></fon 
+t>
+     </td>
+   </tr>
+</table>
+<!-- end footer -->
+
+</body></html>

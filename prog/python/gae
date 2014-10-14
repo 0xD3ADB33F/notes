@@ -1,0 +1,26 @@
+
+Resources {{{1
+External data {{{2
+
+http://code.google.com/appengine/articles/gdata.html 
+http://code.google.com/apis/spreadsheets/data/1.0/developers_guide_py
+
+sample
+http://code.google.com/p/google-app-engine-samples/source/browse/trunk/gdata_feedfetcher
+
+With spreadsheet {{{1
+
+> Does GAE have the Google Spreadsheet API ready to be use by default or 
+> I have include it when uploading my application? 
+
+the latter. you have to include it as part of your uploaded 
+application, however, you don't need to upload *all* of the gdata 
+code. here's an article on using the gdata API on App Engine: 
+http://code.google.com/appengine/articles/gdata.html 
+here is more specific info on the Spreadsheets API: 
+http://code.google.com/apis/spreadsheets/data/1.0/developers_guide_py... 
+here is a moderately recent blog post on this topic: 
+http://blog.andreaskahler.com/2010/03/google-appengine-google-docs-so... 
+also, take a look at the Python code in gdata/alt directory of your 
+gdata distro. 
+

@@ -1,0 +1,51 @@
+Admin Commands
+	control postmaster (start this first)
+		pg_ctl start | stop | restart | status
+	initdb -D <dir>
+		create a new database cluster
+			/var/lib/postgres is usual
+		must be run by user owning the server process (-U username)
+	create admin user
+		sudo -u postgres bash
+	createuser -A -D <username>
+		add -P to prompt for password for password auth over TCPIP connections
+	createdb -O andmalc andmalcwork
+	dropdb	dbname
+	psql	[dbname] (default is username, though not in Debian)
+
+
+
+Cygwin 
+	Read Cygwin/postgres README!
+	Packages
+		ash, bash, cygwin, cygrunsvr, fileutils, grep, ncurses,
+		postgresqlreadline, sed, sh-utils and textutils.  + cygipc (part of
+		Cygwin Utilities)
+
+	Setup: Manual Start Method
+		Run "ipc-daemon &".
+		Once ipc-daemon is running, initialize a database directory with
+			initdb -D /cygdrive/d/apps/cygwin/usr/local/pgsql/data 
+		Start postmaster:
+			postmaster -i -D /cygdrive/d/apps/cygwin/usr/local/pgsql/data
+			Run this in own window without a '&' to see messages.
+
+		Setup: NT Service Method
+			Read /usr/doc/cygwin/postgresql README for instructions.
+
+		Set up account to run postmaster:
+			"login incorrect".: You cannot change user context on NT/W2K if
+			your account has not explicitely set several user rights. Even
+			administrator doesn't have all these user rights. These rights are
+			"Act as part of the operating system" "Replace process level token"
+			"Increase quotas"
+
+		Probably use SYSTEM account as is default for services.
+
+		Install postgres as service with cygrunsrv (see example under notes for
+		ssh).  ipc-daemon - install & run as a service w/o cygrunsrv (contains
+		own code for this) 
+
+    Newsgroup: comp.databases.postgresql.ports.cygwin
+    Mailing list: pgsql-cygwin@postgresql.org
+

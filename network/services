@@ -1,0 +1,50 @@
+service identification
+	/etc/services - map name to protocol 
+		sshd    tcp     #SSH daemon
+
+	
+Service Control
+	Inetd
+		Inetd.conf entry example:
+			sshd stream tcp nowait root /usr/sbin/in.sshd sshd -i
+
+
+Name Resolution
+	Files
+		/etc/resolv.conf
+			'nameserver <IP>' List up to 3 dns servers - first is primary,
+			others are backup
+			'search <name>' Default domain for name searches - use only if doing
+			lots of local domain resolutions as this causes local domain name to
+			be appended to all lookups.
+		/etc/hosts
+			First two lines for local machine:
+			127.0.0.1 localhost (loopback device for internal network connections) <can
+			do an alias here too - should I?>
+			192.168.0.1 <alias1> <alias2> (e.g. myhost.mydomain.net
+			myhost.mydomain myhost)
+			Subsequent lines for frequently used hosts on network - faster than DNS)
+		/etc/host.conf
+				'order hosts, bind' - name resolution method order
+
+Programs
+	host
+		-l  List all hosts in domain, use with -t (may be blocked for security)
+		-t <querytype>  Specify query type eg -t MX
+		-r  Turn off recursion ie use local cache only
+	dig 
+		Debian: in dnsutils package
+		[@server] domain [query-type] [query-class, default IN (Internet)] [+query-option] [dig option] 
+		Query DNS servers about domain info
+		@server Use DNS server - default is server specified in resolv.conf
+	ddclient
+		man page is out of date - see docs dir for current examples
+		test with
+			ddclient -daemon=0 -query
+		/etc/ddclient.conf
+			hostname option: at end of line of options
+			eg server=www.zoneedit.com, protocol=zoneedit1, (login,pw options), 
+			malcolmson.net
+			- couldn't get to work with DI-604.  Use dyndns checkip instead:
+			use=web, web=checkip.dyndns.org/
+

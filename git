@@ -1,0 +1,46 @@
+Create new repo with remote at BB
+	git init <dir>
+	git add . 
+	git commit -m 'comment'
+	git remote add origin ssh://git@bitbucket.org/andmalc/work.git
+    git push -u origin --all # pushes up the repo and its refs for the first time
+	git mv	
+
+	git commit -a  #all changes in working directory
+	git push -u origin master
+
+Show tracked files
+    ls-files
+
+Remove files
+	rm      Deletes file
+    rm --cached     Does not delete file
+
+Ignore files
+	if already indexed:
+		git update-index --assume-unchanged
+	add to .gitignore
+
+
+Utilities
+	vcsh	manage multiple repos
+			http://goo.gl/t2xCne
+		init
+		list
+		enter
+
+	Setup config on new machine
+		sudo apt-get install vcsh git mr
+		vcsh enter config
+		git remote add origin ssh://git@bitbucket.org/andmalc/config.git
+		git pull -u origin master
+
+Git Config
+[user]
+   email = andmalc@gmail.com
+   name = andmalc
+[core]
+   pager = less -r
+[status]
+    showUntrackedFiles = no
+~

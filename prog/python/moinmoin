@@ -1,0 +1,16 @@
+
+Parse page as rst
+	{{{#!rst }}} or #FORMAT rst at page top
+Set default parser with default_markup config variable
+
+
+Markup
+
+Link is photo attachment instead of text
+Layout with css styles
+
+[[LastnameSurname|{{attachment:turnip.jpg||class=photo right}}]]
+
+.photo { border:5px solid gray;  margin:10px;  width:250px;}                    
+.right { float:right}                                                           
+.hr2 { height: 3px;  color: gray;  clear: both;} 

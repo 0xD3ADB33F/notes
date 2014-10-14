@@ -1,0 +1,334 @@
+
+Shell Options
+	shopt	        set shell options command ie 'shopt -s histreedit'
+	cdable_vars	    cd to non-dir assumed to be value of a variable
+
+Key Binding {{{1
+
+Notation:
+	^k = \C=k = control key + k
+	M-k = Meta (usually Alt) key + k
+	ek = Escape + k
+
+Line Editor Key Bindings
+	Default bindings
+		^l	clear screen
+		char
+			^f	move one char forward
+			^b	move one char back
+			^d	delete char to right (also: list completions, log out)
+			BS	delete to left
+		word
+			M-f	word forward
+			M-b	word back
+			^w/M-BS delete word to left
+			M-D	delete word to right
+
+		line
+			^a	beginning of line
+			^e	end of line
+			^u	kill line 
+			^k   kill line to right
+			^U Delete line
+			^Y Yank line back (ie restore)
+
+	Changing
+		Modify in .inputrc
+		Reread .inputrc with C-X C-R
+
+		Emacs (and maybe other environments) uses identical Meta and Escape bindings.  
+		bindkey -m option: when binding an escape sequence like \eb, also bind b to Meta.
+
+		bindkey 
+		-v  vi mode
+		-e  emacs mode
+		-m  bind Meta - enabling Alt key bindings
+		'^V+<key>' <cmd>    Show character code (will show ^[ escape first)
+
+		More on binding function keys in zle:
+			http://zsh.sunsite.dk/Guide/zshguide04.html#l76
+
+Zsh-like completion in bash
+	 bind '\C-i:menu-complete'
+
+Zsh setup wizard
+	autoload -U compinstall
+	compinstall
+
+Docs
+	Some neat shell things (mostly zsh)
+		http://adamspiers.org/computing/shells/#myconfig
+	Eterm FAQ entry on how shells start:
+		http://zsh.sunsite.dk/Doc/Release/zsh_toc.html#SEC_Contents
+
+
+Prompts & Xterm Titles
+	PROMPT='%<control char><rest of prompt>'
+	# if privilaged, otherwise %  %#
+	\e      escape sequence for escape (ESC)
+	\a      escape sequence for bell (BEL)
+	%n      expands to $USERNAME
+	%m      expands to hostname up to first '.'
+	%/	cwd
+	%~      expands to cwd, replacing $HOME with '~'
+
+Prompts with color
+	[3<0-9>m sets color where <0-9> is color number
+	Ctrl+v+<Esc> enters an escape in a string but prints as '^['
+	PROMPT='^[[3<color #>m zsh%% ^[[30m' gives a colored prompt of 'zsh%' 
+
+Recommended prompt:
+	PROMPT=$(echo '%{\033[31m%}%m>%{\033[30m%}')
+	RPROMPT=$(echo '%{\033[32m%}%~%{\033[30m%}')
+
+Prompt to show a '+' when in a subshell
+	PS1='%(2L.+.)%# '
+
+Title print:
+	Basic pattern:
+		* ESC]0;stringBEL -- Set icon name and window title to string
+		* ESC]1;stringBEL -- Set icon name to string
+		* ESC]2;stringBEL -- Set window title to string
+
+	So, if \e is escape and \a is Bell
+	Under zsh, -P enables % sequences above, or use variables like ${USER}
+	without the -P.
+		print -Pn "\e]0;Thing\a"
+		print -n "\e]0;${USER}@${HOST}\a"
+
+	See zsh notes on precmd & preexec for adding job info.
+
+	Title Docs
+		IBM Dev Work articles
+		http://www-106.ibm.com/developerworks/linux/library/l-tip-prompt/
+		Xterm-Title Howto for shell title setting
+
+File Descriptors & Redirection {{{1
+
+Redirection
+http://en.wikipedia.org/wiki/Redirection_(Unix)
+
+Stdin, stdout, and stderr are by convention numbered 0, 1, and 2.  
+Stdout is default
+
+Redirecting standard output, stderr prints to scree
+	program-name > out.txt
+	e.g. ls > directorylisting.txt
+
+To specify the file with a number, place the number before the >
+	program-name 1> out.txt
+	program-name 2> errors.txt
+
+Redirect both stdin and stderror 
+
+	Traditional format: cmd logfile 2>&1
+	New format: cmd >& logfile (not with teed output)
+
+Redirect to file and show on screen
+	cmd | tee logfile 2>&1
+
+Drop errors	
+	2> /dev/null
+
+Standard out from a command in a sub-shell to a file:
+(ls -) > file
+	
+
+Heredoc:
+
+cat > newfile
+Enter text
+^D
+
+cat > filename <<+
+stuff
++
+
+cat >> /etc/apt/apt.conf << .
+hi!
+.
+
+
+Job control {{{1
+
+Running Processes
+	Pipes always between programs. Only works with programs which expect
+	standard input (e.g. not vi).  
+	
+	Can type in with pipe character at line end:
+		echo thing is a word |
+		sed 's/word/wordzzz/'
+
+
+Job Control
+	%n	refer to job by name or number
+	%-	previous job
+	%+	current job (in jobs list)
+	&	Run command in background, don't wait for it to complete
+
+	^c  Interrupt job
+	^z  Suspend job
+
+	EOF marker 
+		C-D on unix
+		C-Z on Windows.  
+		In Python interpreter, this causes an exit. C-C is cancel input.
+
+	bg <cmd>  Resume suspended job in background subshell (zsh only?)
+
+	kill -<signal # or name> PID or %job#
+	pkill -signal <job name>
+	pgrep <job name>
+		get PID by name
+		-f search on whole command line
+		-l list program name
+
+	Signal Names - most apps can trap first 3, KILL will always work
+	INT     Interrupt (^C) - foreground jobs only
+	QUIT    = ^\
+	TERM    Default signal
+	KILL
+	USR1	graceful restart & reread config files
+	HUP		difference from USR1?
+
+	pstree
+		-h	highlight current process
+		-G	solid lines
+		-l	display long lines
+		-p	show PID's
+		-u	show UID transitions
+
+
+Subshells:
+	All but end of a chain of pipes run in subshells.
+	cOde inside a '()' or `cmd`, including substitutions: [$=<>](cmd)
+	Backgrounded or suspended/resumed processes 
+
+	In subshell - does not affect main shell:
+	(cd /usr; ls) > file
+
+
+Running Commands
+	sh [cmd]	Run a script without having to change its access mode
+
+	For Loop
+		for x in y y y
+		do
+		...
+		done
+
+
+Completion & Expansion {{{1
+
+Command Lines
+	Single quoted string enloses literals whereas a double quoted string is
+	evaluated for shell variables or backslash escaping.
+	'xxx'	strong quotes 
+            * no expansion or metacharacters
+	""xxx"	weak quotes 
+            * $, `, and \ not disabled
+            * shell & envir. variablex expanded
+	\       At end of line - special case: removes new line char.
+	`		command - executed before rest of line.
+
+	${VAR}		Value of a shell variable name - curly brackets just used for clarity.
+
+
+Shell Wildcards
+	*	zero or more characters
+	?	any one character
+	~+	current working directory
+	~-	last working directory
+
+	[ab]	a or b
+	[a-b]	from a to b, inclusive
+
+	Note matched: Initial '.' in filename is not matched by wildcards
+        e.g.    ls .*rc
+
+brace expansion
+	used to generate filenames
+		cp filename{,-old}
+		cp filename{-old,}
+		cp filename{-v1,-v2}
+		touch a{1,2,3}b
+
+Completion vs. expansion: expansion of variables, filenames (via globbing), & history done first or after a <Tab>
+
+C-d 	List possible completions
+<pat>M-p  Recall last command beginning with pat
+cmd <pat>M-/ Recall last word beginning with pat.  M-/ again to get next match (good for completing long words like paths, zsh only)
+C-r<pat> Interactive history word search
+C-xu    Undo last completion
+
+
+
+
+Rename files
+	rename command
+
+	or
+		for file in <pat>; do
+			mv $file ${<pat>}
+		done
+	${<pat>} is a shell variable alteration/substitution/expansion  pattern
+	e.g.
+		echo ${foo#*.} removes file name extention from $foo
+
+Command History {{{1
+
+	history [n]	Show n lines of history
+	c	clear contents of current list
+	w	write current list to history file
+
+	Format:
+	Event Designator:[Word Designator]:[Modifier]
+
+	C-p/n   recall previous/next command
+
+	Referring to previous commands and args
+		Referring to commands by sequence
+		!	start character for event designator	
+		!!	previous command
+		!-2	2 commands previous
+		!n	history event #n
+
+		Referring to commands by string contents
+		!str	Refer to most recent cmd starting with str.
+		!?str?	Refer to most recent cmd containing str.
+		
+		Referring to args by string contents
+		!?str?% Most recent arg containing str.
+		!$      Last arg of previous cmd
+
+		Append args
+		!!str   Most recent command + str
+		!(s1)s2 Append s2 to most recent command starting with s1
+		!N str  Append arg str to command #N
+
+	Modifiers:
+		p - print event, don't execute
+			!497:p
+			<edit previous>
+			!! to execute
+		[g]s/old/new	(global) substitution
+		^str^str2^	Substitute str2 for str in last line
+
+	fc command
+		no args	edit last command in vi
+		#		edit history #
+		-l # #	list commands # through #
+		-l -n	list last n commands (default 10)
+		-l s	list last command beginning with s
+		-ln n > file	save cmd# to file
+		-e vi n	edit in vi command n
+		-s [pat=rep] [cmd] reexecute cmd after substitutions
+
+
+	M-.     insert last arg at insertion point
+
+
+
+
+
+vim sw=4 foldmethod=marker

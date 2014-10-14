@@ -1,0 +1,75 @@
+Drivice Driver Modules
+    All hardware identified by device files.  3 types:
+        Character - can handle data one character at a time, e.g. modems
+        Block - can handle larger amounts - blocks - at a time e.g. disk drives
+        Network - data sent in packets
+            File listing in /dev identifies type in left column
+	- Drivers allow kernel to pass data to and from the device
+	- Kernel modules can be inserted into runing kernel and removed if unneeded.
+	utils
+		lsmod		List loaded modules
+		insmod		Load module
+		rmmod		Unload module
+
+kernel & udev can load 'detectable' modules (on USB & PCI buses)
+    see hotplug docs for more on how to tell if a module is detectable
+    character, block, & network protocol drivers mostly loaded on use
+
+Still must be loaded in /etc/modules and /etc/modprobe.d/ (as of summer 05)
+    ide-cd
+    sound modules (in modprobe.d)
+
+
+modprobe and module-init-tools as of 6/04
+	modprobe.conf no longer used
+	module loading statements in /etc/modprobe.d/
+
+** OLD **
+module config as done by update-modules
+	under kernel 2.6
+		provided by module-init-tools package.  Old modutils utilities renamed as
+		*.modutils and are still used under a 2.4 kernel
+		manual entries in /etc/modprobe.conf - run update-modules
+		/etc/modprobe.conf includes /lib/modules/modprobe.conf which is generated
+		from the contents of /etc/modprobe.d/	
+	files
+		under kernel 2.4
+			/etc/modules.conf 
+		/etc/conf.modules - obsolete
+		/etc/modules
+			Debian: names of kernel modules to load at boot
+	modules aliases in modprobe.conf/modules.conf
+		alias device_file  common_name
+		Debian: generated from list of modules in /etc/modules by update-modles	
+** OLD **	
+
+Hardware Monitor & Conifg
+	View interrups use
+		cat /proc/interrupts
+	View i/o port addresses
+		cat /proc/ioports
+	List contents of virtual device space
+		ls /proc
+	List devices on pci bus including pc cards
+	 	cat /proc/pci
+	List processes using a file or filesystem
+		fuser
+	Resources not in use are not listed.
+
+Permissions
+	fstab entry 
+		allows user access to a device (make user member of usb group)
+			/dev/cf_card /mnt/flash/cf vfat  defaults,noexec,rw,user,uid=0,gid=432,umask=007,noauto 0 0
+		explanation
+			Noexec prevents programs from being run from the card, rw is
+			read/writable, user allows users to mount it, uid=0 means all files are
+			owned by user 0 (root), gid=432 means the files are owned by group 432
+			(usb), umask=007 means that all files have permissions 770 (which seems
+			needlessly cryptic, and took a while to work out), noauto means not to
+			try to mount on boot. 
+
+
+Error messages:
+	Error while initializing the sound driver, device /dev/disp can't be opened (Permission denied)
+		> Add yourself to the group 'audio' and re-logon.
+

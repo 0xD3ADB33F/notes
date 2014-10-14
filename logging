@@ -1,0 +1,32 @@
+Recommended packages: metalog (fast, easy to configure), syslog-ng
+
+Syslog
+    all messages sent to syslog include:
+    - Facility (function) type
+    - Priority
+
+    Severity    Keyword     Description
+    0 Emergencies (EMERG)   System is unusable
+    1 Alerts (ALERT)        Action must be taken immediately
+    2 Critical (CRIT)       Critical conditions
+    3 Errors (ERR)          Error Conditions
+    4 Warnings (WARNING)    Warning Conditions
+    5 Notifications (NOTICE) Normal but significant condition
+    6 Informational (INFO)  Informational messages
+    7 Debugging (DEBUG)     Debug-level messages
+
+    syslog.conf
+        format: <facility>.<priority>   <TAB sep> <file/@hostname/@IP>
+
+    special characters
+        ,   separates mult facilities with same severity: fac,fac.sev
+        ;   separates mul fac.sev pairs
+        *   all sev or fac
+        =   fac.=sev - specify rule for a fac only at a sev level
+            Overrides default at lower sev levels
+        @   log to host or IP: @<name>
+        .none    excludes for a facility: kern.none
+
+    Enable remote logging by editing /etc/init.d/sysklogd file
+    Uses UDF port 514
+

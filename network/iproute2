@@ -1,0 +1,16 @@
+
+ip
+	UTIL part of 'iproute2' (just iproute under Debian)
+	for 2.2 & up kernels
+	can supercede ifconfig, route, arp, though essential when > 1 route
+	some criticism of these that report format not as clear as earlier tools
+
+
+show all links & addresses
+	link show	like ipconfig
+	ip address show
+
+show routing
+	route show
+	ip route ls dev ethX
+

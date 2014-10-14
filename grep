@@ -1,0 +1,17 @@
+
+Find alternatives:
+grep 'str1\|str2' filename
+
+
+options
+	-w	match whole words
+	-s	dont print access denied messages, etc
+	-l  only list matching files
+    -A# after context
+	-v  exclude match
+
+
+excluding files under zsh
+	grep -irl thing (*~*html)(.)
+
+

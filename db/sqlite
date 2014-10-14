@@ -1,0 +1,30 @@
+
+docs
+	SQL As Understood By SQLite	
+		http://www.hwaci.com/sw/sqlite/lang.html
+
+utils
+	Sqlite Browser
+		http://sqlitebrowser.sourceforge.net/
+
+
+Date/Time
+	http://www.sqlite.org/cvstrac/wiki?p=DateAndTimeFunctions
+
+	Compute the last day of the current month.
+	SELECT date('now','start of month','+1 month','-1 day');
+	
+	1st Tuesday in Oct of current year
+	SELECT date('now','start of year','+10 months','weekday 2');
+
+
+Commands
+	Descriptions
+		.databases <db name pat>
+			list open db's
+		.tables <table name pat>
+			list tables
+		.schema <table name pat>
+			describe table(s)
+
+

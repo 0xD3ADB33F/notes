@@ -1,0 +1,45 @@
+
+psql
+	which user to run as
+		sudo su - postgres
+		or createuser and run as that, either by being logged in as that user
+		or with -U option, or set PGUSER
+
+	\' commands
+		l       list databases
+		c       change to a new db
+		g or ;			end input
+		o       send query results to a file or pipe
+		d {t/i/s/v}  list tables/views/indexes/sequences
+		H       toggle HTML mode
+
+Table design
+    Timestamp:      colname TIMESTAMP DEFAULT now()
+
+Serial Type
+	Used to create unique identifiers for table entries
+
+	  CREATE TABLE mytable (
+		 myid    SERIAL  PRIMARY KEY,
+		 ...
+	  )
+
+	then:
+		INSERT INTO mytable (col1, col2,...) VALUES (value1, value2,...)
+	
+	If update as above, Serial value created automatically (per README.Debian)
+
+Datatypes
+	boolean, bool - value may be unquoted true/false
+	character(n), char(n) - fixed length string, padded with spaces
+	character varying(n), varchar(n) - string up to length n
+	text - variable length string, unlimited length (PG specific but found in some other db's) 
+	integer, int - signed, 4 byte number
+	float (8 bytes), real (4 bytes) - floating point integers
+	numeric/decimal(precision,scale) - precision is to left of decimal point, scale to right
+	serial - auto-incrementing number (PG specific)
+	date, time, time (with tz), timestamp, interval
+
+	NULL - no value set
+	values - enclose in single quotes (incl. numbers)
+	

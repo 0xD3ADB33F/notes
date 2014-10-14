@@ -1,0 +1,70 @@
+
+
+trace packets 
+	mtr
+	tcpdump
+
+detect hosts on network
+	fping
+	nmap -sP 192.168.0.* | grep Host
+
+Reports on listening daemons
+	netstat
+		reports
+			ant		show programs bound to ports for TCP address family
+			i		interfaces
+			r		kernel routing tables
+			M		masqueraded connections
+		options
+			p		show name of program
+			c		continuous display
+			t		tcp
+			l		listening servers (*)
+			a		show all
+						with -i, show interfaces that are not up
+						with n, show both listening & established connections
+		Examples
+			show all running sessions and daemons
+				netstat -untap  
+				netstat --tcp --udp --listening --program --numeric
+			shows running daemons
+				netstat -ltp
+
+darkstat
+	Easy monitoring of bandwidth
+	included webserver with graphs of bandwidth, usage by site 
+
+capturing network traffic
+	tcpdump 
+		raw info
+		good article
+			http://www.informit.com/articles/article.asp?p=352988&seqNum=3
+		
+		e.g.
+			Test ping through firewall using tcpdump
+			https://lists.linux-foundation.org/pipermail/bridge/2005-October/004724.html
+			tcpdump -i eth2 icmp
+
+
+	ethereal (graphical) / tethereal (cmd line)
+		friendlier interface
+
+	tshark/wireshark
+		-D	list interfaces
+		-i	interface name or # from -D
+
+
+Wake-on-lan
+	http://www.debian-administration.org/articles/122
+	
+	install on client: ethtool
+	Enable interface:
+		in /etc/networking/interfaces:
+			ifac inet eth0 dhcp
+				 up ethtool -s $IFACE wol g
+
+	install on host issuing command: wakeonlan
+	get client hw address:
+		/usr/sbin/arp <hostname>
+	wakeonlan <client mac address>
+

@@ -1,0 +1,1005 @@
+read this 
+http://www.ibm.com/developerworks/linux/library/l-virtual-networking/
+
+Create a rootfs {{{1
+
+Rsync:
+rsync -arvpz --numeric-ids --exclude=/dev --exclude=/proc --exclude=/tmp -e ssh root@a.b.c.d:/ /vz/private/123/
+
+Tar:
+1.	create an excludes file:
+.bash_history
+/dev/*
+/mnt/*
+/tmp/*
+/proc/*
+/sys/*
+/usr/src/*
+2. tar --numeric-owner -cjpf /tmp/mysystem.tar.bz2 / -X /tmp/excludes
+
+Modifications to system files
+http://wiki.openvz.org/Physical_to_container#.2Fetc.2Ffstab
+
+Chroot {{{1
+
+#debootstrap sid targetdir  http://debian.yorku.ca/debian/
+
+alternatives: schroot, openroot, sbuild (for building pkgs in chroots)
+
+Schroot {{{2
+
+/etc/schroot/schroot.conf
+	type=directory for chroots in directories
+	type=block-device for lvm lv's
+	setting 'location' changed to 'directory'
+	If chroot in lv, don't need Location
+
+/etc/schroot/desktop/copyfiles
+	/etc/sudoers
+
+[sid]
+description=Debian sid (unstable)
+type=directory
+directory=/opt/chroot/sid
+users=andmalc
+
+To run X apps
+	set script-config=desktop/config
+	-p
+	
+, run before invoking schroot: xhost +local (or maybe +localhost)
+
+Recent changes in schroot:
+location=/path is now directory=/path
+run-exec-scripts and run-setup-scripts are no longer required
+priority=num is deprecated and will be removed in the future
+/etc/schroot/mount-defaults is now /etc/schroot/default/fstab (and there's an /etc/schroot/desktop/fstab to go with the "desktop" profile).
+
+
+VirtualBox {{{1
+	Linux client
+		Install
+			virtual-box-ose-guest-utils - depends on X etc.
+				or run install cmd from GUI, mount /media/cdrom, run VBoxLinuxInstaller
+			virtual-box-ose-guest-source and compile as here:
+				http://dongsupark.de/blog/archives/108			
+
+Remote / headless {{{2
+
+From TLUG 02/10
+	If you're using the commercial version of VirtualBox (free for
+	personal/evaluation/academic use) then you can connect directly to the
+	VM via rdesktop (mstsc in windows, in linux using "rdesktop-vrdp -u
+	VMUSER as -p VMUSERPASSWORD SERVER:3389"). Once it's setup you could
+	use VBoxHeadless to start the VM without needing the GUI
+
+	If you're using the OSE (open-source/free) version, you don't get the
+	RDP server, USB support, or USB-over-RDP support (which is really
+	cool), but you could still set it up using the VirtualBox GUI and then
+	setup RDP, give the VM a live IP via a bonded interface, and then
+	enable RDP within your windows guest.
+
+
+KVM / Qemu {{{1
+Setup {{{2
+
+For accelerator support, add user to kvm group
+
+Improve i/o
+	http://blog.bodhizazen.net/linux/improve-kvm-performance/
+
+Packages
+	with h/w support: qemu-kvm
+	w/o h/w support: qemu
+
+From Debian Readme kvm-qemu
+	check for processor flags in /proc/cpuinfo.
+
+	For AMD CPUs "svm" flag should be listed.  For Intel CPUs, it's "vmx".
+	The following command:
+
+	 egrep '^flags.*(vmx|svm)' /proc/cpuinfo
+
+	will output nothing if these extensions are either not present of not
+	enabled.
+
+	Almost all AMD CPUs after and including Athlon X2-64 supports virtualization,
+	including most Durons.  Modern Opteron, AthlonII, Phenom and Phenom II
+	have it too.
+
+	For Intel CPUs things are not this simple.  Even in latest Core2 Duo and
+	Core2 Quad series there are models without VT support.  If in doubt check
+	Intel documents about your CPU and Wikipedia articles, for example
+	http://en.wikipedia.org/wiki/List_of_Intel_Core_2_microprocessors.
+
+	Note that in addition to the CPU itself, the BIOS of the system should
+	have support for these extensions too, and it should be enabled.  It is
+	NOT POSSIBLE for now to turn the extensions on if they're not enabled in
+	BIOS or BIOS has no support.  The only option in this case is to
+	update the system BIOS.
+
+kernel support {{{2
+
+From Debian Readme kvm-qemu
+	KVM requires kernel modules that enables the use of the above mentioned
+	extensions to be present and loaded.  For AMD CPUs it is kvm_amd.ko, and
+	for Intel CPUs it is kvm_intel.ko.  The startup script in this package
+	ensures that the appropriate module is loaded during system startup.
+
+	Kernel includes the necessary modules since 2.6.22 version.
+
+	In order to run this version of KVM, your system should be running at least
+	a 2.6.24 kernel.  However, using a 2.6.28 or more later kernel is highly
+	recommended.
+
+Monitor commands {{{2
+
+Display monitor
+	-monitor stdio
+
+Access monitor		Ctrl+Alt 2
+Back to guest		Ctrl+Alt 1
+
+images {{{2
+
+Create Image 
+	use raw, no size needed
+	use base image option to get only differences saved
+
+Usage
+	qemu-img create xp.raw 3G
+	qemu -hda xp.raw -cdrom /dev/cdrom -boot d -net user -m 256
+
+Convert an image file to a block device => big files
+	qemu-img convert root.qcow2 -O raw /dev/sdb
+
+Backup an image file - size is < 1/3
+	tar c --sparse -f img.bak.tar img.img 
+
+Create and mount partitioned image file
+	http://www.wand.net.nz/~smr26/wordpress/2008/08/28/kvm-the-hard-way/
+
+Mount partitions in qcow format image
+	qemu-diskp http://www.saulsbury.org/software/virtualization.html
+
+image versioning {{{2
+
+http://www.linux-kvm.com/content/how-you-can-use-qemukvm-base-images-be-more-productive-part-1
+
+Base image method {{{3
+
+Create derived image from base img
+	qemu-img create -b <base img> -f qcow2 today.img
+	base-image is not modified until 'commit' in monitor or 'qemu-image commit fn'
+	may create a new derived image based on existing derived
+
+Commit changes back to base
+	qemu-img commit clone.img
+Convert clone to be a base
+	qemu-img convert clone.img -O qcow2 newclone.img
+
+Snapshots {{{3
+
+run with -snapshot
+
+file format must be qcow2 (?)
+
+Manage snapshots
+
+qemu-img snapshot [options snapshotname] imagefile
+	-l		list
+	-a <sn>	apply to image ?
+	-c <sn>	create
+	-d <sn>	delete
+
+in monitor
+	info snapshots
+	write changes to image with 'C-a s'
+	commit (all | device)
+	in monitor: savevm my_snapshot
+	loadvm my_snapshot (can also run from cmd line)
+	delvm
+
+
+
+startup {{{2
+
+Boot from CD or iso
+	-boot d
+	-cdrom 	path to CD device or file
+
+Allow graphical installer, e.g. Ubuntu: option -std-vga
+
+run the image as follows :
+	qemu -hda xp.raw -cdrom /dev/cdrom -boot c -net user -m 256
+
+Test a bootable USB drive
+	qemu -usb /dev/sdb
+
+
+
+console/serial {{{2
+
+Run from console
+	in /etc/inittab uncomment 's1:12345:respawn:/sbin/agetty -L ttyS0 9600 vt100'
+	qemu -nographic -hda blah.img -append "console=ttyS0 root=/dev/hda1 ro"
+
+1. In guest enable serial console in /etc/inittab and in /boot/grub/menu.lst
+	menu.lst
+		serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1
+		terminal --timeout=10 serial console
+		Add to kopt: console=ttyS0,115200n8 console=tty0
+
+2. Run qemu with -nographic option
+or 
+kvm ... -serial unix:/tmp/console.socket,server,nowait ...
+
+In -nographic, Ctrl-a c to toggle monitor
+
+Remote qemu:
+	option: append "console=ttyS0 root=/dev/hda1 ro"
+	in guest /etc/inittab: s1:12345:respawn:/sbin/agetty -L ttyS0 9600 vt100 
+
+Installing Debian
+	At install prompt
+		install console=ttyS0,9600,n8
+		show serial console - ^+M+3
+
+Networking {{{2
+
+overview
+	http://kvm.qumranet.com/kvmwiki/Networking
+
+Read this:
+1/10
+http://groups.google.ca/group/linux.debian.user/browse_frm/thread/9cb11244ffe6f695?hl=en#
+
+Easy ssh into client
+	start Qemu with -redir tcp:2222::22
+	ssh localhost -p 2222
+
+VNC
+	-vnc :0
+	Allow vnc access w/o password: -vnc 1
+
+Routing - allow instance to access net
+	-net nic -net user
+
+
+Route through tap interface {{{3
+ To  create  an  interface  for  use by a particular user, invoke tunctl
+       without the -d option:
+
+       #
+       tunctl -u someuser
+       Set ’tap0’ persistent and owned by ’someuser’
+
+       Then, configure the interface as normal:
+
+       #
+       ifconfig tap0 192.168.0.254 up
+       #
+       route add -host 192.168.0.253 dev tap0
+       #
+       bash -c ’echo 1 > /proc/sys/net/ipv4/conf/tap0/proxy_arp’
+       #
+       arp -Ds 192.168.0.253 eth0 pub
+
+       To delete the interface, use the -d option:
+
+       #
+       tunctl -d tap0
+       Set ’tap0’ nonpersistent
+
+SEE ALSO
+       The UserModeLinux-HOWTO  (link  to  URL  http://user-mode-linux.source‐
+       forge.net/UserModeLinux-HOWTO.html)
+Network bridge {{{3
+	http://compsoc.dur.ac.uk/~djw/qemu.html 
+
+Install
+ bridge-utils (for brctl, to manipulate bridges)
+ uml_utilities (for tunctl, to manipulate taps)
+
+- start qemu with "-net nic -net tap". If you run more than one guest,
+you will need to set distinct MAC addresses as in "-net nic,mac=XX:XX:XX:XX:XX:XX"
+- Iptables not needed
+
+Working bridge config:
+
+Command:
+qemu -k en-us -hda <img> -net nic -net tap,ifname=tap0,script=no
+
+guest configures nic with dhcp - /etc/qemu-ifup not needed
+
+interfaces file:
+	auto lo
+
+	iface lo inet loopback
+	iface eth0 inet manual
+
+	auto br0
+	iface br0 inet dhcp
+		hostname via
+	   pre-up /usr/sbin/tunctl -u andmalc -t tap0
+	   pre-up ifconfig tap0 up
+	   bridge_ports all tap0
+	   post-down ifconfig tap0 down
+	   post-down tunctl -d tap0
+
+
+Network boot {{{3
+
+http://alien.slackbook.org/dokuwiki/doku.php?id=slackware:qemu
+
+
+
+USB {{{2
+
+Use USB devices
+	usb_add in monitor
+		info usbhost
+		usb_add host:<device id as shown in previous>
+Xorg.conf for guest {{{2
+
+Section "Monitor"
+  Identifier  "Monitor0"
+  HorizSync   20.0 - 50.0
+  VertRefresh 40.0 - 80.0
+EndSection
+
+Section "Device"
+  Identifier "Device0"
+  Driver     "vesa"
+EndSection
+
+Section "Screen"
+  Identifier   "Screen0"
+  Device       "Device0"
+  Monitor      "Monitor0"
+  DefaultDepth 16
+  Subsection "Display"
+    Depth 16
+    Modes "1680x1050"
+  EndSubsection
+EndSection
+
+
+Docs {{{2
+
+KVM howtos
+	http://www.linux-kvm.org/page/HOWTO
+
+Xen {{{1
+
+Use
+	xm
+		list 
+		console <vm name>
+		top
+
+
+Installation
+
+Debian packages
+         xen-linux-system-2.6.18-4-xen-686 
+                pulls in all needed
+
+Diagnose boot failures
+	kernel      /boot/xen-2.0.X.gz dom0_mem=65536 noreboot
+
+Custom kernel
+        kernel-package
+        linux-source-2.6.18 
+        linux-patch-debian-2.6.18  
+
+Create file-based client
+        cd /data/
+        dd if=/dev/zero of=vm1_root.img bs=1024k count=1000
+        dd if=/dev/zero of=vm1_swap.img bs=1024k count=1000
+        mkfs.ext3 -j vm1_root.img
+        mkswap vm1_swap.img
+        mkdir working
+        mount -o loop vm1_root.img working/ 
+        debootstrap –arch i386 sarge working/ http://ftp2.de.debian.org/debian
+        chroot working 
+vi /etc/fstab # add disks (in this example, hda1 for /, hda2 for swap)
+vi /etc/network/interfaces # add networking - lookback and an eth0
+vi /etc/hosts # add loopback (127.0.0.1) and eth0’s address.
+apt-get install localeconf # make en_GB
+base-config # timezone, rootpwd
+apt-get install ssh
+cp -dpR /lib/modules/2.6.11.12-xenU/ working/lib/modules/
+mv working/lib/tls working/lib/tls.disabled
+umount working/
+
+
+Networking
+	Interface names
+		peth0 - port connecting to real net interface
+		xenbr0 - bridge
+		vif0.0 - bridge port used by traffic to/from Dom0 
+		eth0 - in Dom0
+		vif<id>.0 - bridge port used by traffic to/from DomU 
+		eth0 - in DomU - only int seen
+		eth0 (in DomU) - virtual interface with address copied from real int peth0
+
+Allocate ip addresses when using DHCP
+	If you distribute ip addresses with dhcp, the best way is to set a
+	static ip through dhcp.conf. eg:
+
+	host s0015f2bbc04a{
+		hardware ethernet 00:15:f2:bb:c0:4a;
+		fixed-address 10.1.0.3;
+	  }
+
+	and in your xen config file you provide a mac address that fits to your
+	dhcp entry. eg:
+
+	vif = [ 'mac=00:15:f2:bb:c0:4a' ]
+	dhcp = "dhcp"
+
+OpenVZ {{{1
+
+Linux only virt, very light weight
+Isolate network services for security
+
+Base package with kernel = 63M
+
+sysctl
+kernel.sysrq = 1 #not set
+net.ipv4.conf.all.rp_filter = 1 #default on
+net.ipv4.ip_forward = 1 #default on
+net.ipv4.icmp_echo_ignore_broadcasts = 1 #default on
+net.ipv4.conf.all.send_redirects = 0 #default on, turn off 
+net.ipv4.conf.eth0.proxy_arp = 1 #default off, turn on
+
+CTID: container ID - must be > 100
+Recommend: add 1000 to last segment of IP address
+
+Create from cache
+	vzctl create CTID --ostemplate osname
+
+Configure
+use commands or edit /etc/vz/conf/<CTID>.conf
+	vzctl set CTID --ipadd a.b.c.d --save
+	vzctl set 101 --numothersock 120 --save
+	vzctl set CTID --nameserver a.b.c.d --save
+	vzctl exec 101 passwd #set root pw
+	vzctl set 101 --onboot yes --save
+
+Manage
+	vzctl start/enter/stop/destroy CTID
+	vzlist -a #list
+
+Networking
+	If CT IP on different subnet than HN, edit /etc/vz/vz.conf and set "NEIGHBOUR_DEVS=all"
+	
+	shorewall
+		http://www.shorewall.net/OpenVZ.html
+		http://montanalinux.org/proxmox-ve-with-shorewall.html
+
+Check for resource usage
+	vzctl exec 101 cat /proc/user_beancounters
+		'failcnt' column should be all 0's.  If not edit /etc/vz/conf/ file for CT and raise values
+
+Backup
+
+http://www.proxmox.com/cms_proxmox/en/virtualization/openvz/vzdump/
+Depends on cstream
+
+VMWare ESXi {{{1
+
+said to be free VMW version
+
+
+VServer {{{1
+
+Default location /var/lib/vservers
+If other, set path in /etc/vservers/newvserver-vars
+
+Utils
+	newvserver
+	vserver
+
+
+Deb packages: 
+	util-vserver
+
+Config
+	root server
+		sshd_config
+			ListenAddress host.server.IP.address 
+
+Firewall
+
+If you have only one public IP address, you can use iptables to do SNAT(masq) and DANT(port forwarding) for vservers.
+Here is an example for doing such things by shorewall:
+
+zones:
+net     Net             Internet
+dmz     DMZ             Demilitarized zone for VServers
+
+policy:
+fw              net             ACCEPT
+net             all             DROP            info
+dmz             net             ACCEPT
+net             dmz             ACCEPT
+all             all             REJECT          info
+
+interfaces:
+net     eth0            detect          routefilter,nobogons,tcpflags,nosmurfs
+
+hosts:
+dmz             eth0:10.0.0.0/24
+
+masq:
+eth0            10.0.0.0/24           140.109.13.50
+
+Note:140.109.13.50 is real eth0's public IP address
+
+routestopped:
+eth0
+
+rules:
+AllowSSH	net	fw
+DNAT		net	dmz:10.0.0.1:22	tcp	1022	-	140.109.13.50
+DNAT		net	dmz:10.0.0.2:22	tcp	2022	-	140.109.13.50
+
+More of Single IP Issue
+
+If you want to have multiple vservers runing apache, you can setup a web gateway, and use apache's rewrite or proxy module for reverse proxy, you can also use squid for doing this, but I have never tried.
+Here is an example for using apache for proxy:
+
+rules:
+AllowWeb	net     fw
+DNAT    	net     dmz:10.0.0.254   tcp     http    -       140.109.13.50
+DNAT    	net     dmz:10.0.0.254   tcp     https   -       140.109.13.50
+
+Note: 10.0.0.254 is the web gateway(For proxy apache on other vserver).
+Added hostname mapping into /etc/hosts on the web gateway
+
+10.0.0.1	people.linux.org.tw	people
+
+Added a virtual host which does proxy to apache:
+
+<VirtualHost *>
+    ServerName people.linux.org.tw
+    DocumentRoot /var/www/people.linux.org.tw
+    CustomLog /var/log/apache2/people.linux.org.tw-access.log combined
+    ErrorLog /var/log/apache2/people.linux.org.tw-error.log
+
+    ProxyRequests off
+    ProxyPass / http://people.linux.org.tw:80/
+    <Proxy http://people.linux.org.tw>
+        Order deny,allow
+        Allow from all
+    </Proxy>
+</VirtualHost>
+
+Linux Containers {{{1
+
+New tutorial http://www.howtoforge.com/forums/showthread.php?t=49220
+Howto: http://lxc.teegra.net/
+Sourceforge: http://lxc.sourceforge.net/lxc.html
+Ubuntu wiki: https://wiki.ubuntu.com/ContainersSpec
+Users list: http://news.gmane.org/gmane.linux.kernel.containers.lxc.general
+Debian tutorial: http://nigel.mcnie.name/blog/a-five-minute-guide-to-linux-containers-for-debian
+http://www.stgraber.org/2009/11/06/lxc-containers-or-extremely-fast-virtualization
+
+
+lxc - user space tools
+
+setup
+	need kernel with 'user namespace' enabled in kernel under General Setup / Namespaces Support
+		see http://lxc.sourceforge.net/lxc.html
+	mkdir /var/local/cgroup
+	/etc/fstab:
+		cgroup  /var/local/cgroup  cgroup  defaults  1  0
+
+	allow non-root
+		lxc-setcap (takes no arguments)
+
+Use
+	create
+		lxc-create -n deb -f configfile
+		lxc-create -n deb -f configfile -t debian
+			invokes lxc-debian template
+	Enter
+		virsh --connect lxc:/// console v1
+lxc-execute -n foo [-f config] /bin/bash
+	  lxc-start -n foo [/bin/bash]
+
+If the container is configured with the ttys
+	lxc-console -n foo -t 3
+
+lxc-ls
+lxc-info
+lxc-ps --name foo --forest
+lxc-netstat -n foo -tano
+lxc-monitor -n <name>
+
+Templates
+	may use openvz from 
+		deb http://download.openvz.org/debian-systs lenny openvz
+		pkg vzctl-ostmpl-debian-*
+		file in /var/lib/vz/template
+
+libata article
+http://kernelnewbies.org/Linux_2_6_19#head-cdcbaa9c1b476decdc064e0a75d23d1328b1ddce		
+
+Error
+lxc-start: failed to clone(0x6c020000): No space left on device
+lxc-start: No space left on device - failed to fork into a new namespace
+lxc-start: failed to spawn '/sbin/init'
+lxc-start: No such file or directory - failed to remove cgroup '/var/local/cgroup/newdeb'
+lxc-start: failed to clone(0x6c020000): No space left on device
+lxc-start: No space left on device - failed to fork into a new namespace
+lxc-start: failed to spawn '/sbin/init'
+lxc-start: No such file or directory - failed to remove cgroup '/var/local/cgroup/newdeb'
+
+lxc networking {{{2
+
+macvlan
+lxc.network.macvlan.mode = vepa
+
+	bridge mode
+		lxc.network.type=macvlan
+		lxc.network.macvlan.mode=bridge
+	This mode will allow several macvlan to communicate if they have the 
+	same lower-dev (eg eth0).
+	But this mode does not allow macvlan<->eth0 communication, you have to 
+	create a macvlan in the host.
+
+
+
+LibVirt {{{1
+	http://virt-manager.org/
+	http://docs.fedoraproject.org/virtualization-guide/f12/en-US/html/
+	http://www.redhat.com/docs/en-US/Red_Hat_Enterprise_Virtualization/
+
+
+Install {{{2 
+libvirt-bin - libvirt binaries
+python-libvirt - python bindings for libvirt
+virtinstall 
+virt-manager
+Add users to 'libvirt' group
+
+domains {{{2
+
+create <XML file>
+
+start <domain>
+start --console <domain> 
+
+
+network {{{2
+http://wiki.libvirt.org/page/Networking
+disable dnsmasq
+enable ip forwarding in /etc/sysctl; sysctl -p
+
+#virsh net-start default 
+or virsh net-autostart default
+
+# virsh net-list --all => should show default
+# brctl show => should show virbr0
+
+Default interface:
+<interface type='network'>                                                                
+   <mac address='52:54:00:13:58:9b'/>                                                     
+   <source network='default'/>                                                            
+</interface>                                                                
+
+
+Bridged interface:
+<interface type='bridge'>                                                                
+   <mac address='52:54:00:e2:38:a4'/>                                                     
+   <source bridge='virbr0'/>                                                              
+   <target dev='vnet0'/>     
+<interface>                                                                
+
+Firewall to share NATed vm's:
+sudo iptables -t nat -I PREROUTING -p tcp --dport 5984 -j DNAT --to 192.168.122.115:5984                                       
+sudo iptables -I FORWARD -p tcp -d 192.168.122.115  --dport 5984  -j ACCEPT        
+
+storage {{{2
+http://libvirt.org/storage.html
+http://fedoraproject.org/wiki/Test_Day:2009-09-17_Virtualization_qcow2
+
+image file
+	formats include raw & qcow2
+
+Storage
+	pool-create-as
+
+Increase size
+	http://wiki.libvirt.org/page/Tips
+Snapshots with img files tips
+	http://fedoraproject.org/wiki/Test_Day:2009-09-17_Virtualization_qcow2
+
+Save snapshot - kvm, not qemu
+	virsh save vmname filename
+	virsh restore filename
+
+Snapshot mode
+#!/bin/sh
+exec /usr/bin/qemu "$@" -snapshot
+END
+Change emulator element to point to script with above
+
+pool {{{3
+
+Create:
+# virsh pool-dumpxml vm
+<pool type='dir'>
+  <name>vm</name>
+  <source>
+  </source>
+  <target>
+    <path>/home/andmalc/vm</path>
+  </target>
+</pool>
+
+virsh pool-create <file>
+pool-refresh, pool-list
+
+disk {{{3
+
+1G = 1068708864
+
+vol-create, 
+vol-list, 
+
+vol-delete
+	deletes physical volume
+	--pool poolname volname
+
+# cat demo-disk.xml
+<volume>
+  <name>demo.qcow2</name>
+  <capacity>5368709120</capacity>
+  <target>
+    <format type='qcow2'/>
+    <encryption format='qcow'>
+      <secret type='passphrase' uuid='0a81f5b2-8403-7b23-c8d6-21ccc2f80d6f'/>
+    </encryption>
+  </target>
+</volume>
+
+virsh vol-create/vol-delete default new.xml
+
+Disk with backing file:
+<volume>
+  <name>new.img</name>
+  <capacity>1000000000</capacity>
+  <allocation>0</allocation>
+  <target>
+    <format type='qcow2'/>
+  </target>
+  <backingStore>
+    <path>/var/lib/libvirt/images/youroriginal.img</path>
+  </backingStore>
+</volume>
+
+lvm-based storage {{{3
+
+Benefits vs image-based: less disk i/o & may use lvm snapshots
+
+Use a volume group with unallocated space
+Create a logical volume
+	lvcreate -L20G -n vm11 vg0
+Use with virt-install
+	--disk path=/dev/vg0/vm11
+
+Convert image to lv of same size
+	qemu-img convert ~/vm10.qcow2 -O raw /dev/vg0/vm10
+	do remaining steps at
+		http://www.howtoforge.com/virtualization-with-kvm-on-a-debian-lenny-server-p3
+
+virt-install {{{2
+	--virt-type 
+		kvm, qemu, xen, or kqemu
+	--disk opt=val, 
+		options
+			path=path
+				storage at path created if doesn't exist, size required
+			size in GB
+			pool
+				libvirt storage pool to create storage on, size required
+			vol
+				existing libvirt storage 'poolname/volname'
+			sparce
+				default is true - don't allocate storage fully
+	--location, -l
+		Location of install source, e.g.
+		directory path
+		distro source
+			 http://ftp.us.debian.org/debian/dists/etch/main/installer-amd64/
+	--import
+		Skip install, create guest from existing image.
+		Use first device via --disk or --file
+	--cdrom=CDROM, -c
+	--connect
+		change default connect type which is:
+			xen if running xen kernel
+			qemu:///system if non-xen and root
+			qemu:///session if non-xen and non-root
+	--livecd
+		use with --nodisks
+	--nodisks
+		for booting live CD
+	--network=<type>, -w <type>
+		types are:
+			bridge:<br name>
+			network:<name>
+				name as create by virsh
+				use if outbound interface is dynamic or wireless
+				default name is 'default'
+				NATed
+			user
+				SLIRP network for unprivileged qemu guest
+	--nographics
+		text console on first serial port
+		default if display var not set
+	--os-variant=os_variant
+		debianlenny,debiansqueeze, generic26
+	--os-type=os_type
+		linux, windows, etc.
+	--ram=#, -r
+		RAM memory in MB
+	--sdl
+	--serial pty
+		serial console access enabled by default
+	--vnc
+		default if display var set
+
+example {{{2
+
+Install from CD:
+virt-install \
+	--connect qemu:///system \
+	--virt-type kvm \
+	--name demo \
+	--ram 200 \
+	--disk path=demo.img,size=3 \
+	--network bridge:br0 \
+	--vnc \
+	--os-variant debianlenny
+	--cdrom=debian-testing-i386-netinst.iso 
+
+Create qemu guest from existing device:
+virt-install \
+    --name demo \
+    --ram 200 \
+    --connect qemu:///system \
+    --disk path=/dev/main/sid \
+    --import \
+    --os-variant debiansqueeze
+
+
+management with virtsh {{{2
+
+virsh --connect qemu:///system <cmd> <guestname>
+virt-viewer --connect qemu+ssh://root@play.malcolmson.ca/system demo2
+	start
+	shutdown
+	destroy - force shutdown
+	suspend
+	resume
+
+list running & inactive domains
+	list
+
+console
+
+change domain settings
+	virsh edit <domain>
+
+Other virsh edit,dumpxml cmds:
+   * Virtual Networks: net-edit, net-dumpxml
+   * Storage Pools: pool-edit, pool-dumpxml
+   * Storage Volumes: vol-edit, vol-dumpxml
+   * Interfaces: iface-edit, iface-dumpxml
+
+Misc {{{2
+
+libguestfs
+	http://libguestfs.org/
+	http://honk.sigxcpu.org/con/Libguestfs__Virtual_Machine_Image_Swiss_Army_Knife.html
+	Utilities for working with guest images
+		resize img, access files, 
+
+
+Create image, instal Grub {{{1
+
+$ qemu-img create -f raw lenny-base.raw 5G
+
+Now, create a loopback device for it:
+
+# losetup /dev/loop0 lenny-base.raw
+
+Partition the loopback device using fdisk. I use a single primary partition in this article.
+
+# fdisk /dev/loop0
+
+Now we need to create device-mapper entries for each of the partitions on the loopback device:
+
+# kpartx -a /dev/loop0
+
+If you made a single partition on /dev/loop0, there will now be a device-mapper block device at /dev/mapper/loop0p1, which you can go ahead and make a filesystem on and bootstrap to whatever flavour of Debian/Ubuntu you’d like. You’ll also want to remember the UUID of the root filesystem for later. For example,
+
+# mke2fs -j /dev/mapper/loop0p1
+# vol_id --uuid /dev/mapper/loop0p1 > target.uuid
+# mkdir /mnt/target
+# mount /dev/mapper/loop0p1 /mnt/target
+# debootstrap lenny /mnt/target http://ftp.nz.debian.org/debian
+
+At this point, the bootstrapped filesystem will need some manual setting up. In particular you’ll need to
+
+    Set up /etc/hostname
+    Set up /etc/hosts
+    Set up /etc/fstab (you’ll want to use the UUID you saved before)
+    Enable serial getty in /etc/inittab (important, we’ll use this for initial login)
+
+Copy the following into the target’s /etc/kernel-img.conf:
+
+do_symlinks = yes
+relative_links = yes
+do_bootfloppy = no
+do_initrd = yes
+link_in_boot = no
+postinst_hook = update-grub
+postrm_hook = update-grub
+do_bootloader = no
+
+Now we need to install a kernel and set up the boot-loader.
+
+# chroot /mnt/target
+target # apt-get install linux-image-amd64 grub
+target # mkdir -p /boot/grub
+target # cp /usr/lib/grub/x86_64-pc/* /boot/grub
+
+Exit from the target’s chroot. Now we’re back in the host, we need to install grub into the MBR of the disk image. You’ll need that UUID for the root filesystem from before. This step requires the host’s /dev to be bind-mounted into the target’s filesystem
+
+# mount --bind /dev /mnt/target/dev
+# echo "(hd0) lenny-base.raw" >> device.map
+# grub --device-map=device.map
+grub>root (hd0,0)
+grub>setup (hd0)
+grub>quit
+# echo "(hd0) UUID=UUID of target root fs goes here" >> /mnt/target/boot/grub/device.map
+# chroot /mnt/target
+target # update-grub
+
+update-grub will have written a basic menu.lst, but because it’s using the host’s /dev it will be pointing to the wrong place. Edit the target’s /boot/grub/menu.lst to use the UUID of the filesystem and not use the loop0 device. So, open up the target’s /boot/grub/menu.lst, search for the line:
+
+# kopt_2_6 root=/dev/mapper/loop0p1 ro
+
+and replace /dev/mapper/loop0p1 with
+
+UUID=the uuid of the root filesystem
+
+so it will look something like (make sure the # is still at the start of the line):
+
+# kopt_2_6 root=UUID=81af6388-cca5-4bf2-99dc-a47c81c00445 ro
+
+Also, replace the line groot=(loop0p1) with groot=(hd0,0). Again, it’s “commented out”. Now we need to update grub again.
+
+# chroot /mnt/target
+target # update-grub
+target # exit
+
+Almost done… At this point check that you’ve enabled the serial getty in the target’s /etc/inittab file as we’re going to boot the VM and use the serial console to do the initial login. Of course, you could install SSH in the chroot, set up networking and forget about the serial console, but it’s interesting none the less. The other alternative is to use VNC to connect to the console, but that’s the easy way out, though you will get boot messages, so if something goes wrong you’ll get to see why.
+
+Unmount everything:
+
+# umount /mnt/target/dev
+# umount /mnt/target
+# kpartx -d /dev/loop0
+# losetup -d /dev/loop0
+
+Now boot your shiny new VM:
+
+# kvm -nographic -serial pty -drive file=lenny-base.raw,if=virtio,index=0,boot=on -daemonize
+

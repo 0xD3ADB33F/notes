@@ -1,0 +1,7 @@
+
+
+Packages
+	bash
+	ntpclient
+	vnstat
+		https://wiki.openwrt.org/doc/howto/vnstat

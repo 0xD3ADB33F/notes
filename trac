@@ -1,0 +1,6 @@
+
+Installation
+	Permissions
+		Web server needs write access to trac environment (e.g /var/trac/proj) and
+		to subversion repo.
+

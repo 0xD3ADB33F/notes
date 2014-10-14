@@ -1,0 +1,8 @@
+View process opening files
+	strace -eopen cmd
+
+which glibc am I running?
+	ldd --version
+
+
+

@@ -1,0 +1,103 @@
+Info {{{1
+	list partitions
+		sfdisk -l
+	list scsi type devices
+		cat /proc/scsi/scsi
+
+
+Utilities {{{1
+	gpart
+		find lost partitions
+	partimage
+		restore to file
+			http://www.coolacid.net/20080908134/Latest/restore-a-partimage-backup-to-loopback
+
+MBR  {{{1
+	format
+		512 bytes: 446 bytes code, 64 bytes partition table, 2 bytes signature
+	backup
+		dd if=/dev/hda bs=512 count=1 of=/root/mbr.bin
+	wipe
+		dd if=/dev/zero of=/dev/hda bs=512 count=63
+
+Specific devices {{{1
+	zip drives
+		/dev/sda4
+	hard drives
+		/dev/hda1
+			letter is device, number is partition
+	floppies
+		cannot be partitioned
+		/dev/fd0, fd1 - # indicates drive, not parition
+	USB drives
+		smaller are like floppies - mount as /dev/sda etc
+		larger are like hd's (ATAPI) - mount a parition as /dev/sda1 etc.
+
+Trying to mount partition of a non-partitionable device
+	mount -t vfat /dev/sda1 /mnt/fob
+	mount: /dev/sda1 is not a valid block device
+
+
+LVM {{{1
+
+docs {{{2
+	HOWTO - http://www.silentpcreview.com/news355.htm
+	http://www.tldp.org/HOWTO/LVM-HOWTO/index.html
+
+modules  {{{2
+	device mapper - dm-mod.o
+	lvm	- lvm-mod
+		needed in 2.6?  Don't see in kernel source.  All support under
+		'Multi-Device' - just device-mapper needed
+
+terms {{{2
+	vg - volume group
+		collection of Logical Volumes and Physical Volumes into one administrative unit
+	pv - physical volume
+	lv - logical volume
+		visible as a standard block device
+		equivalent to a partition
+	pe - physical extents
+	le	logical extent - will be same size as pe's for vg
+
+planning {{{2
+
+500M root + boot in non-LVM partition
+
+steps {{{2
+	1. pvcreate <dev> [<dev> ...]
+		initialize a disk or partition to use in a physical vol.
+	2. vgcreate vg_name pv
+		create a vol group from one or more physical vols
+	2a	if needed:
+			vgextend vgname pvpath - add a pv to an existing vg
+	3. activate vg with 'vgchange -a y' or reboot
+	4.	lvcreate [-n name] [-L size(kmg) -l sizeLE] vgName [vgpath]
+			-l	size in Physical Extents
+			-L	size in MB or GB
+			create lv using all space in vg
+				lvcreate -l 100%VG
+			create lv using all free space in vg
+				lvcreate -l 100%FREE
+	5.	create filesystem - device = /dev/a4/lvol0
+	6.	mount 
+
+utilities {{{2
+	vgdisplay
+	vg/lvremove
+	e2fsadm
+		must umount fs
+		resizes ext2/3 filesystems and lv's in one command
+		combines functions of lvextend & resize2fs
+	resize_reiserfs
+		resize offline or online ('-f' switch) 
+	
+	show partitions
+		ls /dev/<vgname>/		
+
+
+Crypto {{{1
+	new 2.6 device mapper crypt
+		 http://www.saout.de/misc/dm-crypt/ 	
+		 module dm-crypt
+
