@@ -21,6 +21,20 @@ Ignore files
 		git update-index --assume-unchanged
 	add to .gitignore
 
+Branches
+    show-branch show all changes in branch
+    branch -r   show remote tracking branches
+    branch -a   show local and remote tracking branches
+
+Remote repos
+    clone       create new local repo, remote tracking branch is auto-created
+    fetch       pull remote changes to remote tracking branch
+    pull        pull remote changes to remote tracking branch and start merge = fetch+merge
+    push <repo> upload changes to remote.  Default repo is origin
+
+Revert
+    reset 
+    rebase  ?    
 
 Utilities
 	vcsh	manage multiple repos

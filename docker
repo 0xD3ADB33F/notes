@@ -1,31 +1,67 @@
-blah
 
-Show running containers
-docker run -d -p 22 /fedora-ssh
+Docker commands {{{1
+
+run {{{2
+
+-d      daemonize/run in background
+--entrypoint    override default command
+-i      interactive
+--name  name cont.
+-P      auto map ports in container to host
+-p c:h  map port c on container to port h on host
+-t      allocate terminal
+-v src:dest mount data volume in cont.
+--volumes-from  mount volume from cont. (does not have to be running)
+
+Image commands {{{2
+
+images      list images on localhost
+pull        pull image from repo
+build       build an image from a Dockerfile
+history     show layers
+rmi         remove image
+save        export to tar
+tag         tag existing image;
+
+commit      create image from container
+    <cid> <new image name>      
+    -m=<commit message>
+
+
+Container commands {{{2
+attach      attach to a running container
+ps          show running containers
+    -l      show for last container started
+    -a      all containers including stopped
+export      export to tar file
+inspect     show container info
+logs <cid>  show standard output
+    -f      follow
+rm          remove stopped cont.
+stop        stop container
+top         show processes running in cont.
+port <cid> <port#>  show host port for cont. port
+
+
+Examples {{{1
+
+Interactive 
+    docker run -t -i ubuntu:12.04 /bin/bash
+
 
 Run with exposed port
-docker run -d -p 22 /fedora-ssh
+    run -d -p 22 /fedora-ssh
 
-Show container IP
-docker inspect | grep IP
+Daemon
+    docker run -d ubuntu:14.04 /bin/sh -c "while true; do echo hello world; sleep 1; done"
+
+Remove all containers
+    drm -f $(docker ps -aq)
+
+Dockerfile {{{1
 
 
-Dockerfile
+Zsh Aliases {{{1
 
-FROM mattdm/fedora
-MAINTAINER Praveen Kumar "kumarpraveen.nitdgp@gmail.com"
-
-RUN yum -y update
-RUN yum -y install openssh-server
-RUN yum -y install supervisor
-
-RUN mkdir -p /var/run/sshd
-RUN mkdir -p /var/run/supervisord
-RUN echo "root:password" | chpasswd
-
-EXPOSE 22
-ENTRYPOINT ["/usr/bin/supervisord", "-n"]
-
-Execute: docker build -rm -t /fedora-ssh
-rm - Remove intermediate containers
-t - Build tag
+alias drm="docker rm"
+alias dps="docker ps"

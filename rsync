@@ -1,3 +1,5 @@
+-runi <dir> <dir>   compare two directories
+
 --keep-dirlinks, -K	follow symlinked dirs on destination
 
 Info
