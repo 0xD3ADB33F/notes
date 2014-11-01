@@ -1,5 +1,7 @@
 NEW TIPS {{{1
 
+:b#	edit last buffer
+
 Using retab
 :se noet
 :se ts=2
