@@ -212,7 +212,8 @@ Insert mode keys
 	Home    go to cursor to first char in line
 	0 CTRL-D          delete all indent in the current line
 	^ CTRL-D          delete all indent in the current line, restore in next line
-	C-V Insert next non-digit literally
+	C-V    Insert next non-digit literally
+	C-O     Next one keystroke in normal mode
 
 registers
 	Insert (paste) register n
