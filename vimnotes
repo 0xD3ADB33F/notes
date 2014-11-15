@@ -1,5 +1,10 @@
 NEW TIPS {{{1
 
+Foolproof paste
+	:r! cat 
+	Ctrl-v
+	Ctrl-d
+
 :b#	edit last buffer
 
 Using retab

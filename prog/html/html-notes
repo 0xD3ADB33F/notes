@@ -33,17 +33,24 @@ FlexBox {{{2
 http://www.sitepoint.com/easy-responsive-css-grid-layouts/
 http://css-tricks.com/snippets/css/a-guide-to-flexbox/
 
-http://www.sitepoint.com/are-we-ready-to-use-flexbox/
 Flex container properties
 	display: -webkit-flex;
 	display: flex;
 	flex-direction: row (default) | column
 	flex-wrap: nowrap (default) | wrap 
-	flex-flow (shorthand): direction || wrap
-	justify-content: flex-start | flex-end | center | 
-		space-between (l & r at margins) | space-around (space l,r, between)
+	flex-flow = direction || wrap (default row nowrap)
+	justify-content: flex-start (default) | flex-end | center | 
+		space-between (l & r stay at margins) | space-around (space between all)
+	align-items: flex-start | flex-end | center | stretch (default) | baseline
+	align-content (multi-line only)
 
-
+Flex Item properties
+	order
+	flex-shrink
+	flex-grow
+	flex-basis
+	flex = grow, shrink, basis
+		http://css-tricks.com/almanac/properties/f/flex/
 
 
 

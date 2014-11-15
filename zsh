@@ -250,24 +250,44 @@ Named Directories {{{2
 	mydir=/home/me/dir (note: full path)
 	now can refer to as ~mydir
 
-Command Line Editing (Meta = Esc, ^ = Ctrl+ ) {{{1
-	move one word forward/back
-		Mf/Mb
-	swap two words
-		Mt  
-	^w/Md - delete word to left/right
-	Meta q - save line to buffer, replace after next command
-	Meta h	show man page for current command
-	Meta CR
-		with bindkey '\e^M' accept-and-menu-complete
-		accept and continue completing
-	^k - delete to end of line
-	^r - search history
-	print -z  print to edit buffer (ie command line)
+Command Line Editing (Meta = Alt, ^ = Ctrl+ \e = Escape) {{{1
+
+bindkey
+	noarg	print existing bindings
+	-d		delete all keymaps, reset to default
+	-m		if binding ESC also bind Alt
+	-l/L	list short/long form
 	
-	fc:
-		fc <pat>    edit most recent command starting with <pat>
-		fc -l <pat> display, dont edit
+
+
+
+
+Move one word forward/back
+	Mf/Mb
+swap two words
+	Mt  
+Delete char left/right
+	^h/^d	(^d also lists in menu completion)
+
+Delete word to 
+	left:
+		^w or \e+backspace
+	right:
+		Md or \ed
+	
+
+Meta q - save line to buffer, replace after next command
+Meta h	show man page for current command
+Meta CR
+	with bindkey '\e^M' accept-and-menu-complete
+	accept and continue completing
+^k - delete to end of line
+^r - search history
+print -z  print to edit buffer (ie command line)
+
+fc:
+	fc <pat>    edit most recent command starting with <pat>
+	fc -l <pat> display, dont edit
 
 Utilities {{{1 
 
