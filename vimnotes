@@ -1,9 +1,5 @@
 NEW TIPS {{{1
-
-Foolproof paste
-	:r! cat 
-	Ctrl-v
-	Ctrl-d
+-------
 
 :b#	edit last buffer
 
@@ -26,6 +22,7 @@ Elevate permission to root while editing
 	:w !sudo tee %
 	
 Startup & Settings {{{1
+----------------------
 
 -u vimrc
 - Start vim initializing with vimrc (no other vimrc is used)
@@ -303,7 +300,6 @@ Deleting
     [x]x        Delete [x] characters under and after the cursor
     [x]X        Delete [x] characters before the cursor
     nD, d$      Delete to end 
-    c$, C       delete to end of line, enter insert mode
     dd          Delete whole line       
     J           join lines (ie delete EOLs)
     J/:j        Join n lines of text, add spaces in place of removed EOLs.  
@@ -322,8 +318,9 @@ Deleting
 	C-U		Delete line left
 
 Changing
-        cw      change word - replace text until Esc + remove old       
-        S       change whole line
+       cw      change word 
+       S       change whole line
+		 c$, C       change to end of line, enter insert mode
         C & D change & delete from cursor to end of line plus n more complete lines.
         s is a synonym for cl
         S is a synonym for cc
@@ -354,6 +351,11 @@ C-A		insert previously inserted text (= C-R.)
 thing
 thing
 thing
+
+Foolproof paste
+	:r! cat 
+	Ctrl-v
+	Ctrl-d
 
 
 
@@ -638,26 +640,21 @@ search for matching element names
 Mapping {{{1
 
 http://vim.wikia.com/wiki/Mapping_keys_in_Vim_-_Tutorial_(Part_1)
+http://learnvimscriptthehardway.stevelosh.com/chapters/03.html
 Finding keys: help map-which-keys
+
 Show current maps: map
+Types: map (normal + visual), nmap, vmap, imap (normal, visual, insert modes)
 
+Special keys:
+	Escape		<Esc>
+	Return		<CR>
+	Control		<c-X>
 
-Line terminator is needed for a mapping.  Use <CR> for this.
-Enterin escape char in mappings 
-        cpo incl. 'B' (default)
-                Enter Esc as \^[  (simulates Ctr+V escape key)
-        cpo - no 'B'
-                Must enter Esc as <Esc>
-May include a '|' (chain commands) in a mapping as '\|' or '<Bar>' (no 'b'
-or '<' in cpo, respectively (defaults)), or as '^V|' (always works).
-        eg:     map tt :echo 'a' \| echo 'b' <CR>
-For Visual mode mappings, < and > stand for beginning and end of
-last/current selection.
-        '<>' notation (eg <ESC>, <CR>, <Bar>) only recognised in mappings
-Autocommands
-        From autocmd.txt
-                au * {pat}      List all events for a given path/file pattern
-                au! etc.        Remove previous au cmd's for this event & pat and add new
+Chain commands	\| or <Bar>
+
+imap example:
+	:imap <c+d>	<esc>ddi	(i at end returns to insert mode)
 
 Shell {{{1
 
