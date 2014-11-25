@@ -8,14 +8,6 @@ Selectors
 	#<name>	id
 
 
-Selector examples
-    .blah
-        any element with class=blah
-    ul.blah
-        <ul class="blah">
-    #thing a
-        links nested within the element with id=thing
-    H1#thing
-        <h1 id=thing> but not other element types
-
+Colours
+	tomato
 

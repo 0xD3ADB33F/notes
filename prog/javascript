@@ -1,0 +1,14 @@
+
+
+Nodejs {{{1
+
+Install with nodeenv using pip
+https://pypi.python.org/pypi/nodeenv
+	pip install nodeenv
+	workon env
+	nodeenv -p
+
+Tools {{{1
+
+Bower package management 
+npm install -g bower

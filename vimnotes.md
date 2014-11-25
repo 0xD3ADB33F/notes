@@ -281,10 +281,10 @@ n +,-   move n lines on non blank in column 1
 gi	jump to last edit
 `|'<mk>	jump to mark, beginning of line with mark
 
-[n]f/F<char> 
-	move to nth next/prev char in line.  ; to repeat
-[n]t/T	same but exclusive
-	eg: c2t) - change within 2nd bracket
+f/F<char> 
+	move to next/prev char in line.  ; to repeat
+t/T	same but exclusive
+	eg: ct) - change within 
  
 */#	to next/prev word under cursor
 		
@@ -640,21 +640,26 @@ search for matching element names
 Mapping {{{1
 
 http://vim.wikia.com/wiki/Mapping_keys_in_Vim_-_Tutorial_(Part_1)
-http://learnvimscriptthehardway.stevelosh.com/chapters/03.html
 Finding keys: help map-which-keys
-
 Show current maps: map
-Types: map (normal + visual), nmap, vmap, imap (normal, visual, insert modes)
 
-Special keys:
-	Escape		<Esc>
-	Return		<CR>
-	Control		<c-X>
 
-Chain commands	\| or <Bar>
-
-imap example:
-	:imap <c+d>	<esc>ddi	(i at end returns to insert mode)
+Line terminator is needed for a mapping.  Use <CR> for this.
+Enterin escape char in mappings 
+        cpo incl. 'B' (default)
+                Enter Esc as \^[  (simulates Ctr+V escape key)
+        cpo - no 'B'
+                Must enter Esc as <Esc>
+May include a '|' (chain commands) in a mapping as '\|' or '<Bar>' (no 'b'
+or '<' in cpo, respectively (defaults)), or as '^V|' (always works).
+        eg:     map tt :echo 'a' \| echo 'b' <CR>
+For Visual mode mappings, < and > stand for beginning and end of
+last/current selection.
+        '<>' notation (eg <ESC>, <CR>, <Bar>) only recognised in mappings
+Autocommands
+        From autocmd.txt
+                au * {pat}      List all events for a given path/file pattern
+                au! etc.        Remove previous au cmd's for this event & pat and add new
 
 Shell {{{1
 
