@@ -1,39 +1,52 @@
+
+Setup repo {{{1
+
 Create new repo with remote at BB
 	git init <dir>
 	git add . 
 	git commit -m 'comment'
 	git remote add origin ssh://git@bitbucket.org/andmalc/work.git
-    git push -u origin --all # pushes up the repo and its refs for the first time
+	git push -u origin --all # pushes up the repo and its refs for the first time
 	git mv	
 
 	git commit -a  #all changes in working directory
 	git push -u origin master
 
+Info {{{1
+
+Log
+	 git log --decorate --graph --oneline --all
+
+Changes
+	diff <branch> <remote name>/<branch>
+
 Show tracked files
-    ls-files
+	ls-files
+
+File management {{{1
 
 Remove files
-	rm      Deletes file
-    rm --cached     Does not delete file
+	rm		Deletes file
+	rm --cached		Does not delete file
 
 Ignore files
 	if already indexed:
 		git update-index --assume-unchanged
 	add to .gitignore
 
-Changes
-	diff <branch> <remote name>/<branch>
+Branches {{{1
 
-Branches
-    show-branch show all changes in branch
-    branch -r   show remote tracking branches
-    branch -a   show local and remote tracking branches
+branch <name>	create new branch but don't switch to it	    	   
+checkout -b <name>	create new branch <name> and switch to it
+show-branch show all changes in branch
+branch -r	show remote tracking branches
+branch -a	show local and remote tracking branches
 
 Remote repos
-    clone       create new local repo, remote tracking branch is auto-created
-    fetch       pull remote changes to remote tracking branch
-    pull        pull remote changes to remote tracking branch and start merge = fetch+merge
-    push <repo> upload changes to remote.  Default repo is origin
+	clone		create new local repo, remote tracking branch is auto-created
+	fetch		pull remote changes to remote tracking branch
+	pull		pull remote changes to remote tracking branch and start merge = fetch+merge
+	push <repo> upload changes to remote.  Default repo is origin
 
 Subtrees
 	Setup
@@ -44,28 +57,30 @@ Subtrees
 		 git subtree pull --prefix={path/to/subdir} {remote} [branch] --squash
 
 Revert
-    reset 
-    rebase  ?    
+	reset 
+	rebase	?	 
 
-Utilities
-	vcsh	manage multiple repos
-			http://goo.gl/t2xCne
-		init
-		list
-		enter
+Utilities {{{1
 
-	Setup config on new machine
-		sudo apt-get install vcsh git mr
-		vcsh enter config
-		git remote add origin ssh://git@bitbucket.org/andmalc/config.git
-		git pull -u origin master
+vcsh	manage multiple repos
+		http://goo.gl/t2xCne
+	init
+	list
+	enter
 
-Git Config
+Setup config on new machine
+	sudo apt-get install vcsh git mr
+	vcsh enter config
+	git remote add origin ssh://git@bitbucket.org/andmalc/config.git
+	git pull -u origin master
+
+Git Config {{{1
+
 [user]
    email = andmalc@gmail.com
    name = andmalc
 [core]
    pager = less -r
 [status]
-    showUntrackedFiles = no
+	showUntrackedFiles = no
 ~

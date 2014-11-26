@@ -73,6 +73,7 @@ Moving Between
 		t						to top buffer
 
 Window Sizing
+<<<<<<< HEAD
 		horizontal, height
 				=						make equal height
 				N +,-		Increase, reduce window height
@@ -82,6 +83,17 @@ Window Sizing
 		vertical
 				vertical res[size] 
 				Ctrl W N |		vertical resize to N
+=======
+	Height
+		C-W N_				height = N
+		C-W =					make equal height
+		C-W +,- N			increase/decrease height * n
+		z{height}<CR>		resize window height
+		res[ize] +-n | n
+	Width
+		C-W N|			width = N
+		C-W N >,<      increase/reduce with * n
+>>>>>>> 2a39b4053063a68d40b0a4213d691bdaef55f1cd
 
 Window Closing
 		c, :close		Hide buffer - edit next window
@@ -218,12 +230,15 @@ Insert mode keys
 	C-V    Insert next non-digit literally
 	C-O		Next one keystroke in normal mode
 
+<<<<<<< HEAD
 registers
 	Insert (paste) register n
 		C-R"n
 		C-R C-A/C-W				insert word/Word under cursor
 	let @a=" ... " - assign to a register (help 'let-@')
 
+=======
+>>>>>>> 2a39b4053063a68d40b0a4213d691bdaef55f1cd
 Selecting Text
 	v				start Visual mode per character
 	V				.. by line
@@ -235,6 +250,7 @@ Special Inserts:
 	:r! cmd			insert so from cmd below
 
 Replace mode:
+<<<<<<< HEAD
 	Overwrites characters.	Virtual Replace ('gR') also replaces blank areas.
 	r				replace character under
 	R				Enter Replace mode
@@ -245,6 +261,14 @@ Run commands in other modes
 		Ctrl-O	Enter a command and return to insert mode.
 	To run normal or command mode commands from Insert Mode, enter: 
 		ctrl+v[Escape key]:command
+=======
+	gR			replaces blank areas.
+	r        replace character under
+	R        Enter Replace mode
+
+Single Command mode
+	Ctrl-O  Enter a command and return to insert mode.
+>>>>>>> 2a39b4053063a68d40b0a4213d691bdaef55f1cd
 
 Lookups & Word Completion {{{1
 
@@ -349,10 +373,6 @@ Inserting {{{1
 C-@		insert previously inserted text and go to normal
 C-A		insert previously inserted text (= C-R.)
 
-thing
-thing
-thing
-
 Foolproof paste
 	:r! cat 
 	Ctrl-v
@@ -394,9 +414,40 @@ Tabs
 
 Marks & Registers {{{1
 
+<<<<<<< HEAD
 ma				set mark with alpha char
 'a		go to mark
 'ma				go to beginning of line with mark		
+=======
+names
+	register name prefix: "
+	"       current contents of 'unnamed register' - use for ex commands?
+	*       X-Primary register, stores current selection (CUT BUFFER0 of 8)
+			use for transfer to/from xterm
+	+       clipboard.  
+			Used by modern apps for cut/copy/paste ops selection behavior.
+			Use this to paste text from vim to mozilla
+			main paste register.  Not used by xterms
+	:       last executed cmd
+
+show
+		:reg
+execute contents of register
+		@<reg name>
+copy/paste to/from reg
+		"<reg>y/Y
+				yank selected text/lines
+		"<reg>p/P 
+
+				paste reg contents after/before cursor
+		"<reg>gp/gP 
+				as above, cursor left after text
+
+edit register
+		"ap
+		<edit lines>
+		"ad
+>>>>>>> 2a39b4053063a68d40b0a4213d691bdaef55f1cd
 
 Normal mode syntax for using register as target of y or d or as source
 		{Visual}"n[ydp]{motion}
@@ -408,7 +459,9 @@ Normal mode syntax for using register as target of y or d or as source
 Cmd mode register
 		:'a,'bs/thing/ThinG/
 
+
 registers
+<<<<<<< HEAD
 	names
 		register name prefix: "
 		"		current contents of 'unnamed register' - use for ex commands?
@@ -437,6 +490,12 @@ registers
 					"ap
 					<edit lines>
 					"ad
+=======
+	Insert (paste) register n
+		C-R"n
+		C-R C-A/C-W             insert word/Word under cursor
+	let @a=" ... " - assign to a register (help 'let-@')
+>>>>>>> 2a39b4053063a68d40b0a4213d691bdaef55f1cd
 
 insert text from buffer or register into cmd or search
 		  ^R commands
@@ -502,11 +561,20 @@ Ex Mode {{{1
 
 Syntax: line address/pattern/command
 Command Line 
+<<<<<<< HEAD
 		Accelerator keys
 				Ctrl B			Line beginning
 				Ctrl E			Line ending
 				Ctrl U			Delete line to left
 		@:		repeat last ex command
+=======
+        Accelerator keys
+                Ctrl B          Line beginning
+                Ctrl E          Line ending
+                Ctrl U          Delete line to left
+        @:      repeat last ex command
+
+>>>>>>> 2a39b4053063a68d40b0a4213d691bdaef55f1cd
 Display Line Numbers
   set number/nu, nonumber/nonu	show,hide line numbers
   n,n#	temporarily show numbers on lines n,n
