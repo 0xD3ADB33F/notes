@@ -21,6 +21,9 @@ Ignore files
 		git update-index --assume-unchanged
 	add to .gitignore
 
+Changes
+	diff <branch> <remote name>/<branch>
+
 Branches
     show-branch show all changes in branch
     branch -r   show remote tracking branches
@@ -31,6 +34,14 @@ Remote repos
     fetch       pull remote changes to remote tracking branch
     pull        pull remote changes to remote tracking branch and start merge = fetch+merge
     push <repo> upload changes to remote.  Default repo is origin
+
+Subtrees
+	Setup
+		git remote add -f {remote_name} {repository_url}
+		git subtree add --prefix={path/to/subdir} {remote} [branch] --squash
+	Pull changes
+		 git fetch {remote}
+		 git subtree pull --prefix={path/to/subdir} {remote} [branch] --squash
 
 Revert
     reset 
