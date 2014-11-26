@@ -271,10 +271,10 @@ n +,-   move n lines on non blank in column 1
 gi	jump to last edit
 `|'<mk>	jump to mark, beginning of line with mark
 
-f/F<char> 
-	move to next/prev char in line.  ; to repeat
-t/T	same but exclusive
-	eg: ct) - change within 
+[n]f/F<char> 
+	move to nth next/prev char in line.  ; to repeat
+[n]t/T	same but exclusive
+	eg: c2t) - change within 2nd bracket
  
 */#	to next/prev word under cursor
 		
