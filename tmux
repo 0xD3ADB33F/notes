@@ -1,22 +1,21 @@
-neww    new-window  
-split-window [-h]   split vertically/horizontally       %/"     
-swap-pane   -UDLR   swap pane                           {}
 
-Move
+Windows
 n/p     switch to next/previous window
-arrow   move to other window
-;       move to last active pane
-
+arrow   move to other window or pane
 ,       rename window
 x       kill window
 [       scroll	
-
-Split
-
-
-View
 w       list windows
+
+Panes 
+"			Split window horizontal
+%			Split window vetical
+;       move to last active pane
 q       show pane #'s
+{}			swap pane                           
+
+
+
 
 Startup
 -s      create session with <name>
