@@ -1,27 +1,4 @@
-NEW TIPS {{{1
--------
 
-:b#	edit last buffer
-
-Using retab
-:se noet
-:se ts=2
-:retab!
-:se ts=3 If you really want spaces, follow this by
-:se et
-:retab!
-
-Retab 
-	line retab!
-	file %retab!
-
-Insert contents of register
-		C-R 
-				see help c_CTRL-R* for more
-
-Elevate permission to root while editing
-	:w !sudo tee %
-	
 Startup & Settings {{{1
 ----------------------
 
@@ -73,17 +50,6 @@ Moving Between
 		t						to top buffer
 
 Window Sizing
-<<<<<<< HEAD
-		horizontal, height
-				=						make equal height
-				N +,-		Increase, reduce window height
-				N >,<		Increase, reduce window width
-				res[ize] +-n | n		Resize window
-				z{height}<CR>			Resize window height
-		vertical
-				vertical res[size] 
-				Ctrl W N |		vertical resize to N
-=======
 	Height
 		C-W N_				height = N
 		C-W =					make equal height
@@ -93,7 +59,6 @@ Window Sizing
 	Width
 		C-W N|			width = N
 		C-W N >,<      increase/reduce with * n
->>>>>>> 2a39b4053063a68d40b0a4213d691bdaef55f1cd
 
 Window Closing
 		c, :close		Hide buffer - edit next window
@@ -140,8 +105,6 @@ r		read in file
 
 bro[wse] {command} [dir name] for commands including :e & :w, open a file browser.
 vertical split \~  split window and open a file explorer
-
-g/pat/p			   print all lines in file matching pat
 
 
 
@@ -230,15 +193,12 @@ Insert mode keys
 	C-V    Insert next non-digit literally
 	C-O		Next one keystroke in normal mode
 
-<<<<<<< HEAD
 registers
 	Insert (paste) register n
 		C-R"n
 		C-R C-A/C-W				insert word/Word under cursor
 	let @a=" ... " - assign to a register (help 'let-@')
 
-=======
->>>>>>> 2a39b4053063a68d40b0a4213d691bdaef55f1cd
 Selecting Text
 	v				start Visual mode per character
 	V				.. by line
@@ -250,25 +210,16 @@ Special Inserts:
 	:r! cmd			insert so from cmd below
 
 Replace mode:
-<<<<<<< HEAD
-	Overwrites characters.	Virtual Replace ('gR') also replaces blank areas.
-	r				replace character under
-	R				Enter Replace mode
-	Restore characters with <BS>
+	gR			replaces blank areas.
+	r        replace character under
+	R        Enter Replace mode
+
 
 Run commands in other modes
 	Single Command mode
 		Ctrl-O	Enter a command and return to insert mode.
 	To run normal or command mode commands from Insert Mode, enter: 
 		ctrl+v[Escape key]:command
-=======
-	gR			replaces blank areas.
-	r        replace character under
-	R        Enter Replace mode
-
-Single Command mode
-	Ctrl-O  Enter a command and return to insert mode.
->>>>>>> 2a39b4053063a68d40b0a4213d691bdaef55f1cd
 
 Lookups & Word Completion {{{1
 
@@ -368,6 +319,9 @@ Copying and Moving
 		[p				like P, but adjust indent to current line
 		gp				like p, but leave cursor after the new text
 
+Elevate permission to root while editing
+	:w !sudo tee %
+	
 Inserting {{{1
 
 C-@		insert previously inserted text and go to normal
@@ -412,13 +366,25 @@ Tabs
 		If the 'shiftround' option is on, the indent is rounded to a multiple of
 		'shiftwidth'.
 
-Marks & Registers {{{1
+Using retab
+:se noet
+:se ts=2
+:retab!
+:se ts=3 If you really want spaces, follow this by
+:se et
+:retab!
 
-<<<<<<< HEAD
+Retab 
+	line retab!
+	file %retab!
+
+Marks {{{1 
 ma				set mark with alpha char
 'a		go to mark
 'ma				go to beginning of line with mark		
-=======
+
+Registers {{{1
+
 names
 	register name prefix: "
 	"       current contents of 'unnamed register' - use for ex commands?
@@ -432,8 +398,10 @@ names
 
 show
 		:reg
+
 execute contents of register
 		@<reg name>
+
 copy/paste to/from reg
 		"<reg>y/Y
 				yank selected text/lines
@@ -447,7 +415,7 @@ edit register
 		"ap
 		<edit lines>
 		"ad
->>>>>>> 2a39b4053063a68d40b0a4213d691bdaef55f1cd
+
 
 Normal mode syntax for using register as target of y or d or as source
 		{Visual}"n[ydp]{motion}
@@ -459,43 +427,10 @@ Normal mode syntax for using register as target of y or d or as source
 Cmd mode register
 		:'a,'bs/thing/ThinG/
 
-
-registers
-<<<<<<< HEAD
-	names
-		register name prefix: "
-		"		current contents of 'unnamed register' - use for ex commands?
-		*		X-Primary register, stores current selection (CUT BUFFER0 of 8)
-				use for transfer to/from xterm
-		+		clipboard.	
-				Used by modern apps for cut/copy/paste ops selection behavior.
-				Use this to paste text from vim to mozilla
-				main paste register.  Not used by xterms
-		:		last executed cmd
-
-	using
-			show
-					:reg
-			execute contents of register
-					@<reg name>
-			copy/paste to/from reg
-					"<reg>y/Y
-							yank selected text/lines
-					"<reg>p/P 
-
-							paste reg contents after/before cursor
-					"<reg>gp/gP 
-							as above, cursor left after text
-			edit register
-					"ap
-					<edit lines>
-					"ad
-=======
 	Insert (paste) register n
 		C-R"n
 		C-R C-A/C-W             insert word/Word under cursor
 	let @a=" ... " - assign to a register (help 'let-@')
->>>>>>> 2a39b4053063a68d40b0a4213d691bdaef55f1cd
 
 insert text from buffer or register into cmd or search
 		  ^R commands
@@ -540,6 +475,9 @@ Formating {{{1
 				
 						
 Search & Replace {{{1
+
+g/pat/p			   print all lines in file matching pat
+
 		/ ?				Search forward/backward
 		/CR				Repeat search, forward
 		?CR				Repeat search, backward 
@@ -561,20 +499,12 @@ Ex Mode {{{1
 
 Syntax: line address/pattern/command
 Command Line 
-<<<<<<< HEAD
 		Accelerator keys
 				Ctrl B			Line beginning
 				Ctrl E			Line ending
 				Ctrl U			Delete line to left
 		@:		repeat last ex command
-=======
-        Accelerator keys
-                Ctrl B          Line beginning
-                Ctrl E          Line ending
-                Ctrl U          Delete line to left
-        @:      repeat last ex command
 
->>>>>>> 2a39b4053063a68d40b0a4213d691bdaef55f1cd
 Display Line Numbers
   set number/nu, nonumber/nonu	show,hide line numbers
   n,n#	temporarily show numbers on lines n,n

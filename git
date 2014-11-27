@@ -19,6 +19,9 @@ Log
 
 Changes
 	diff <branch> <remote name>/<branch>
+	diff -- <file>		working tree vs. commit
+	diff --cached -- <file>	working tree vs. staged
+
 
 Show tracked files
 	ls-files
