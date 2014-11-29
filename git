@@ -91,6 +91,14 @@ Ignore files
 		git update-index --assume-unchanged
 	add to .gitignore
 
+Forking {{{1
+
+Fork at Github
+clone a local copy
+add URL of original as remote upstream
+update by fetching changes, checking out master then merging upstream/master
+
+
 Utilities {{{1
 
 vcsh	manage multiple repos

@@ -237,16 +237,24 @@ Enabling word completion with ^N & ^P
 	cpt defaults include search current buffers and tags files.  Search of
 		dict files not on by default. 
 
+Text objects {{{1
 
-Text object motions {{{1
+i<marker>
+	Edit within markers
+	Marker = ([{<"
+	When used with edit commands, affects text within marker pairs
+t<marker>
+	Edit until marker
 
-w/W		beginning of next word/blank separated words, 
-	same for other motions (incl. gE for blank sep ge.
+
+
+Motions {{{1
+
+w/W		beginning of next word/blank separated words, same for other motions incl. gE for blank sep ge.
 space	move right
 b		move to beginning of current word
 e		move to end of current word
 ge,E	back to end of word
-n j,k	move n lines down or up
 n +,-	move n lines on non blank in column 1
 )(		sentences forward, backward
 }{		paragraphs forward, backward
@@ -254,21 +262,24 @@ n +,-	move n lines on non blank in column 1
 ][,[]			""				, end of sect
 {,}		move by sentences or blocks
 
-gi	jump to last edit
-`|'<mk>	jump to mark, beginning of line with mark
-
 [n]f/F<char> 
 	move to nth next/prev char in line.  ; to repeat
 [n]t/T	same but exclusive
 	eg: c2t) - change within 2nd bracket
- 
-*/#	to next/prev word under cursor
+
+
 		
 Tags & Jumps
+	^o/^i	jump back to last edit / forward
 	^I/^O	go to newer/older position in jump list
 			Can use to move between two files or within a 
 			file.															
 	:ts /pat	tag select arg is a regex
+
+	gi	jump to last edit
+	`|'<mk>	jump to mark, beginning of line with mark
+	*/#	to next/prev word under cursor
+
 
 Editing {{{1
 
