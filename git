@@ -14,28 +14,35 @@ Create new repo with remote at BB
 
 Info {{{1
 
+Status 
+	-sb				short form
+					left column is staged, right column is modified
+
 Log
-	 git log --decorate --graph --oneline --all
+	-#				number of commits to show
+	 -p				show diffs	
+	 --grep			matching string
+	 --stat			short summary of files and changes
+	 --decorate --graph --oneline --all
+	 <path>			show commits with this file
 
-Changes
-	diff <branch> <remote name>/<branch>
-	diff -- <file>		working tree vs. commit
-	diff --cached -- <file>	working tree vs. staged
+Diff
+	no arg				changed but not staged
+	--staged		changes staged
+	--cached		same as --staged
+	<branch> <remote name>/<branch>
+	-- <file>		working tree vs. commit
+	--cached -- <file>	working tree vs. staged
 
+	difftool			show diff in vim etc.
 
 Show tracked files
 	ls-files
 
-File management {{{1
+Commit {{{1
 
-Remove files
-	rm		Deletes file
-	rm --cached		Does not delete file
-
-Ignore files
-	if already indexed:
-		git update-index --assume-unchanged
-	add to .gitignore
+	commit -v			show diff in commit message
+	commit -a			commit all tracked files
 
 Branches {{{1
 
@@ -44,6 +51,9 @@ checkout -b <name>	create new branch <name> and switch to it
 show-branch show all changes in branch
 branch -r	show remote tracking branches
 branch -a	show local and remote tracking branches
+
+git branch -rd <remote>/<branch>
+			Remove remote branch if error
 
 Remote repos
 	clone		create new local repo, remote tracking branch is auto-created
@@ -67,8 +77,26 @@ Submodules
 		cd into module dir and git fetch / git merge origin/master
 
 Revert
-	reset 
+	reset --hard HEAD	revert all changes incl. working dir. 
 	rebase	?	 
+
+Merging {{{1
+
+	merge --abort	abandon merge - what happens to uncommited changes?
+	merge -Xignore-all-space or -Xignore-space-change - ignore whitespace changes
+
+
+File management {{{1
+
+Moves files		mv
+Remove files
+	rm		Deletes file/directory
+	rm --cached		Untracks files/directoires
+
+Ignore files
+	if already indexed:
+		git update-index --assume-unchanged
+	add to .gitignore
 
 Forking {{{1
 
