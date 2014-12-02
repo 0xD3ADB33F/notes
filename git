@@ -59,6 +59,13 @@ Subtrees
 		 git fetch {remote}
 		 git subtree pull --prefix={path/to/subdir} {remote} [branch] --squash
 
+Submodules
+	
+	Cloning - don't need to be in submodule dir
+		submodule init / submodule update
+	Updating
+		cd into module dir and git fetch / git merge origin/master
+
 Revert
 	reset 
 	rebase	?	 

@@ -1,4 +1,3 @@
-Out of space: /var/lib/docker/subvolumes and /var/lib/docker/vfs/dir
 
 Docker commands {{{1
 
@@ -9,7 +8,7 @@ run {{{2
 -i      interactive
 --name  name cont.
 -P      auto map ports in container to host
--p c:h  map port c on container to port h on host
+-p h:c  map port h on host to port c on container
 -t      allocate terminal
 -v src:dest mount data volume in cont.
 --volumes-from  mount volume from cont. (does not have to be running)
@@ -31,8 +30,9 @@ commit      create image from container
 
 Container commands {{{2
 attach      attach to a running container
+^p^q		detach from shell without stopping container
 ps          show running containers
-    -l      show for last container started
+    -l      last container created/started
     -a      all containers including stopped
 export      export to tar file
 inspect     show container info
