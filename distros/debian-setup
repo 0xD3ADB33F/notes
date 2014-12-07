@@ -31,15 +31,6 @@ Backports
     aptitude -t lenny-backports install <pkg>
 
 Installation sizes {{{2
-	lenny 
-		before kernel - 189 M
-		after locale & purge +5
-		after install kernel from packge +80M 
-		'standard system': 570M
-		small desktop: 
-			xserver-xorg + lxde + firefox = 630M
-			same after upgrade lennny to squeeze 830
-		voyage: 114M
 	sid/Squeeze
 		if choosing 'graphical desktop': 5G
 	Weezy
@@ -171,6 +162,7 @@ Locales
 	Install locales, localepurge
 	dpkg-reconfigure locales -> en_US.UTF-8 or lang #112
 	run localepurge
+	ubuntu: locale-gen en_US.UTF-8
 
 date/time
 	rdate -n clock.isc.org  / time.nrc.ca
