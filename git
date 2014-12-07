@@ -60,8 +60,10 @@ Remote repos
 	fetch		pull remote changes to remote tracking branch
 	pull		pull remote changes to remote tracking branch and start merge = fetch+merge
 	push <repo> upload changes to remote.  Default repo is origin
+				<local branch name>:<remote name>
 
 Subtrees
+	Reference to another project.  Files not saved in parent repo. Dir is empty until  
 	Setup
 		git remote add -f {remote_name} {repository_url}
 		git subtree add --prefix={path/to/subdir} {remote} [branch] --squash
@@ -70,11 +72,21 @@ Subtrees
 		 git subtree pull --prefix={path/to/subdir} {remote} [branch] --squash
 
 Submodules
-	
+	Repo independent of parent, harder to merge parent with child.  
+	Tracked in .gitmodules file.  Composed from a gitlink tree entry in main repo that points to particular commit 
+	New
+		submodule add <remote repo> <path from root>
+	Delete
+		submodule deinit
+		git rm -f <dir>
+		rm -rf .git/modules/<repo name>
 	Cloning - don't need to be in submodule dir
 		submodule init / submodule update
 	Updating
 		cd into module dir and git fetch / git merge origin/master
+	Info
+		submodule status
+		git status ?
 
 Revert
 	reset --hard HEAD	revert all changes incl. working dir. 
