@@ -1,3 +1,5 @@
+Fugitive
+http://flaviusim.com/blog/how-to-do-a-git-merge-with-vim/
 
 Setup repo {{{1
 
@@ -39,11 +41,6 @@ Diff
 Show tracked files
 	ls-files
 
-Commit {{{1
-
-	commit -v			show diff in commit message
-	commit -a			commit all tracked files
-
 Branches {{{1
 
 branch <name>	create new branch but don't switch to it	    	   
@@ -56,32 +53,57 @@ git branch -rd <remote>/<branch>
 			Remove remote branch if error
 
 Remote repos
+	remote show <b>	
+	add <remote add <name> <url>
 	clone		create new local repo, remote tracking branch is auto-created
 	fetch		pull remote changes to remote tracking branch
 	pull		pull remote changes to remote tracking branch and start merge = fetch+merge
 	push <repo> upload changes to remote.  Default repo is origin
+				<local branch name>:<remote name>
 
 Subtrees
+	Reference to another project.  Files not saved in parent repo. Dir is empty until  
 	Setup
-		git remote add -f {remote_name} {repository_url}
-		git subtree add --prefix={path/to/subdir} {remote} [branch] --squash
+		remote add -f {remote_name} {repository_url}
+		subtree add --prefix={path/to/subdir} {remote} [branch] --squash
 	Pull changes
-		 git fetch {remote}
-		 git subtree pull --prefix={path/to/subdir} {remote} [branch] --squash
+		subtree merge --prefix={-} 
+		fetch {remote}
+		subtree pull --prefix={path/to/subdir} {remote} [branch] --squash
+	Read-tree
+		read-tree --prefix=<path from repo root> -u rack_branch
 
 Submodules
-	
+
+Submodules
+	Repo independent of parent, harder to merge parent with child.  
+	Tracked in .gitmodules file.  Composed from a gitlink tree entry in main repo that points to particular commit 
+	New
+		submodule add <remote repo> <path from root>
+	Delete
+		submodule deinit
+		git rm -f <dir>
+		rm -rf .git/modules/<repo name>
 	Cloning - don't need to be in submodule dir
 		submodule init / submodule update
 	Updating
 		cd into module dir and git fetch / git merge origin/master
+	Info
+		submodule status
+		git status ?
 
 Revert
 	reset				unstages all 
 	reset -- <path>		unstages <path>
-	reset --hard HEAD	revert all changes incl. working dir. 
+	reset --hard HEAD	revert all changes incl. working dir. Staged files => untracked.
 	reset -p			unstage interactively
+	
 	rebase	?	 
+
+Commit {{{1
+
+	commit -v			show diff in commit message
+	commit -a			commit all tracked files
 
 Merging {{{1
 
@@ -93,6 +115,16 @@ https://rtcamp.com/tutorials/git/git-resolve-merge-conflicts/
 
 	checkout --ours <path>		keep whole file in local commit
 
+Buffer names
+	show with: ls-files -s
+	0	working tree
+	1	change
+	2	target
+	3	merge branch
+
+Fugitive
+http://vimcasts.org/episodes/fugitive-vim-resolving-merge-conflicts-with-vimdiff/
+http://alblue.bandlem.com/2011/10/git-tip-of-week-index-revisited.html
 
 File management {{{1
 
@@ -100,6 +132,9 @@ Moves files		mv
 Remove files
 	rm		Deletes file/directory
 	rm --cached		Untracks files/directoires
+
+Reset or unstage file
+	reset <file>
 
 Ignore files
 	if already indexed:
