@@ -77,13 +77,21 @@ Submodules
 		cd into module dir and git fetch / git merge origin/master
 
 Revert
+	reset				unstages all 
+	reset -- <path>		unstages <path>
 	reset --hard HEAD	revert all changes incl. working dir. 
+	reset -p			unstage interactively
 	rebase	?	 
 
 Merging {{{1
 
+Merge conficts
+https://rtcamp.com/tutorials/git/git-resolve-merge-conflicts/
+
 	merge --abort	abandon merge - what happens to uncommited changes?
-	merge -Xignore-all-space or -Xignore-space-change - ignore whitespace changes
+	merge -Xignore-all-space or -Xignore-space-change - ignore ws changes
+
+	checkout --ours <path>		keep whole file in local commit
 
 
 File management {{{1
