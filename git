@@ -35,6 +35,8 @@ Diff
 	<branch> <remote name>/<branch>
 	-- <file>		working tree vs. commit
 	--cached -- <file>	working tree vs. staged
+	HEAD\^ HEAD		show diffs between last two commits
+					prefix noglob in zsh for no ^ escape needed
 
 	difftool			show diff in vim etc.
 
@@ -79,7 +81,9 @@ Submodules
 	Repo independent of parent, harder to merge parent with child.  
 	Tracked in .gitmodules file.  Composed from a gitlink tree entry in main repo that points to particular commit 
 	New
-		submodule add <remote repo> <path from root>
+		submodule add [--name name] <remote repo> <path from root>
+		if no path, name is final part of repo path
+		if given, path is logical name unless --name specified
 	Delete
 		submodule deinit
 		git rm -f <dir>
