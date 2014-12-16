@@ -97,7 +97,11 @@ Submodules
 		git status ?
 
 Revert
+	reset				unstages all 
+	reset -- <path>		unstages <path>
 	reset --hard HEAD	revert all changes incl. working dir. Staged files => untracked.
+	reset -p			unstage interactively
+	
 	rebase	?	 
 
 Commit {{{1
@@ -107,8 +111,13 @@ Commit {{{1
 
 Merging {{{1
 
+Merge conficts
+https://rtcamp.com/tutorials/git/git-resolve-merge-conflicts/
+
 	merge --abort	abandon merge - what happens to uncommited changes?
-	merge -Xignore-all-space or -Xignore-space-change - ignore whitespace changes
+	merge -Xignore-all-space or -Xignore-space-change - ignore ws changes
+
+	checkout --ours <path>		keep whole file in local commit
 
 Buffer names
 	show with: ls-files -s
