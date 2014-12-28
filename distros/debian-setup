@@ -161,12 +161,14 @@ Locales
 	as of Etch, default is UTF-8, setting in /etc/default/locale
 	Install locales, localepurge
 	dpkg-reconfigure locales -> en_US.UTF-8 or lang #112
-	run localepurge
+	run dpkg-reconfigure localepurge
 	ubuntu: locale-gen en_US.UTF-8
 
 	or in script:
 	 bash -c 'echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 	 locale-gen
+
+	 Better than localepurge: bleachbit
 
 date/time
 	rdate -n clock.isc.org  / time.nrc.ca

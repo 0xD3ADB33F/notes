@@ -8,7 +8,10 @@ General Install
 
 Methods:
 
-1) Debian Packages:
+* Recommended by python-guide.org
+easy_install pip
+
+* Debian Packages:
 Install python-pip, python-virtualenv, and optional virtualenvwrapper
 Debian package of pip - no python3
 
@@ -16,19 +19,18 @@ VirtualEnv Wrapper: Also could install with pip with optional install to .local
 pip install virtualenvwrapper --install-option="--user"
 
 
-
-2) Pip Manual
+*  Pip Manual
 curl -O https://bootstrap.pypa.io/get-pip.py
 sudo python get-pip.py  # system wide
 sudo python get-pip.py --user # local 
 
 Includes setuptools
 
-3) Virtualenv
+* Virtualenv
 sudo pip install virtualenv #system wide
 pip install --user virtualenv #local to .local/bin
 
-4) Python 3
+* Python 3
 Run pip install with python3 to get pip3
 Virtualenv installed with pip3 will default to python3 or virtualenv --python=/usr/bin/python3 --no-site-packages
 

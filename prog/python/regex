@@ -1,9 +1,10 @@
 
 Regex article
-http://www.onlamp.com/pub/a/onlamp/2003/08/21/regexp.html
 http://junedmunshiblog.blogspot.in/2013/08/tutorialregular-expressions-in-python.html
 
-Testing: re.findall(pat,str) => list of matches
+re.findall(pat,str) => list of matches
+re.sub(pat,sub,str) - replace pat with sub
+
 Pattern match:
 	m=re.match('xxx (group to match)',str)
 	m.group(0) => matched str
@@ -16,6 +17,8 @@ Pattern match:
 \s : Matches a whitespace character which includes space,\t,\r,\n
 \w : Matches an alphanumeric character, including "_" 
 \   : Treat next character as literal character. 
+^	Beginning of line
+$	End of line excluding return
 
 Format example
 
