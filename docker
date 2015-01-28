@@ -1,3 +1,5 @@
+Read
+http://www.projectatomic.io/docs/docker-image-author-guidance/
 
 Docker commands {{{1
 
@@ -60,6 +62,11 @@ Remove all containers
     drm -f $(docker ps -aq)
 
 Dockerfile {{{1
+
+
+Networking {{{1
+
+http://www.dasblinkenlichten.com/docker-networking-101/
 
 
 Zsh Aliases {{{1
