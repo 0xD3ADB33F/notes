@@ -8,27 +8,24 @@ detect hosts on network
 	fping
 	nmap -sP 192.168.0.* | grep Host
 
-Reports on listening daemons
-	netstat
-		reports
-			ant		show programs bound to ports for TCP address family
-			i		interfaces
-			r		kernel routing tables
-			M		masqueraded connections
-		options
-			p		show name of program
-			c		continuous display
-			t		tcp
-			l		listening servers (*)
-			a		show all
-						with -i, show interfaces that are not up
-						with n, show both listening & established connections
-		Examples
-			show all running sessions and daemons
-				netstat -untap  
-				netstat --tcp --udp --listening --program --numeric
-			shows running daemons
-				netstat -ltp
+netstat 
+		Reports on listening daemons
+		debian package net-tools
+	show all running sessions and daemons
+		netstat -untap  
+	shows running daemons
+		netstat --tcp --udp --listening --program --numeric
+		netstat -ltp
+	options
+		ant		show programs bound to ports for TCP address family
+		i		interfaces
+		r		kernel routing tables
+		M		masqueraded connections
+		p		show name of program
+		c		continuous display
+		t		tcp
+		l		listening servers only
+		a		show all
 
 darkstat
 	Easy monitoring of bandwidth
