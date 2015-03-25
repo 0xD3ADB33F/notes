@@ -1,16 +1,24 @@
-Info {{{1
-	list partitions
-		sfdisk -l
-	list scsi type devices
-		cat /proc/scsi/scsi
+https://wiki.archlinux.org/index.php/Persistent_block_device_naming
 
+Info {{{1
+
+lsblk -f	shows tree of disks and parts, labels, UUIDs, mount points
+blkid		shows UUID's and types
+sfdisk -l
+udevadm info -n /dev/sdb -q all
+
+du -schx /*	shows disk space used by subdirs
 
 Utilities {{{1
-	gpart
-		find lost partitions
-	partimage
-		restore to file
-			http://www.coolacid.net/20080908134/Latest/restore-a-partimage-backup-to-loopback
+
+change labels
+	e2label / e2fsprogs		for extX
+	btrfs filesystem label /dev/XXX <label> 
+	swaplabel -L <label> /dev/XXX
+
+gpart
+	find lost partitions
+partimage
 
 MBR  {{{1
 	format
@@ -19,24 +27,6 @@ MBR  {{{1
 		dd if=/dev/hda bs=512 count=1 of=/root/mbr.bin
 	wipe
 		dd if=/dev/zero of=/dev/hda bs=512 count=63
-
-Specific devices {{{1
-	zip drives
-		/dev/sda4
-	hard drives
-		/dev/hda1
-			letter is device, number is partition
-	floppies
-		cannot be partitioned
-		/dev/fd0, fd1 - # indicates drive, not parition
-	USB drives
-		smaller are like floppies - mount as /dev/sda etc
-		larger are like hd's (ATAPI) - mount a parition as /dev/sda1 etc.
-
-Trying to mount partition of a non-partitionable device
-	mount -t vfat /dev/sda1 /mnt/fob
-	mount: /dev/sda1 is not a valid block device
-
 
 LVM {{{1
 

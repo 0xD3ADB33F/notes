@@ -1,0 +1,8 @@
+
+networkctl	
+	noarg	lists network interfaces
+	status #	shows info for interface #
+
+timedatectl
+
+

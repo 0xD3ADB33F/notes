@@ -1,3 +1,5 @@
+Redraw on bigger screen
+	tmux attach -d
 
 Windows
 n/p     switch to next/previous window
@@ -11,10 +13,13 @@ Panes
 "			Split window horizontal
 %			Split window vetical
 ;       move to last active pane
+o		select last pane in current window
 q       show pane #'s
 {}			swap pane                           
 
 
+Pane commands 
+join-pane -s # -t #		Two windows into 2 panes
 
 
 Startup

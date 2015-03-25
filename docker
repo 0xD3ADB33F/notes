@@ -1,5 +1,13 @@
+Read
+http://www.projectatomic.io/docs/docker-image-author-guidance/
+http://fedoramagazine.org/quick-containers-with-fedora-dockerfiles/
 
 Docker commands {{{1
+
+build {{{2
+
+final arg is directory containing Dockerfle
+-t		tag, 'andmalc/blah'
 
 run {{{2
 
@@ -8,7 +16,12 @@ run {{{2
 -i      interactive
 --name  name cont.
 -P      auto map ports in container to host
--p h:c  map port h on host to port c on container
+
+-p		publish 
+		Not needed if EXPOSE in dockerfile.
+		c	expose cont port to host
+		h:c  map port h on host to port c on container
+
 -t      allocate terminal
 -v src:dest mount data volume in cont.
 --volumes-from  mount volume from cont. (does not have to be running)
@@ -60,6 +73,11 @@ Remove all containers
     drm -f $(docker ps -aq)
 
 Dockerfile {{{1
+
+
+Networking {{{1
+
+http://www.dasblinkenlichten.com/docker-networking-101/
 
 
 Zsh Aliases {{{1
