@@ -43,6 +43,11 @@ Diff
 Show tracked files
 	ls-files
 
+Commit {{{1
+
+	commit -v			show diff in commit message
+	commit -a			commit all tracked files
+
 Branches {{{1
 
 branch <name>	create new branch but don't switch to it	    	   

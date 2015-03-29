@@ -1,51 +1,14 @@
 Canadian mirror mirror.csclub.uwaterloo.ca
 
 
-Install non-free repo
-sudo yum localinstall --nogpgcheck http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-branched.noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-branched.noarch.rpm
-
-Chrome Repo
-
-[google-chrome 32] 
-name=google-chrome 
-baseurl=http://dl.google.com/linux/chrome/rpm/stable/i386 
-enabled=1 
-gpgcheck=1 
-gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
-
-[google-chrome 64]
-name=Google Chrome 64-bit
-baseurl=http://dl.google.com/linux/chrome/rpm/stable/x86_64
-
-
-
-Dropbox
-In /etc/yum.repos.d
-sudo wget http://dl.dropbox.com/u/30876345/repo/dropbox.repo 
-
-Or add file:
-[Dropbox] 
-name=Dropbox Repository 
-baseurl=http://linux.dropbox.com/fedora/$releasever/ gpgkey=http://linux.dropbox.com/fedora/rpm-public-key.asc 
-
-sudo yum install nautilus-dropbox
-
-Config
-
-GSettings replaces GConf.
-Dconf is backend for GSettings
-
-DVD play
-
-http://packages.atrpms.net/dist/f17/libdvdcss/
-
-Download autoplus and install from menu - http://www.dnmouse.org/autoten/
-
 
 
 Yum
 
 yum provides '*/vimdiff'
 	find packages with given filename
+
+yum list available package-name --listavailable
+	show all versions of a package
 
 
