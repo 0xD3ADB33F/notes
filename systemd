@@ -6,3 +6,10 @@ networkctl
 timedatectl
 
 
+journalctl
+	-u sshd		show logs for unit name sshd
+	-f			follow
+	-b			this boot only
+	<exec name>	eg /usr/lib/systemd/systemd-sysctl
+
+

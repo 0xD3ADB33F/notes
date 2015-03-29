@@ -1,9 +1,11 @@
 
-
 Yum
 
 yum provides '*/vimdiff'
 	find packages with given filename
+
+yum list available package-name --listavailable
+	show all versions of a package
 
 
 repoquery --whatrequires <pkg>

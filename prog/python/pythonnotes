@@ -7,18 +7,25 @@ Classes
 	  def __str__(self):
 		return self.__class__.__name__ + ':' + self.name
 
-External Processes {{{1
+Data structures {{{1
 
-Subprocess module
-	http://docs.python.org/library/subprocess.html
-	http://www.doughellmann.com/PyMOTW/subprocess/
+Tuples:
+Immutable therefore idea as data records
 
-	run external program, wait to finish
-		subprocess.call('ls -l', shell=True)
-	run program, don't wait
-		process=s.Popen('ls',stdout=s.PIPE)
-		(stdoutdata, stderrdata)= process.communicate()
-	'process' is a Popen instance
+Unpacking:
+	* prefix when argument to function:
+		tup =(1,2)
+		myfunction(*tup) => myfunction(1,2)
+
+
+
+Introspection {{{1
+
+	getattr function
+		getattr(module,method,default_method)
+			returns a function as specified by string 'method'	
+			acts as a dispatcher
+
 
 O/S {{{1
 
@@ -46,31 +53,6 @@ Files
 if args[0]=='-': 
 	for line in iter(sys.stdin.readline, ""): 
 
-Filter {{{1
-	filter lines (>= Python 2.2)
-		filter(ConditionalFunc, open(filename))
-	d.has_keys as filter function
-		keys = ['baz', 'faz']
-		d = {'phoo': 1,  'bar': 2, 'baz': 10}
-		valid_keys = filter(d.has_key, keys)
-
-	in list comprehensions
-		[re.sub('a','ZZZ',item) for item in L if 'a' in item]
-
-Web {{{1
-
-Instant web server
-	runs on port 8000
-	python -c "import SimpleHTTPServer;SimpleHTTPServer.test()"
-		
-Introspection {{{1
-
-	getattr function
-		getattr(module,method,default_method)
-			returns a function as specified by string 'method'	
-			acts as a dispatcher
-
-
 Text {{{1
 
 string processing {{{2
@@ -90,3 +72,22 @@ Open filename in r+ mode using UTF-8 encoding
 
 
 vim:ts=4 sw=4 foldmethod=marker
+Web {{{1
+
+Instant web server
+	runs on port 8000
+	python -c "import SimpleHTTPServer;SimpleHTTPServer.test()"
+		
+External Processes {{{1
+
+Subprocess module
+	http://docs.python.org/library/subprocess.html
+	http://www.doughellmann.com/PyMOTW/subprocess/
+
+	run external program, wait to finish
+		subprocess.call('ls -l', shell=True)
+	run program, don't wait
+		process=s.Popen('ls',stdout=s.PIPE)
+		(stdoutdata, stderrdata)= process.communicate()
+	'process' is a Popen instance
+

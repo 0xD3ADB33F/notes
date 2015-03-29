@@ -4,9 +4,9 @@ Docs
 Utilities:
 	Modify user and groups 
 		adduser
-			adduser <username> <groupname>
-				may use to add an existing user to a group
-				Debian: officially recommended over useradd
+			Debian: officially recommended over useradd
+		adduser <username> <groupname>
+			add user to a group
 		addgroup
 		usermod
 		groupmod

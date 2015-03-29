@@ -202,10 +202,12 @@ Make fs
 Make subvolume
 	btrfsctl -S NewSubVol /mnt/test
 Mount subvolume
-	mount -t btrfs -o subvol=new_subvol /dev/sda2 /mnt/new_subvol 
+	mount -t btrfs -o subvol=subvolname /dev/sda2 /mnt/new_subvol 
+	mount -t btrfs -o subvolid=### /dev/sda2 /mnt/new_subvol 
 Make snapshot
 	btrfsctl -s /mnt/btrfs/snapshot_of_root /mnt/btrfs 
-
+Repair - fs umounted
+	btrfs check --repair
 btrfsck
 Cryptography {{{1
 	k2.6 module for crypt target support - dm_crypt
