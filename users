@@ -1,25 +1,29 @@
 Docs
 	adduser man page
 
-Utilities:
-	Modify user and groups 
+Modify user and groups 
+	Debian: 
 		adduser
-			Debian: officially recommended over useradd
 		adduser <username> <groupname>
-			add user to a group
+			add user to group <groupname>
 		addgroup
+	Fedora:
+		useradd 
 		usermod
+			<username> -aG <comma sep list of groupnames>	append group to existing
 		groupmod
 		userdel
 		groupdel
-    Display & Change Groups
-        id [user] - see info page
-            id -nG  = print user's groups with names (no ids) - same as groups cmd.
-        newgrp, sg
-			change effect group ID.  Should be member of group to change to.
-			See man pages for differences
+
 		gpasswd
-			check this out re assigning group administrators
+			<groupname> -a <username>
+
+Display & Change Groups
+	id [user] - see info page
+		id -nG  = print user's groups with names (no ids) - same as groups cmd.
+	newgrp, sg
+		change effect group ID.  Should be member of group to change to.
+		See man pages for differences
 
 PAM
 	read Debian docs in libpam-doc package
