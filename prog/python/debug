@@ -6,6 +6,7 @@ Tools
 	ipdb	IPython debugger
 	pudb	Graphical ascii debugger
 	pdbpp (pip install)
+	ptpdb   based on prompt-toolkit
 
 
 import pdb; pdb.set_trace();
