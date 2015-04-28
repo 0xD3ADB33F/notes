@@ -109,11 +109,9 @@ sshfs#btd: /home/andmalc/mnt/btd fuse uid=1000,gid=1000,user 0 0
 
 rssh
 	scp/sftp only access
-secvpn
-	ssh-based VPN as discussed in Linux VPN HOWTO
-corkscrew
-	ssh through HTTP proxy
-'connect' program to bypass proxy
+
+bgtunnel
+    Python util for forwarding SSH connections to localhost
 
 techniques {{{1
 
