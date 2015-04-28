@@ -1,4 +1,8 @@
 
+netcat
+	server: nc -l -p <port>
+	client: nc <host> <port>
+	scan: nc -vz <host> <port or port range>
 
 trace packets 
 	mtr
@@ -14,7 +18,7 @@ netstat
 	show all running sessions and daemons
 		netstat -untap  
 	shows running daemons
-		netstat --tcp --udp --listening --program --numeric
+		netstat --tcp --udp --listening --program --numeric (ntpl)
 		netstat -ltp
 	options
 		ant		show programs bound to ports for TCP address family
@@ -49,19 +53,4 @@ capturing network traffic
 	tshark/wireshark
 		-D	list interfaces
 		-i	interface name or # from -D
-
-
-Wake-on-lan
-	http://www.debian-administration.org/articles/122
-	
-	install on client: ethtool
-	Enable interface:
-		in /etc/networking/interfaces:
-			ifac inet eth0 dhcp
-				 up ethtool -s $IFACE wol g
-
-	install on host issuing command: wakeonlan
-	get client hw address:
-		/usr/sbin/arp <hostname>
-	wakeonlan <client mac address>
 

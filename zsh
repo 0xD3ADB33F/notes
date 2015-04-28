@@ -23,6 +23,10 @@ fc:
 	fc <pat>    edit most recent command starting with <pat>
 	fc -l <pat> display, dont edit
 
+vared
+    edit environment variables
+
+
 Parameters {{{1  
 	set by:
 		parameter_name=value - No space before or after '='

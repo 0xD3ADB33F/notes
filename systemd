@@ -1,9 +1,23 @@
+etc/systemd/logind.conf
+	Configure sleep/hibernate timeout and which buttons activate
+
+etc/systemd/sleep.conf
+[Sleep]
+SuspendState=freeze
 
 networkctl	
 	noarg	lists network interfaces
 	status #	shows info for interface #
 
 timedatectl
+	list-timezone
+	set-timezone America/Toronto
+
+journalctl
+	-u sshd		show logs for unit name sshd
+	-r /usr/sbin/sshd	same with path to exec
+	-f			follow
+	-b			this boot only
 
 
 journalctl
