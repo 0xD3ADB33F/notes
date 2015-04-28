@@ -6,3 +6,9 @@ networkctl
 timedatectl
 
 
+journalctl
+	-b		show only this boot
+	--no-pager don't pipe to pager
+	-u		filter on unit
+
+
