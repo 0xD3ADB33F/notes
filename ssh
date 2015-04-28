@@ -37,10 +37,16 @@ Terminate connection	.
 Suspend connection		^Z
 Port forward term		C
 List forwarded			#
+	only shows if connection is in use.
+	Instead run 'netstat -tpln' from local host
 Override escape			~ (i.e. ~~)
 
 
-config file {{{1
+Port Forwarding  {{{1
+
+http://unix.stackexchange.com/questions/46235/how-does-reverse-ssh-tunneling-work
+
+-R listens on remote side, delivers to local
 
 Port Forwarding:
 LocalForward 2001 localhost:143
