@@ -150,6 +150,10 @@ Ignore files
 		git update-index --assume-unchanged
 	add to .gitignore
 
+Undelete files staged but not commited:
+    git reset HEAD <fn>
+    git checkout -- <fn>
+
 Forking {{{1
 
 Fork at Github
