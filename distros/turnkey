@@ -1,5 +1,0 @@
-
-Enable backups in non-cloud VM's:
-	chmod +x /etc/cron.daily/tklbam-backup
-
-
