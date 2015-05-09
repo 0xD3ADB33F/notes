@@ -1,3 +1,9 @@
+
+
+systemd-cgls
+    show processes in control groups
+
+
 etc/systemd/logind.conf
 	Configure sleep/hibernate timeout and which buttons activate
 
@@ -25,4 +31,19 @@ journalctl
 	--no-pager don't pipe to pager
 	-u		filter on unit
 
+systemd-nspawn
+    -D <dir>  use <dir> as fs root
+    -M <machine>  boot machine
+    -b boot
+     --ephemeral, -x 
+        create snapshot, remove after done
+     --template=<dir>
+        use fs in dir as template 
 
+     examples:
+        -xb -D /  #ephemeral snap of root
+         -b -D /var/lib/container/mycontainer --template=/var/lib/container/fedora21 # create tree mycontainer using template
+        --template=/ #use host root dir as template 
+
+    Container as service - must be in /var/lib/machines
+    systemctl start systemd-nspawn@mycontainer.service
