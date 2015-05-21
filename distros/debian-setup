@@ -60,7 +60,7 @@ Locales
 	/usr/sbin/update-locale LANG=C.UTF-8
 	 locale-gen
 
-	new commeand
+	new commeand, used by Fedora
 	localectl set-locale LANG=en_US.UTF-8
 
 	 Better than localepurge: bleachbit

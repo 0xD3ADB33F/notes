@@ -2,6 +2,16 @@ https://wiki.archlinux.org/index.php/Persistent_block_device_naming
 
 Info {{{1
 
+Parition info
+    MBR
+        512 bytes long, stored at sector 0
+        contains boot loader e.g Grub and partition table (primary & extended but not logical)
+        limitation of 4 primary partitions & 2TB disk
+
+    GPT GUID Partition Table
+        Stores partition info as GUID's (= UUID in Linux) instead of by order
+
+
 lsblk -f	shows tree of disks and parts, labels, UUIDs, mount points
 blkid		shows UUID's and types
 sfdisk -l

@@ -85,9 +85,9 @@ Submodules
 Submodules
 	Repo independent of parent, harder to merge parent with child.  
 	Tracked in .gitmodules file.  Composed from a gitlink tree entry in main repo that points to particular commit 
-	New
-		submodule add [--name name] <remote repo> <path from root>
-		if no path, name is final part of repo path
+	Add
+		submodule add [--name name] <remote repo> [path from cwd]/finalpath
+		if no path, repo cloned into cwd/<final part of repo path>
 		if given, path is logical name unless --name specified
 	Delete
 		submodule deinit
@@ -109,7 +109,6 @@ Revert
 	
 	rebase	?	 
 
-Commit {{{1
 
 	commit -v			show diff in commit message
 	commit -a			commit all tracked files

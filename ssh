@@ -47,8 +47,9 @@ Port Forwarding  {{{1
 http://unix.stackexchange.com/questions/46235/how-does-reverse-ssh-tunneling-work
 
 -R listens on remote side, delivers to local
+-R <remote port>:localhost:<local port>
 
-Port Forwarding:
+Config
 LocalForward 2001 localhost:143
 
 

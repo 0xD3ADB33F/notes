@@ -1,3 +1,33 @@
+systemctl
+    lists running units
+    options:
+        -H <host> (uses SSH)
+         --failed
+    subcommands
+
+    unit commands
+        start/stop/reload/status (runtime), show (properties)
+         list-units --type=[target | unit type]
+         kill <name>
+
+    unit fle commands
+        set/get-default  <target name>
+        
+        edit <unit>
+            creates 'override.conf' in /etc/systemd/system/<unit name>
+            reloads unit when done
+        edit --full <unit>
+            edit unit file
+
+    system commands
+        suspend, hibernate, reboot, halt
+        switch-root 
+        isolate <target name>   switch immmediately to other target
+
+systemd-cgls
+    show processes in control groups
+
+
 etc/systemd/logind.conf
 	Configure sleep/hibernate timeout and which buttons activate
 
@@ -14,9 +44,45 @@ timedatectl
 	set-timezone America/Toronto
 
 journalctl
+	--no-pager don't pipe to pager
+	-f			follow
+    -r          reverse (newest entries first)
+    -n x        newest 10 or x
+
+    filters:
+	-b			this boot only
+    -k          kernel output
+    -p err      priority - show at this level or above
+                emerg, altert, crit, err, warning, notice, info, debug
 	-u sshd		show logs for unit name sshd
 	-r /usr/sbin/sshd	same with path to exec
-	-f			follow
-	-b			this boot only
+
+    filter by date/time
+    --since "1 hour ago" | today 
+    --until "2015-01-11 03:00"
+
+    manage logs:
+    --disk-usage    show size
+    --vacuum-size=1G
+    --vacuum-time=1year
+
+    config: /etc/systemd/journald.conf
+    SystemMaxUse=   max disk usage
 
 
+systemd-nspawn
+    -D <dir>  use <dir> as fs root
+    -M <machine>  boot machine
+    -b boot
+     --ephemeral, -x 
+        create snapshot, remove after done
+     --template=<dir>
+        use fs in dir as template 
+
+     examples:
+        -xb -D /  #ephemeral snap of root
+         -b -D /var/lib/container/mycontainer --template=/var/lib/container/fedora21 # create tree mycontainer using template
+        --template=/ #use host root dir as template 
+
+    Container as service - must be in /var/lib/machines
+    systemctl start systemd-nspawn@mycontainer.service

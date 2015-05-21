@@ -5,23 +5,27 @@ Docs
 		http://www.penlug.org/twiki/bin/view/Main/GrubSecrets
 
 Boot with Grub
-    Basic Session: 
-		grub looks for /boot and then for its configuration file
-		which indictes location of kernel.
 	Manual session:
 		set grub's root device with 
-			> root (hd0, <root dev>
-		if unknown, search with
-        	> find /grub/stage1 (sep boot part)
-        	> find /boot/grub/stage1 (combined root/boot fs) 
-		setup
-			> setup (hd0)
-			> setup (hd0,<part>)
+			root=(hd0,<boot root dev>
+        set prefix (locates grub modules)
+            prefix=(hd0,<boot root dev>)/boot/grub2
+        load modules for tab completion
+            insmod normal
+            normal (opens menu?)
+            insmod linux
+        kernel /vmlinuz root=/dev/hdax
+        initrd /initrd
 
-        > kernel /vmlinuz root=/dev/hda? (optional ?) params
-	Make boot floppy
-		dd if=/usr/share/grub/i386-pc/stage1 of=/dev/fd0 bs=512 count=1
-		dd if=/usr/share/grub/i386-pc/stage2 of=/dev/fd0 bs=512 seek=1
+        If grub not found or not installed
+            if unknown, search with
+                > find /grub/stage1 (sep boot part)
+                > find /boot/grub/stage1 (combined root/boot fs) 
+            setup
+                > setup (hd0)
+                > setup (hd0,<part>)
+
+
 
 Install grub on img file
 Grub1:
