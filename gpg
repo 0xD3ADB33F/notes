@@ -1,34 +1,35 @@
-Manual
-	http://www.gnupg.org/gph/en/manual.html
-Tutorials
-	http://www.somacon.com/p107.php
-	http://dudu.dyn.2-h.org/nist/gpg-enigmail-howto.php#t1.1
 
-Sites
-	keysigning coordination
-		http://biglumber.com/
-	keysigning HOWTO
-		http://www.cryptnet.net/fdp/crypto/gpg-party.html
-	some gpg & CACert info
-		http://www.pollinger.org.uk/
 
 Encrypt a document
+	for specific user
+        gpg -r recipient -e <data>
 	conventional or symetric, w/o public key
 		gpg -c <filename>
-	for specific user
-		gpg --output doc.gpg --encrypt --recipient name@dom.com doc
-	Tar & encrypt
-		tar -c /var /etc | gpg -r EEC775E3 -e -o /tmp/backup.tar.gpg
+
 Decrypt a document
-	gpg <filename>
 	needed: private key to which doc was encrypted
-		gpg --output doc --decypt doc.gpg
+        gpg -d <fn>
+
+Export key
+    Binary format:
+        gpg --output <fn> --export <ID>
+    ASCII Armor format
+        gpg --armor --export <ID>
+
 
 Sign documents
 	gpg --output doc.sig --sign doc   #doc is compressed and signed
 	gpg --output doc.sig --detach-sig doc  #detached compressed signuture file created.
 	gpg --clearsign doc #clearsigned - creates doc.asc in two part body + signature format
 	
+Manage keys in keychain
+	Master key is for creating signatures and collects signatures of others who have confirmed my identity.  
+	gpg --edit-key name
+	uid <name>
+		select a uid for editing
+		> sign
+		> check
+
 Verifying signatures - validates the origin and verifies the integrity of document
 Verify a detached signature
 	gpgv file.sig
@@ -38,14 +39,6 @@ Verify a detached signature
 	gpg --keyserver pgp.mit.edu --recv-keys 621CC013
 		now gpgv will verify that pubkey in chain signed this file
 		To verify that this key is genuine, check user home page or search web for key and name to find matches or see if signed by known good signatures.
-
-Manage keys in keychain
-	Master key is for creating signatures and collects signatures of others who have confirmed my identity.  
-	gpg --edit-key name
-	uid <name>
-		select a uid for editing
-		> sign
-		> check
 
 Key types (left column in --edit-key display)
     pub     Public Master signing key

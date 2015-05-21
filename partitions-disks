@@ -7,6 +7,7 @@ blkid		shows UUID's and types
 sfdisk -l
 udevadm info -n /dev/sdb -q all
 
+du -hs * | sort -h - sort by human readable size
 du -schx /*	shows disk space used by subdirs
 
 Utilities {{{1
