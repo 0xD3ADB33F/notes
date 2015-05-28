@@ -1,0 +1,23 @@
+
+Options
+    -m <mod>    module name
+    -i <fn>     hosts file
+    -a          args for module
+    -l <host>   limit to one host
+    
+    -vv     verbose
+    -vvv    extra verbose for ssh issues
+
+    --check check playbook syntax
+
+Modules
+    copy    copy file from local to remote
+            args: src=<path dest=<path>
+
+    setup   gather info 
+            args: filter=<key>
+
+
+
+    dnf     Fedora
+            args: dnf: name=httpd state=latest

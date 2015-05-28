@@ -35,6 +35,7 @@ Virtualenv
 	Newly installed modules go there too.
 
 virtualenvwrapper
+http://virtualenvwrapper.readthedocs.org/en/latest/command_ref.html
 
 	
 config:
