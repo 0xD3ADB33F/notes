@@ -12,4 +12,44 @@ repoquery --whatrequires <pkg>
 	show packages depending on pkg
 
 
+Dnf
+
+Repo management
+    repolist [all]
+        list enabled [all] repos
+
+Packages - can use globbing in pkg name
+    search <pkg>  shows & searches by name, description
+    info <pkg>    shows details
+    list [<pkg>]
+                show pkg version, repo, if installed or available
+                if no pkg, lists installed then avail packages
+                does not sync metadata
+    list [installed | available]
+                list all available and installed [just installed | avail & not installed]
+
+    install, reinstall, remove, downgrade
+    options:
+        --exclude <pkg>         don't install a dependency
+        --enablerepo <repo>     install pkg from a repo
+        --disable <repo>
+
+
+
+Package Groups
+    grouplist
+
+History
+    list
+        recent
+        upgrade <pkg>       avail upgrades for pkg
+        userinstalled       manually installed pkgs
+    undo
+    rollback
+
+Other
+    autoremove  uninstall orphan pkgs
+    clean all   clear package cache
+
+
 
