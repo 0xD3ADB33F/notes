@@ -8,9 +8,11 @@ trace packets
 	mtr
 	tcpdump
 
-detect hosts on network
-	fping
-	nmap -sP 192.168.0.* | grep Host
+nmap 
+    detect hosts on network
+        192.168.0.* | grep Host
+    -sn     ping scan
+    -sP      
 
 netstat 
 		Reports on listening daemons
