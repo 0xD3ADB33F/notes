@@ -122,6 +122,8 @@ filesystem {{{1
 	kpartx	- create device mapper entries for partitions in a device file
 	system-config-lvm
 	encfs	encrypted filesystem
+    ncdu    ncurses util for visualizing disk space usage
+
 
 fstab
 	ext3 options

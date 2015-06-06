@@ -8,6 +8,13 @@ yum list available package-name --listavailable
 	show all versions of a package
 
 
+sudo yum -y -v groupinstall "C Development Tools and Libraries"
+    Install package group
+
+yum group info "C Development Tools and Libraries"
+    Show packages in group
+
+
 repoquery --whatrequires <pkg>
 	show packages depending on pkg
 

@@ -17,14 +17,18 @@ o		select last pane in current window
 q       show pane #'s
 {}			swap pane                           
 
+Sessions
+$   rename
+
+    startup
+        new-session -s  create session with <name>
+        -t      target - use with attach, switch
 
 Pane commands 
 join-pane -s # -t #		Two windows into 2 panes
 
 
 Startup
--s      create session with <name>
--t      target - use with attach, switch
 -n      name
 -c      start dir
 -p      split percent

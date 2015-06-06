@@ -21,3 +21,12 @@ Modules
 
     dnf     Fedora
             args: dnf: name=httpd state=latest
+
+
+Local actions
+    playbook:
+        hosts: localhost
+    single task:
+        local_action: command arg arg
+
+
