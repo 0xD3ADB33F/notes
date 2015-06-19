@@ -1,49 +1,35 @@
-systemctl
-    lists running units
-    options:
-        -H <host> (uses SSH)
-         --failed
-    subcommands
+systemctl {{{1
+lists running units
+options:
+    -H <host> (uses SSH)
+    -M <container>
+     --failed
 
-    unit commands
-        start/stop/reload/status (runtime), show (properties)
-         list-units --type=[target | unit type]
-         kill <name>
+Subcommands
 
-    unit fle commands
-        set/get-default  <target name>
-        
-        edit <unit>
-            creates 'override.conf' in /etc/systemd/system/<unit name>
-            reloads unit when done
-        edit --full <unit>
-            edit unit file
+unit commands
+    list-units --type=[target | unit type]  #this is default command
+    start, restart, stop, restart, reload, status <runtime> [service | socket]
+    show (properties)
+    kill <name>
 
-    system commands
-        suspend, hibernate, reboot, halt
-        switch-root 
-        isolate <target name>   switch immmediately to other target
+unit fle commands
+    edit <unit>
+        creates 'override.conf' in /etc/systemd/system/<unit name>
+        reloads unit when done
+    edit --full <unit>
+        edit unit file
 
-systemd-cgls
-    show processes in control groups
+system commands
+    suspend, hibernate, reboot, halt
+    switch-root 
+    set/get-default  <target name>
+    isolate <target name>   switch immmediately to other target
+
+list-machines
 
 
-etc/systemd/logind.conf
-	Configure sleep/hibernate timeout and which buttons activate
-
-etc/systemd/sleep.conf
-[Sleep]
-SuspendState=freeze
-
-networkctl	
-	noarg	lists network interfaces
-	status #	shows info for interface #
-
-timedatectl
-	list-timezone
-	set-timezone America/Toronto
-
-journalctl
+journalctl {{{1
 	--no-pager don't pipe to pager
 	-f			follow
     -r          reverse (newest entries first)
@@ -69,20 +55,51 @@ journalctl
     config: /etc/systemd/journald.conf
     SystemMaxUse=   max disk usage
 
+Other {{{1
 
-systemd-nspawn
-    -D <dir>  use <dir> as fs root
-    -M <machine>  boot machine
-    -b boot
-     --ephemeral, -x 
-        create snapshot, remove after done
-     --template=<dir>
-        use fs in dir as template 
+hostnamectl
+    -M containername
+    set-hostname 'name'
 
-     examples:
-        -xb -D /  #ephemeral snap of root
-         -b -D /var/lib/container/mycontainer --template=/var/lib/container/fedora21 # create tree mycontainer using template
-        --template=/ #use host root dir as template 
 
-    Container as service - must be in /var/lib/machines
-    systemctl start systemd-nspawn@mycontainer.service
+logind 
+
+    etc/systemd/logind.conf
+        Configure sleep/hibernate timeout and which buttons activate
+    etc/systemd/sleep.conf
+        [Sleep]
+        SuspendState=freeze
+
+machinectl
+    login, reboot, poweroff, status <container>
+
+
+networkctl 	
+	noarg	lists network interfaces
+	status #	shows info for interface #
+
+timedatectl
+    list-timezone
+    set-timezone America/Toronto
+
+systemd-cgls
+    show processes in control groups
+
+systemd-nspawn {{{1 
+
+-D <dir>  use <dir> as fs root
+-M <machine>  boot machine
+-b boot
+ --ephemeral, -x 
+    create snapshot, remove after done
+ --template=<dir>
+    use fs in dir as template 
+
+examples:
+    -xb -D /  #ephemeral snap of root
+     -b -D /var/lib/container/mycontainer --template=/var/lib/container/fedora21 # tree using template
+    --template=/    #use host root dir as template 
+
+Container as service - must be in /var/lib/machines
+systemctl start systemd-nspawn@mycontainer.service
+

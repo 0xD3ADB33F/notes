@@ -1,46 +1,27 @@
 
-Yum
 
-yum provides '*/vimdiff'
-	find packages with given filename
-
-yum list available package-name --listavailable
-	show all versions of a package
-
-
-sudo yum -y -v groupinstall "C Development Tools and Libraries"
-    Install package group
-
-yum group info "C Development Tools and Libraries"
-    Show packages in group
-
-
-repoquery --whatrequires <pkg>
-	show packages depending on pkg
-
-
-Dnf
+Dnf {{{1
 
 Repo management
     repolist [all]
         list enabled [all] repos
+    fedora-release-rawhide
 
 Packages - can use globbing in pkg name
-    search <pkg>  shows & searches by name, description
-    info <pkg>    shows details
+    search  shows & searches by name, description
+    info    shows details
     list [<pkg>]
-                show pkg version, repo, if installed or available
-                if no pkg, lists installed then avail packages
-                does not sync metadata
+            show pkg version, repo, if installed or available
+            if no arg, lists installed then avail packages
+            does not sync metadata
     list [installed | available]
-                list all available and installed [just installed | avail & not installed]
+            list all available and installed [just installed | avail & not installed]
 
     install, reinstall, remove, downgrade
     options:
         --exclude <pkg>         don't install a dependency
         --enablerepo <repo>     install pkg from a repo
         --disable <repo>
-
 
 
 Package Groups
@@ -59,4 +40,34 @@ Other
     clean all   clear package cache
 
 
+Install OS tree {{{1
+
+dnf -y --releasever=22 --nogpg --installroot=/srv/fedora22-tree --disablerepo='*' --enablerepo=fedora groupinstall core
+dnf -y --installroot=/var/lib/machines/fedora22 copr enable lkundrak/NetworkManager
+dnf -y --installroot=/var/lib/machines/fedora22 install NetworkManager
+
+setenforce 0
+systemctl-nspawn -D <path to container>
+Change root password
+systemctl-nspawn -bD <path to container>
+
+
+Yum {{{1
+
+yum provides '*/vimdiff'
+	find packages with given filename
+
+yum list available package-name --listavailable
+	show all versions of a package
+
+
+sudo yum -y -v groupinstall "C Development Tools and Libraries"
+    Install package group
+
+yum group info "C Development Tools and Libraries"
+    Show packages in group
+
+
+repoquery --whatrequires <pkg>
+	show packages depending on pkg
 
