@@ -168,22 +168,29 @@ Recovery {{{1
 
 LVM {{{1
 
-Boot device in LVM
-	http://grub.enbug.org/LVMandRAID
+PV/physical volume
+    usually a partition
 
-Create physical volume
-	pvcreate <disk or partition>
-	if using whole disk, wipe partition table
-		dd if=/dev/zero of=PhysicalVolume bs=512 count=1
-Create volume group
-	vgcreate my_volume_group /dev/hda1 /dev/hdb
-Extend existing vg
-	vgextend my_volume_group /dev/hdc1
+    Create physical volume
+        pvcreate <disk or partition>
+        if using whole disk, wipe partition table
+            dd if=/dev/zero of=PhysicalVolume bs=512 count=1
+
+VG/volume group
+    composed of 1 or more PV's, optionally already initialized with pvcreate
+
+    Create
+        vgcreate my_volume_group /dev/hda1 /dev/hdb
+
+    Extend existing vg
+        vgextend my_volume_group /dev/hdc1
 
 Show info
 	pvscan
 	vgscan
-	system-config-lvm
+	fdisk -l    shows lv sizes
+    pvdisplay --maps
+        shows physical layout of volume
 
 Create Logical Volume
 	lvcreate -L size -n name vgname
@@ -191,6 +198,9 @@ Create Logical Volume
 Access LVM on disk from rescue disk
 	vgscan
 	vgchange -ay
+
+Rearranging partitions example:
+http://microdevsys.com/wp/linux-lvm-resizing-partitions/
 
 btrfs {{{1
 

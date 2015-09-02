@@ -39,6 +39,15 @@ Other
     autoremove  uninstall orphan pkgs
     clean all   clear package cache
 
+Plugins
+http://dnf-plugins-core.readthedocs.org/en/latest/index.html
+
+    config-manager
+        dnf config-manager --set-enabled testing-updates
+
+    repoquery
+
+
 
 Install OS tree {{{1
 
