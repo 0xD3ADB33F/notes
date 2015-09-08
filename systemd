@@ -36,7 +36,7 @@ journalctl {{{1
     -n x        newest 10 or x
 
     filters:
-	-b			this boot only
+	-b / -b -1		this boot only / last boot
     -k          kernel output
     -p err      priority - show at this level or above
                 emerg, altert, crit, err, warning, notice, info, debug
