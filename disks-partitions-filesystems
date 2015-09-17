@@ -69,6 +69,79 @@ dd
 	exact copy of entire partition including MBR
 		dd if=/dev/part of=/dev/anotherpart
 
+Filesystems {{{1
+
+Info {{{1
+
+findmnt     show mounted filesystems
+    --df/-D     show space used
+    --fstab/-s  show only from fstab
+    -S <dev>    show on device
+    --target/-T <dir>   show only for mount dir
+    -l          list format output
+
+Attributes {{{2	
+change times
+	atime
+		access time
+		time of read (including backups) 
+		permissions changes don't affect
+	mtime   
+		change to file data
+	ctime   
+		change to file data, permissions, or ownership (most
+		inclusive)
+
+FS Labels {{{2
+
+change labels
+	e2label / e2fsprogs		for extX
+	btrfs filesystem label /dev/XXX <label> 
+	swaplabel -L <label> /dev/XXX
+
+Space {{{2
+du -hs * | sort -h - sort by human readable size
+
+du -schx /*	shows disk space used by subdirs
+
+Journals {{{2
+	Add/Remove ext2 journal
+		tune2fs -j /dev/xxx<n>
+		tune2fs -O ^has_journal /dev/xxx<n>
+
+tmpfs {{{2
+	Mount directory in tmpfs
+		mount -t tmpfs -o size=100M,mode=0755 tmpfs /var/cache/tmp
+	entry in /etc/fstab
+		tmpfs /var/www/www.example.com/cache tmpfs size=100M,mode=0755 0 0
+
+btrfs {{{2
+
+New utility: btrfs
+btrfs subvolume list <path>
+
+Make fs
+	/sbin/mkfs.btrfs - in btrfs-tools
+Make subvolume
+	btrfsctl -S NewSubVol /mnt/test
+Mount subvolume
+	mount -t btrfs -o subvol=subvolname /dev/sda2 /mnt/new_subvol 
+	mount -t btrfs -o subvolid=### /dev/sda2 /mnt/new_subvol 
+Make snapshot
+	btrfsctl -s /mnt/btrfs/snapshot_of_root /mnt/btrfs 
+Repair - fs umounted
+	btrfs check --repair
+btrfsck
+Recovery {{{2
+	Make boot disk
+		cat BOOT ROOT.gz USR.bz2 > /dev/fd0u1722
+	recover deleted file
+		recover, gtk-recover
+
+	reiserfs undelete - works from copy to preserve original
+		dd < /dev/hdx > hdx.image
+		reiserfsck -S hdx.image  
+
 LVM {{{1
 docs {{{2
 	HOWTO - http://www.silentpcreview.com/news355.htm
@@ -225,69 +298,4 @@ automount
 		amd automount daemon - userspace
 		autofs - kernel support needed -
 			cat /proc/filesystems -> autofs
-
-Filesystems {{{1
-
-
-Attributes {{{2	
-change times
-	atime
-		access time
-		time of read (including backups) 
-		permissions changes don't affect
-	mtime   
-		change to file data
-	ctime   
-		change to file data, permissions, or ownership (most
-		inclusive)
-
-FS Labels {{{2
-
-change labels
-	e2label / e2fsprogs		for extX
-	btrfs filesystem label /dev/XXX <label> 
-	swaplabel -L <label> /dev/XXX
-
-Space {{{2
-du -hs * | sort -h - sort by human readable size
-
-du -schx /*	shows disk space used by subdirs
-
-Journals {{{2
-	Add/Remove ext2 journal
-		tune2fs -j /dev/xxx<n>
-		tune2fs -O ^has_journal /dev/xxx<n>
-
-tmpfs {{{2
-	Mount directory in tmpfs
-		mount -t tmpfs -o size=100M,mode=0755 tmpfs /var/cache/tmp
-	entry in /etc/fstab
-		tmpfs /var/www/www.example.com/cache tmpfs size=100M,mode=0755 0 0
-
-btrfs {{{2
-
-New utility: btrfs
-btrfs subvolume list <path>
-
-Make fs
-	/sbin/mkfs.btrfs - in btrfs-tools
-Make subvolume
-	btrfsctl -S NewSubVol /mnt/test
-Mount subvolume
-	mount -t btrfs -o subvol=subvolname /dev/sda2 /mnt/new_subvol 
-	mount -t btrfs -o subvolid=### /dev/sda2 /mnt/new_subvol 
-Make snapshot
-	btrfsctl -s /mnt/btrfs/snapshot_of_root /mnt/btrfs 
-Repair - fs umounted
-	btrfs check --repair
-btrfsck
-Recovery {{{2
-	Make boot disk
-		cat BOOT ROOT.gz USR.bz2 > /dev/fd0u1722
-	recover deleted file
-		recover, gtk-recover
-
-	reiserfs undelete - works from copy to preserve original
-		dd < /dev/hdx > hdx.image
-		reiserfsck -S hdx.image  
 
