@@ -1,0 +1,301 @@
+
+Parition info
+    MBR
+        512 bytes long, stored at sector 0
+        contains boot loader e.g Grub and partition table (primary & extended but not logical)
+        limitation of 4 primary partitions & 2TB disk
+
+    GPT GUID Partition Table
+        Stores partition info as GUID's (= UUID in Linux) instead of by order
+
+Disk, Partition Info {{{1
+
+
+lsblk -f	shows tree of disks and parts, labels, UUIDs, mount points
+blkid		shows UUID's and types
+sfdisk -l
+udevadm info -n /dev/sdb -q all
+
+gpart
+	find lost partitions
+
+Naming {{{1
+
+https://wiki.archlinux.org/index.php/Persistent_block_device_naming
+
+Using Labels and much else:
+http://ubuntuforums.org/showthread.php?t=283131
+
+
+Partitions {{{1
+Partitioning utilities {{{2 
+
+compatibility
+	don't use both PQMagic and Linux fdisk to create partitions
+	on the same drive.  Instead, use PQM exclusively.
+
+partition writable by users
+	fstab options: rw - no need for uid option in fs types that preserve ownership
+	create directory in partition writable by user
+cfdisk
+	said (by the fdisk man page) to be reliable and better
+	than fdisk
+	'maximize' option creates incompatibility with Windows?
+	print/sector command shows partitions in hd order
+
+parted (qtparted and nparted on Knoppix)
+	can resize ext2 & 3 partitions but start point can't move.
+	gparted can move start point
+	has lost partition rescue feature
+	
+
+sfdisk - partition table reporting
+	-s  [<device - partition or disk>]    
+		show disk/partition size
+	-l [options] <dev>
+	-D  DOS compatibility - free 512 free at part beginning
+	-L  ignore irrelevant to Linux
+
+testdisk
+	haven't tried yet
+
+Partition copy & backup {{{2
+
+partimage utility on knoppix
+	partimage imginfo <img-file> 
+		show size, original device, etc.
+	No way to restore parts of image file
+dd
+	exact copy of entire partition including MBR
+		dd if=/dev/part of=/dev/anotherpart
+
+Filesystems {{{1
+
+Info {{{1
+
+findmnt     show mounted filesystems
+    --df/-D     show space used
+    --fstab/-s  show only from fstab
+    -S <dev>    show on device
+    --target/-T <dir>   show only for mount dir
+    -l          list format output
+
+Attributes {{{2	
+change times
+	atime
+		access time
+		time of read (including backups) 
+		permissions changes don't affect
+	mtime   
+		change to file data
+	ctime   
+		change to file data, permissions, or ownership (most
+		inclusive)
+
+FS Labels {{{2
+
+change labels
+	e2label / e2fsprogs		for extX
+	btrfs filesystem label /dev/XXX <label> 
+	swaplabel -L <label> /dev/XXX
+
+Space {{{2
+du -hs * | sort -h - sort by human readable size
+
+du -schx /*	shows disk space used by subdirs
+
+Journals {{{2
+	Add/Remove ext2 journal
+		tune2fs -j /dev/xxx<n>
+		tune2fs -O ^has_journal /dev/xxx<n>
+
+tmpfs {{{2
+	Mount directory in tmpfs
+		mount -t tmpfs -o size=100M,mode=0755 tmpfs /var/cache/tmp
+	entry in /etc/fstab
+		tmpfs /var/www/www.example.com/cache tmpfs size=100M,mode=0755 0 0
+
+btrfs {{{2
+
+New utility: btrfs
+btrfs subvolume list <path>
+
+Make fs
+	/sbin/mkfs.btrfs - in btrfs-tools
+Make subvolume
+	btrfsctl -S NewSubVol /mnt/test
+Mount subvolume
+	mount -t btrfs -o subvol=subvolname /dev/sda2 /mnt/new_subvol 
+	mount -t btrfs -o subvolid=### /dev/sda2 /mnt/new_subvol 
+Make snapshot
+	btrfsctl -s /mnt/btrfs/snapshot_of_root /mnt/btrfs 
+Repair - fs umounted
+	btrfs check --repair
+btrfsck
+Recovery {{{2
+	Make boot disk
+		cat BOOT ROOT.gz USR.bz2 > /dev/fd0u1722
+	recover deleted file
+		recover, gtk-recover
+
+	reiserfs undelete - works from copy to preserve original
+		dd < /dev/hdx > hdx.image
+		reiserfsck -S hdx.image  
+
+LVM {{{1
+docs {{{2
+	HOWTO - http://www.silentpcreview.com/news355.htm
+	http://www.tldp.org/HOWTO/LVM-HOWTO/index.html
+
+modules  {{{2
+	device mapper - dm-mod.o
+	lvm	- lvm-mod
+		needed in 2.6?  Don't see in kernel source.  All support under
+		'Multi-Device' - just device-mapper needed
+
+terms {{{2
+	vg - volume group
+		collection of Logical Volumes and Physical Volumes into one administrative unit
+	pv - physical volume
+	lv - logical volume
+		visible as a standard block device
+		equivalent to a partition
+	pe - physical extents
+	le	logical extent - will be same size as pe's for vg
+
+planning {{{2
+
+500M root + boot in non-LVM partition
+
+steps {{{2
+	1. pvcreate <dev> [<dev> ...]
+		initialize a disk or partition to use in a physical vol.
+	2. vgcreate vg_name pv
+		create a vol group from one or more physical vols
+	2a	if needed:
+			vgextend vgname pvpath - add a pv to an existing vg
+	3. activate vg with 'vgchange -a y' or reboot
+	4.	lvcreate [-n name] [-L size(kmg) -l sizeLE] vgName [vgpath]
+			-l	size in Physical Extents
+			-L	size in MB or GB
+			create lv using all space in vg
+				lvcreate -l 100%VG
+			create lv using all free space in vg
+				lvcreate -l 100%FREE
+	5.	create filesystem - device = /dev/a4/lvol0
+	6.	mount 
+
+Commands {{{2
+
+
+PV/physical volume
+    usually a partition
+
+    Create physical volume
+        pvcreate <disk or partition>
+        if using whole disk, wipe partition table
+            dd if=/dev/zero of=PhysicalVolume bs=512 count=1
+
+VG/volume group
+    composed of 1 or more PV's, optionally already initialized with pvcreate
+
+    Create
+        vgcreate my_volume_group /dev/hda1 /dev/hdb
+
+    Extend existing vg
+        vgextend my_volume_group /dev/hdc1
+
+Show info
+	pvscan
+	vgscan
+	fdisk -l    shows lv sizes
+    pvdisplay --maps
+        shows physical layout of volume
+
+Create Logical Volume
+	lvcreate -L size -n name vgname
+
+Access LVM on disk from rescue disk
+	vgscan
+	vgchange -ay
+
+Rearranging partitions example:
+http://microdevsys.com/wp/linux-lvm-resizing-partitions/
+
+utilities {{{2
+	vgdisplay
+	vg/lvremove
+	e2fsadm
+		must umount fs
+		resizes ext2/3 filesystems and lv's in one command
+		combines functions of lvextend & resize2fs
+	resize_reiserfs
+		resize offline or online ('-f' switch) 
+	
+	show partitions
+		ls /dev/<vgname>/		
+
+
+	new 2.6 device mapper crypt
+		 http://www.saout.de/misc/dm-crypt/ 	
+		 module dm-crypt
+
+more LVM {{{2
+
+Changing volumes
+	with ext2 filesystems
+		e2fsadm - 
+			resize physical or LVM volumes and filesystems (using lvextend and
+			ext2online)
+		ext2online - resize online (mounted) ext2 fs. Requires kernel patch. 
+		ext2resize - resize offline ext2 fs.
+	LVM
+		pvresize - resize vg on a device
+
+Mounting & Permissions 
+
+mount
+	attaches a filesystem on a device to a point in unix filesystem tree.
+
+	mount as writable by a user
+		 -o user,dmask=022,fmask=011
+
+allow umounting
+	Running 'exec /bin/sh' eliminates last processes.
+	fuser: show what processes are using which files.
+	cat /proc/mounts
+
+/etc/fstab settings
+	defaults options 
+		rw, suid, dev, exec, auto, nouser, async
+	ownership
+		user & users imply noexec, nosuid, & nodev unless subsequently
+		overriden 
+			e.g. -o user[s],exec,suid
+		"auto, uid=500, gid=100" 
+			take all ownership of files in mounted partition.
+
+	recommended options
+		/		defaults,relatime,errors=remount-ro
+		/home	nodev,nosuid,relatime
+
+restricting access
+	Colin Watson
+		There should be no need to apply the restrictive permissions to
+		subdirectories too, because once execute permission is withheld on
+		a parent directory you can't get to the subdirectories anyway 
+	in /home - chmod * 700
+	in adduser.conf
+		DIR_MODE=700
+
+
+automount
+	docs
+		HOWTO - very good intro to network filesystems 
+			http://www.Linux-Consulting.com/Amd_AutoFS/autofs.html
+
+	requirements
+		amd automount daemon - userspace
+		autofs - kernel support needed -
+			cat /proc/filesystems -> autofs
+

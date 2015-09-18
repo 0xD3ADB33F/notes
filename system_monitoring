@@ -1,4 +1,16 @@
 
+
+Top for systemd slices
+    systemd-cgtop
+
+Show contents of cgroups
+    systemd-cgls
+
+
+Old {{{1
+
+
+
 Monitor a log fail:
 	tail -f		Monitor growth of a log file
 	tailf		same, but wait for log activity to write to the file (avoids disk spin up on laptops)
