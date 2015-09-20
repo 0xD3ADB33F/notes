@@ -1,14 +1,14 @@
-Docs {{{2
+Docs {{{1
 
 KVM howtos
 	http://www.linux-kvm.org/page/HOWTO
 
 
-Setup {{{2
+Setup {{{1
 
 For accelerator support, add user to kvm group
 
-Options {{{2
+Options {{{1
 
 Boot from CD or iso
 	-boot d
@@ -24,6 +24,10 @@ Usage
 	run the image as follows :
 	qemu -hda xp.raw -cdrom /dev/cdrom -boot c -net user -m 256
 
+Graphical boot of iso to install on raw disk image
+ qemu-system-x86_64  -machine accel=kvm --enable-kvm --cdrom /opt/coreos.iso -boot d  -m 4096 -net nic,model=e1000  -net user,hostfwd=tcp:127.0.0.1:6666-:22 -name coreos -localtime -no-reboot -drive format=raw,file=/opt/coreos.raw
+
+
 Test a bootable USB drive
 	qemu -usb /dev/sdb
 
@@ -36,7 +40,7 @@ Backup an image file - size is < 1/3
 
 
 
-console/serial {{{2
+console/serial {{{1
 
 	1. In guest enable serial console in /etc/inittab and in /boot/grub/menu.lst
 		menu.lst
@@ -58,7 +62,7 @@ Installing Debian
 		show serial console - ^+M+3
 
 
-Monitor commands {{{2
+Monitor commands {{{1
 
 Display monitor
 	-monitor stdio
@@ -66,11 +70,8 @@ Display monitor
 Access monitor		Ctrl+Alt 2
 Back to guest		Ctrl+Alt 1
 
-Versioning {{{2
 
-http://www.linux-kvm.com/content/how-you-can-use-qemukvm-base-images-be-more-productive-part-1
-
-Base image method {{{3
+Base image method {{{1
 
 Create clone from base img
  qemu-img create -b <base img> -f <outformat> clone.img
@@ -80,7 +81,7 @@ Commit changes back to base
 Convert clone to be a base
 	qemu-img convert clone.img -O qcow2 newclone.img
 
-Snapshots {{{3
+Snapshots {{{1
 	run with -snapshot
 	in monitor
 		info snapshots
@@ -97,7 +98,7 @@ Versioning
 		write changes to image with 'C-a s'
 
 
-Networking {{{2
+Networking {{{1
 
 overview
 	http://kvm.qumranet.com/kvmwiki/Networking
@@ -114,7 +115,7 @@ Routing - allow instance to access net
 	-net nic -net user
 
 
-Route through tap interface {{{3
+Route through tap interface {{{1
  To  create  an  interface  for  use by a particular user, invoke tunctl
        without the -d option:
 
@@ -143,7 +144,7 @@ SEE ALSO
        The UserModeLinux-HOWTO  (link  to  URL  http://user-mode-linux.source‐
        forge.net/UserModeLinux-HOWTO.html)
 
-Network bridge {{{2
+Network bridge {{{1
 	http://compsoc.dur.ac.uk/~djw/qemu.html 
 
 Install
@@ -177,13 +178,13 @@ interfaces file:
 	   post-down tunctl -d tap0
 
 
-Network boot {{{3
+Network boot {{{1
 
 http://alien.slackbook.org/dokuwiki/doku.php?id=slackware:qemu
 
 
 
-USB {{{2
+USB {{{1
 
 Use USB devices
 	usb_add in monitor

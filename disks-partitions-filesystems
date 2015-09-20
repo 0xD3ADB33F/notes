@@ -272,6 +272,7 @@ btrfs subvolume list <path>
 Make fs
 	/sbin/mkfs.btrfs - in btrfs-tools
 Make subvolume
+    btrfs subvolume create <destination | current dir> <name>
 	btrfsctl -S NewSubVol /mnt/test
 Mount subvolume
 	mount -t btrfs -o subvol=subvolname /dev/sda2 /mnt/new_subvol 

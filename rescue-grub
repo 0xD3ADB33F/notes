@@ -1,6 +1,9 @@
 Fedora 22 multiboot Guide
 https://docs.fedoraproject.org/en-US/Fedora/22/pdf/Multiboot_Guide/Fedora-22-Multiboot_Guide-en-US.pdf
 
+https://wiki.archlinux.org/index.php/GRUB#Installation_2
+
+
 
 Missing efi bootloader files: reinstall Grub
     dnf reinstall grub2-efi shim
@@ -8,11 +11,11 @@ Missing efi bootloader files: reinstall Grub
 
 Boot with Grub
 	Manual session:
-		set grub's root device with 
+		set grub's root device (location of kernel & initrd) 
 			root=(hd0,<boot root dev>
         set prefix (locates grub modules)
             prefix=(hd0,<boot root dev>)/boot/grub2
-        load modules for tab completion
+        load modules for tab completion (not needed anymore?)
             insmod normal
             normal (opens menu?)
             insmod linux

@@ -1,6 +1,7 @@
 
-
 Dnf {{{1
+
+http://dnf.readthedocs.org/en/latest/command_ref.html
 
 Repo management
     repolist [all]
@@ -22,10 +23,11 @@ Packages - can use globbing in pkg name
         --exclude <pkg or pat>  exclude from install, remove, list etc.
         --enablerepo <repo>     install pkg from a repo
         --disable <repo>
-
+        --releasever 23
 
 Package Groups
-    grouplist
+    group info, list, install 
+
 
 History
     list
