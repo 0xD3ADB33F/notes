@@ -7,6 +7,7 @@ Repo management
     repolist [all]
         list enabled [all] repos
     fedora-release-rawhide
+    fedora-updates-testing 
 
 Packages - can use globbing in pkg name
     search  shows & searches by name, description
@@ -58,7 +59,7 @@ Install OS tree {{{1
 
 dnf -y --releasever=22 --nogpg --installroot=/srv/fedora22-tree --disablerepo='*' --enablerepo=fedora groupinstall core
 
-sudo dnf -y --releasever=23 --nogpg --installroot=/srv/f23 --disablerepo='*' --enablerepo=fedora install systemd passwd dnf fedora-release bridge-utils                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+sudo dnf -y --releasever=23 --nogpg --installroot=/srv/f23 --disablerepo='*' --enablerepo=fedora install systemd passwd dnf fedora-release bridge-utils
 
 setenforce 0
 systemctl-nspawn -D <path to container>
