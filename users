@@ -16,7 +16,7 @@ Modify user and groups
 		groupdel
 
 		gpasswd
-			<groupname> -a <username>
+			-a <username> <groupname>  
 
 Display & Change Groups
 	id [user] - see info page

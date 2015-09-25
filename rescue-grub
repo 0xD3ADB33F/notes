@@ -9,14 +9,14 @@ Missing efi bootloader files: reinstall Grub
 Boot with Grub
 	Manual session:
 		set grub's root device with 
-			root=(hd0,<boot root dev>
+			set root=(hd0,<boot root dev>
         set prefix (locates grub modules)
-            prefix=(hd0,<boot root dev>)/boot/grub2
+            set prefix=(hd0,<boot root dev>)/boot/grub2
         load modules for tab completion
             insmod normal
-            normal (opens menu?)
+            normal (opens menu)
             insmod linux
-        kernel /vmlinuz root=/dev/hdax
+        linux /vmlinuz root=/dev/hdax
         initrd /initrd
 
         If grub not found or not installed

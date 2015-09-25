@@ -71,7 +71,7 @@ dd
 
 Filesystems {{{1
 
-Info {{{1
+Info {{{2
 
 findmnt     show mounted filesystems
     --df/-D     show space used
@@ -117,9 +117,6 @@ tmpfs {{{2
 
 btrfs {{{2
 
-New utility: btrfs
-btrfs subvolume list <path>
-
 Make fs
 	/sbin/mkfs.btrfs - in btrfs-tools
 Make subvolume
@@ -129,9 +126,24 @@ Mount subvolume
 	mount -t btrfs -o subvolid=### /dev/sda2 /mnt/new_subvol 
 Make snapshot
 	btrfsctl -s /mnt/btrfs/snapshot_of_root /mnt/btrfs 
+
+btrfs device
+    add <dev> <dev> | <mount point of existing fs>
+
+btrfs subvolume 
+    list <path>
+
+btrfs filesystem 
+    label /dev/XXX <label> 
+
+    balance - distribute data after new vol added
+
+
 Repair - fs umounted
 	btrfs check --repair
-btrfsck
+
+
+
 Recovery {{{2
 	Make boot disk
 		cat BOOT ROOT.gz USR.bz2 > /dev/fd0u1722
