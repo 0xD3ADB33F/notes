@@ -141,17 +141,17 @@ Remove files
 	rm		Deletes file/directory
 	rm --cached		Untracks files/directoires
 
-Reset or unstage file
+Unstage file
 	reset <file>
+    git reset HEAD <fn>
+
+Undelete files staged but not commited:
+    git checkout -- <fn>
 
 Ignore files
 	if already indexed:
 		git update-index --assume-unchanged
 	add to .gitignore
-
-Undelete files staged but not commited:
-    git reset HEAD <fn>
-    git checkout -- <fn>
 
 Forking {{{1
 
