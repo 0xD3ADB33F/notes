@@ -1,3 +1,27 @@
+Systemd-Boot
+
+[root@fhome andmalc]# bootctl --path=/boot/efi install
+Created "/boot/efi/EFI/systemd".
+Copied "/usr/lib/systemd/boot/efi/systemd-bootx64.efi" to "/boot/efi/EFI/systemd/systemd-bootx64.efi".
+Copied "/usr/lib/systemd/boot/efi/systemd-bootx64.efi" to "/boot/efi/EFI/Boot/BOOTX64.EFI".
+Created EFI boot entry "Linux Boot Manager".
+
+Boot Entries:
+$esp/loader/entries
+
+title          Arch Linux (LVM)
+linux          /vmlinuz-linux
+initrd         /initramfs-linux.img
+options        root=/dev/mapper/<VolumeGroup-LogicalVolume> rw
+
+title          Fedora 22 (LVM)
+linux          /boot/vmlinuz-4.1.6-200.fc22.x86_64 
+initrd         /boot/initramfs-4.1.6-200.fc22.x86_64.img
+options        root=/dev/mapper/fedora-root ro rd.lvm.lv=fedora/root rhgbi resume=/dev/sda5 quiet 
+
+
+
+
 Fedora 22 multiboot Guide
 https://docs.fedoraproject.org/en-US/Fedora/22/pdf/Multiboot_Guide/Fedora-22-Multiboot_Guide-en-US.pdf
 
