@@ -3,11 +3,6 @@ Dnf {{{1
 
 http://dnf.readthedocs.org/en/latest/command_ref.html
 
-Repo management
-    repolist [all]
-        list enabled [all] repos
-    fedora-release-rawhide
-    fedora-updates-testing 
 
 Packages - can use globbing in pkg name
     search  shows & searches by name, description
@@ -54,6 +49,24 @@ http://dnf-plugins-core.readthedocs.org/en/latest/index.html
     repoquery
 
 
+Repos {{{1
+
+Repo files in /etc/yum.d
+
+Install from specific release: 
+    $releasever variable is number: 22, 23
+    Copy repo file and replace var with number to get packages from other release
+    Enabled = 0
+    dnf --enablerepo=fedora-23 update systemd
+
+
+
+dnf repo management
+    repolist [all]
+        list enabled [all] repos
+    fedora-release-rawhide
+    fedora-updates-testing 
+
 
 Install OS tree {{{1
 
@@ -67,22 +80,16 @@ Change root password
 systemctl-nspawn -bD <path to container>
 
 
-Yum {{{1
+Selinux {{{1
 
-yum provides '*/vimdiff'
-	find packages with given filename
+setenforce/getenforce
 
-yum list available package-name --listavailable
-	show all versions of a package
+Context: user:role:type:level
+ls -Z
 
-
-sudo yum -y -v groupinstall "C Development Tools and Libraries"
-    Install package group
-
-yum group info "C Development Tools and Libraries"
-    Show packages in group
+Show map of login names to SE Linux users
+    semanage login -l
 
 
-repoquery --whatrequires <pkg>
-	show packages depending on pkg
+
 

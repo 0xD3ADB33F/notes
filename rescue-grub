@@ -1,10 +1,5 @@
-Systemd-Boot
+Systemd-Boot {{{1
 
-[root@fhome andmalc]# bootctl --path=/boot/efi install
-Created "/boot/efi/EFI/systemd".
-Copied "/usr/lib/systemd/boot/efi/systemd-bootx64.efi" to "/boot/efi/EFI/systemd/systemd-bootx64.efi".
-Copied "/usr/lib/systemd/boot/efi/systemd-bootx64.efi" to "/boot/efi/EFI/Boot/BOOTX64.EFI".
-Created EFI boot entry "Linux Boot Manager".
 
 Boot Entries:
 $esp/loader/entries
@@ -20,7 +15,7 @@ initrd         /boot/initramfs-4.1.6-200.fc22.x86_64.img
 options        root=/dev/mapper/fedora-root ro rd.lvm.lv=fedora/root rhgbi resume=/dev/sda5 quiet 
 
 
-
+Grub {{{1
 
 Fedora 22 multiboot Guide
 https://docs.fedoraproject.org/en-US/Fedora/22/pdf/Multiboot_Guide/Fedora-22-Multiboot_Guide-en-US.pdf
@@ -34,38 +29,24 @@ Do not use grub2-install on UEFI system!
 Missing efi bootloader files: reinstall Grub
     dnf reinstall grub2-efi grub2-efi-modules shim
 
-Boot with Grub
-	Manual session:
-		set grub's root device (location of kernel & initrd) 
-			root=(hd0,<boot root dev>
-        set prefix (locates grub modules)
-            prefix=(hd0,<boot root dev>)/boot/grub2
-        load modules for tab completion (not needed anymore?)
-            insmod normal
-            normal (opens menu?)
-            insmod linux
-        kernel /vmlinuz root=/dev/hdax
-        initrd /initrd
+Manual session:
+    set grub's root device (location of kernel & initrd) 
+        root=(hd0,<boot root dev>
+    set prefix (locates grub modules)
+        prefix=(hd0,<boot root dev>)/boot/grub2
+    load modules for tab completion (not needed anymore?)
+        insmod normal
+        normal (opens menu)
+        insmod linux
+    linux /vmlinuz root=/dev/hdax
+    initrd /initrd
 
-        If grub not found or not installed
-            if unknown, search with
-                > find /grub/stage1 (sep boot part)
-                > find /boot/grub/stage1 (combined root/boot fs) 
-            setup
-                > setup (hd0)
-                > setup (hd0,<part>)
-
+    If grub not found or not installed
+        if unknown, search with
+            > find /grub/stage1 (sep boot part)
+            > find /boot/grub/stage1 (combined root/boot fs) 
+        setup
+            > setup (hd0)
+            > setup (hd0,<part>)
 
 
-Grub2
-	make a grub.cfg manually
-		grub-mkconfig
-	command line
-		https://help.ubuntu.com/community/Grub2
-		http://grub.enbug.org/CommandList
-
-Docs old
-	Grub & other boot loaders tutorial
-		www.tldp.org/LDP/linuxcookbook/html/cookbook_34.html 
-	Another tutorial
-		http://www.penlug.org/twiki/bin/view/Main/GrubSecrets

@@ -1,5 +1,5 @@
 
-Parition info
+General info {{{1
     MBR
         512 bytes long, stored at sector 0
         contains boot loader e.g Grub and partition table (primary & extended but not logical)
@@ -18,14 +18,6 @@ udevadm info -n /dev/sdb -q all
 
 gpart
 	find lost partitions
-
-Naming {{{1
-
-https://wiki.archlinux.org/index.php/Persistent_block_device_naming
-
-Using Labels and much else:
-http://ubuntuforums.org/showthread.php?t=283131
-
 
 Partitions {{{1
 Partitioning utilities {{{2 
@@ -69,9 +61,22 @@ dd
 	exact copy of entire partition including MBR
 		dd if=/dev/part of=/dev/anotherpart
 
+Labels/Naming {{{1
+
+https://wiki.archlinux.org/index.php/Persistent_block_device_naming
+
+Using Labels and much else:
+http://ubuntuforums.org/showthread.php?t=283131
+
+change labels
+	e2label / e2fsprogs		for extX
+	btrfs filesystem label /dev/XXX <label> 
+	swaplabel -L <label> /dev/XXX
+
+
 Filesystems {{{1
 
-Info {{{1
+Info {{{2
 
 findmnt     show mounted filesystems
     --df/-D     show space used
@@ -79,6 +84,10 @@ findmnt     show mounted filesystems
     -S <dev>    show on device
     --target/-T <dir>   show only for mount dir
     -l          list format output
+
+Space Used:
+du -hs * | sort -h - sort by human readable size
+du -schx /*	shows disk space used by subdirs
 
 Attributes {{{2	
 change times
@@ -92,22 +101,12 @@ change times
 		change to file data, permissions, or ownership (most
 		inclusive)
 
-FS Labels {{{2
+ExtX {{{2
 
-change labels
-	e2label / e2fsprogs		for extX
-	btrfs filesystem label /dev/XXX <label> 
-	swaplabel -L <label> /dev/XXX
-
-Space {{{2
-du -hs * | sort -h - sort by human readable size
-
-du -schx /*	shows disk space used by subdirs
-
-Journals {{{2
-	Add/Remove ext2 journal
-		tune2fs -j /dev/xxx<n>
-		tune2fs -O ^has_journal /dev/xxx<n>
+Journals:
+    Add/Remove
+        tune2fs -j /dev/xxx<n>
+        tune2fs -O ^has_journal /dev/xxx<n>
 
 tmpfs {{{2
 	Mount directory in tmpfs
@@ -116,9 +115,6 @@ tmpfs {{{2
 		tmpfs /var/www/www.example.com/cache tmpfs size=100M,mode=0755 0 0
 
 btrfs {{{2
-
-New utility: btrfs
-btrfs subvolume list <path>
 
 Make fs
 	/sbin/mkfs.btrfs - in btrfs-tools
@@ -129,18 +125,23 @@ Mount subvolume
 	mount -t btrfs -o subvolid=### /dev/sda2 /mnt/new_subvol 
 Make snapshot
 	btrfsctl -s /mnt/btrfs/snapshot_of_root /mnt/btrfs 
+
+btrfs device
+    add <dev> <dev> | <mount point of existing fs>
+
+btrfs subvolume 
+    list <path>
+
+btrfs filesystem 
+    label /dev/XXX <label> 
+
+    balance - distribute data after new vol added
+
+
 Repair - fs umounted
 	btrfs check --repair
-btrfsck
-Recovery {{{2
-	Make boot disk
-		cat BOOT ROOT.gz USR.bz2 > /dev/fd0u1722
-	recover deleted file
-		recover, gtk-recover
 
-	reiserfs undelete - works from copy to preserve original
-		dd < /dev/hdx > hdx.image
-		reiserfsck -S hdx.image  
+
 
 LVM {{{1
 docs {{{2
@@ -298,73 +299,4 @@ automount
 		amd automount daemon - userspace
 		autofs - kernel support needed -
 			cat /proc/filesystems -> autofs
-
-Filesystems {{{1
-
-Attributes {{{2	
-change times
-	atime
-		access time
-		time of read (including backups) 
-		permissions changes don't affect
-	mtime   
-		change to file data
-	ctime   
-		change to file data, permissions, or ownership (most
-		inclusive)
-
-FS Labels {{{2
-
-change labels
-	e2label / e2fsprogs		for extX
-	btrfs filesystem label /dev/XXX <label> 
-	swaplabel -L <label> /dev/XXX
-
-Space {{{2
-du -hs * | sort -h - sort by human readable size
-
-du -schx /*	shows disk space used by subdirs
-
-Journals {{{2
-	Add/Remove ext2 journal
-		tune2fs -j /dev/xxx<n>
-		tune2fs -O ^has_journal /dev/xxx<n>
-
-tmpfs {{{2
-	Mount directory in tmpfs
-		mount -t tmpfs -o size=100M,mode=0755 tmpfs /var/cache/tmp
-	entry in /etc/fstab
-		tmpfs /var/www/www.example.com/cache tmpfs size=100M,mode=0755 0 0
-
-btrfs {{{2
-
-New utility: btrfs
-btrfs subvolume list <path>
-
-Make fs
-	/sbin/mkfs.btrfs - in btrfs-tools
-Make subvolume
-    btrfs subvolume create <destination | current dir> <name>
-	btrfsctl -S NewSubVol /mnt/test
-Mount subvolume
-	mount -t btrfs -o subvol=subvolname /dev/sda2 /mnt/new_subvol 
-	mount -t btrfs -o subvolid=### /dev/sda2 /mnt/new_subvol 
-Make snapshot
-	btrfsctl -s /mnt/btrfs/snapshot_of_root /mnt/btrfs 
-Repair - fs umounted
-	btrfs check --repair
-
-Convert from extX
-fsck.ext3 -f /dev/xxx
-btrfs-convert /dev/xxx
-
-Recovery {{{2
-	Make boot disk
-		cat BOOT ROOT.gz USR.bz2 > /dev/fd0u1722
-	recover deleted file
-		recover, gtk-recover
-
-	reiserfs undelete - works from copy to preserve original
-		dd < /dev/hdx > hdx.image
-		reiserfsck -S hdx.image  
 

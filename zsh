@@ -246,6 +246,11 @@ Arrays  {{{1
 		U option ensures unique - not adding if already set
 			typeset -TU PYTHONPATH pythonpath
 			pythonpath=(/lib/python/site-packages lib/python2.2/site-packages)
+			
+            typeset -U PATH path
+            path+=(blah/blah) #appends 
+            path=(~/foo "$path[@]") #foo at beginning of array
+
 	eg
 		${array:gs/foo/bar} substitute foo for bar throughout array
 		${list:#pat} list excluding pat
