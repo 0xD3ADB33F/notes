@@ -28,12 +28,12 @@ vared
 
 
 Parameters {{{1  
-	set by:
-		parameter_name=value - No space before or after '='
-		Get value (parameter expansion) with $parameter_name
-	expansion  - see zshparam
-		$ character introduces parameter/brace expansion
-		${name} - braces are optional
+
+set by:
+    parameter_name=value - No space before or after '='
+    Get value (parameter expansion) with $parameter_name
+    $ character introduces parameter/brace expansion
+    ${name} - braces are optional
 
 Configuration {{{1
 Startup Files {{{2
@@ -96,17 +96,20 @@ Good one: From http://www.princeton.edu/~kmccarty/zsh.html
 
 History {{{1
 
-CD stack
-	cp file ~1 - copy file to first dir in stack 
 shortcuts
 	M-.			last argument - repeat to cycle backwards
-	<cmd> M-p / M-n	
+	
+    <cmd> M-p / M-n	
 		search hist for cmds starting with <cmd>
+
 event selection:
 	!           start history expansion
-	!!			last command - may omit ! if followed by :<word selection>
+	!!			last command 
+                may omit ! if followed by :<word selection> e.g. !:0
+
 	!str        last command starting with str
 	!?str[?]    last command containing str
+
 word selection: 
 	number	- 0 is cmd
 	* - all args
@@ -259,10 +262,11 @@ Processes {{{1
 Programming {{{1 
 
 Loops {{{2
-	for file in `ls -lh` | echo $file
 
-	for file in `ls -lh` ; do
-		echo $file
+for file in `ls -lh` ; do
+    echo $file
+done
 
+for file in **/*(.); do mv $file{,.sh}; done
 
 
