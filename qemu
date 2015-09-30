@@ -1,25 +1,14 @@
-Docs {{{1
 
-KVM howtos
-	http://www.linux-kvm.org/page/HOWTO
-
-
-Setup {{{1
-
-For accelerator support, add user to kvm group
-
-Options {{{1
+Booting images {{{1
 
 Boot from CD or iso
 	-boot d
 	-cdrom 	path to CD device or file
 
-Allow graphical installer, e.g. Ubuntu: option -std-vga
-
-
+Test a bootable USB drive
+	qemu -usb /dev/sdb
 
 Usage
-	qemu-img create xp.raw 3G
 	qemu -hda xp.raw -cdrom /dev/cdrom -boot d -net user -m 256
 	run the image as follows :
 	qemu -hda xp.raw -cdrom /dev/cdrom -boot c -net user -m 256
@@ -28,9 +17,15 @@ Graphical boot of iso to install on raw disk image
  qemu-system-x86_64  -machine accel=kvm --enable-kvm --cdrom /opt/coreos.iso -boot d  -m 4096 -net nic,model=e1000  -net user,hostfwd=tcp:127.0.0.1:6666-:22 -name coreos -localtime -no-reboot -drive format=raw,file=/opt/coreos.raw
 
 
-Test a bootable USB drive
-	qemu -usb /dev/sdb
+Create, manage image files {{{1
 
+Create img/qcow 
+    virt-builder
+
+guestfish shell - from libguestfstools
+
+Create raw file
+	qemu-img create xp.raw 3G
 
 Convert an image file to a block device => big files
 	qemu-img convert root.qcow2 -O raw /dev/sdb
@@ -56,10 +51,6 @@ Remote qemu:
 	option: append "console=ttyS0 root=/dev/hda1 ro"
 	in guest /etc/inittab: s1:12345:respawn:/sbin/agetty -L ttyS0 9600 vt100 
 
-Installing Debian
-	At install prompt
-		install console=ttyS0,9600,n8
-		show serial console - ^+M+3
 
 
 Monitor commands {{{1
@@ -71,7 +62,18 @@ Access monitor		Ctrl+Alt 2
 Back to guest		Ctrl+Alt 1
 
 
-Base image method {{{1
+Versioning {{{1
+
+	base_image
+		qemu-img create -b <base-img> <out-file>
+		base-image is not modified until 'commit' in monitor
+
+	snapshot
+		run qemu with -snapshot option
+		changes written to temp files
+		write changes to image with 'C-a s'
+
+Base image method {{{2
 
 Create clone from base img
  qemu-img create -b <base img> -f <outformat> clone.img
@@ -81,21 +83,12 @@ Commit changes back to base
 Convert clone to be a base
 	qemu-img convert clone.img -O qcow2 newclone.img
 
-Snapshots {{{1
+Snapshots {{{2
+
 	run with -snapshot
 	in monitor
 		info snapshots
 		commit (all | device)
-
-Versioning
-	base_image
-		qemu-img create -b <base-img> <out-file>
-		base-image is not modified until 'commit' in monitor
-
-	snapshot
-		run qemu with -snapshot option
-		changes written to temp files
-		write changes to image with 'C-a s'
 
 
 Networking {{{1
