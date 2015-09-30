@@ -5,6 +5,8 @@ Set default project and zone
     gcloud config set project <NAME OF PROJECT>
     gcloud config set compute/zone us-central1-a
 
+Copy files
+    gcloud compute copy-files myapp.aci coreos:~ 
 
 Add ssh key
 gcloud compute project-info add-metadata \

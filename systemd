@@ -72,6 +72,7 @@ logind
 
 machinectl
     login, reboot, poweroff, status <container>
+    bind <machinename> <source path> [<dest path in cont>]
 
 
 networkctl 	
@@ -84,6 +85,10 @@ timedatectl
 
 systemd-cgls
     show processes in control groups
+
+Stop/Start GDM
+systemctl isolate multi-user.target (or just init 3)
+systemctl isolate graphical.target (or default.target or init 5)
 
 systemd-nspawn {{{1 
 

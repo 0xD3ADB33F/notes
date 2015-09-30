@@ -915,6 +915,12 @@ Create image, instal Grub {{{1
 
 $ qemu-img create -f raw lenny-base.raw 5G
 
+-P  scan for partitions
+-f  find unused loopback device
+
+ emu-system-x86_64 -drive format=raw,file=coreos.raw
+
+
 Now, create a loopback device for it:
 
 # losetup /dev/loop0 lenny-base.raw

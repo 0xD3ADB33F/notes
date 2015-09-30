@@ -1,5 +1,5 @@
 
-Parition info
+General info {{{1
     MBR
         512 bytes long, stored at sector 0
         contains boot loader e.g Grub and partition table (primary & extended but not logical)
@@ -18,14 +18,6 @@ udevadm info -n /dev/sdb -q all
 
 gpart
 	find lost partitions
-
-Naming {{{1
-
-https://wiki.archlinux.org/index.php/Persistent_block_device_naming
-
-Using Labels and much else:
-http://ubuntuforums.org/showthread.php?t=283131
-
 
 Partitions {{{1
 Partitioning utilities {{{2 
@@ -69,9 +61,22 @@ dd
 	exact copy of entire partition including MBR
 		dd if=/dev/part of=/dev/anotherpart
 
+Labels/Naming {{{1
+
+https://wiki.archlinux.org/index.php/Persistent_block_device_naming
+
+Using Labels and much else:
+http://ubuntuforums.org/showthread.php?t=283131
+
+change labels
+	e2label / e2fsprogs		for extX
+	btrfs filesystem label /dev/XXX <label> 
+	swaplabel -L <label> /dev/XXX
+
+
 Filesystems {{{1
 
-Info {{{1
+Info {{{2
 
 findmnt     show mounted filesystems
     --df/-D     show space used
@@ -79,6 +84,10 @@ findmnt     show mounted filesystems
     -S <dev>    show on device
     --target/-T <dir>   show only for mount dir
     -l          list format output
+
+Space Used:
+du -hs * | sort -h - sort by human readable size
+du -schx /*	shows disk space used by subdirs
 
 Attributes {{{2	
 change times
@@ -92,22 +101,12 @@ change times
 		change to file data, permissions, or ownership (most
 		inclusive)
 
-FS Labels {{{2
+ExtX {{{2
 
-change labels
-	e2label / e2fsprogs		for extX
-	btrfs filesystem label /dev/XXX <label> 
-	swaplabel -L <label> /dev/XXX
-
-Space {{{2
-du -hs * | sort -h - sort by human readable size
-
-du -schx /*	shows disk space used by subdirs
-
-Journals {{{2
-	Add/Remove ext2 journal
-		tune2fs -j /dev/xxx<n>
-		tune2fs -O ^has_journal /dev/xxx<n>
+Journals:
+    Add/Remove
+        tune2fs -j /dev/xxx<n>
+        tune2fs -O ^has_journal /dev/xxx<n>
 
 tmpfs {{{2
 	Mount directory in tmpfs
@@ -116,9 +115,6 @@ tmpfs {{{2
 		tmpfs /var/www/www.example.com/cache tmpfs size=100M,mode=0755 0 0
 
 btrfs {{{2
-
-New utility: btrfs
-btrfs subvolume list <path>
 
 Make fs
 	/sbin/mkfs.btrfs - in btrfs-tools
@@ -129,116 +125,122 @@ Mount subvolume
 	mount -t btrfs -o subvolid=### /dev/sda2 /mnt/new_subvol 
 Make snapshot
 	btrfsctl -s /mnt/btrfs/snapshot_of_root /mnt/btrfs 
+
+btrfs device
+    add <dev> <dev> | <mount point of existing fs>
+
+btrfs subvolume 
+    list <path>
+
+btrfs filesystem 
+    label /dev/XXX <label> 
+
+    balance - distribute data after new vol added
+
+
 Repair - fs umounted
 	btrfs check --repair
-btrfsck
-Recovery {{{2
-	Make boot disk
-		cat BOOT ROOT.gz USR.bz2 > /dev/fd0u1722
-	recover deleted file
-		recover, gtk-recover
 
-	reiserfs undelete - works from copy to preserve original
-		dd < /dev/hdx > hdx.image
-		reiserfsck -S hdx.image  
+
 
 LVM {{{1
 docs {{{2
-	HOWTO - http://www.silentpcreview.com/news355.htm
-	http://www.tldp.org/HOWTO/LVM-HOWTO/index.html
 
-modules  {{{2
-	device mapper - dm-mod.o
-	lvm	- lvm-mod
-		needed in 2.6?  Don't see in kernel source.  All support under
-		'Multi-Device' - just device-mapper needed
+Rearranging partitions example:
+http://microdevsys.com/wp/linux-lvm-resizing-partitions/
+
 
 terms {{{2
-	vg - volume group
-		collection of Logical Volumes and Physical Volumes into one administrative unit
-	pv - physical volume
-	lv - logical volume
-		visible as a standard block device
-		equivalent to a partition
-	pe - physical extents
-	le	logical extent - will be same size as pe's for vg
 
-planning {{{2
-
-500M root + boot in non-LVM partition
-
-steps {{{2
-	1. pvcreate <dev> [<dev> ...]
-		initialize a disk or partition to use in a physical vol.
-	2. vgcreate vg_name pv
-		create a vol group from one or more physical vols
-	2a	if needed:
-			vgextend vgname pvpath - add a pv to an existing vg
-	3. activate vg with 'vgchange -a y' or reboot
-	4.	lvcreate [-n name] [-L size(kmg) -l sizeLE] vgName [vgpath]
-			-l	size in Physical Extents
-			-L	size in MB or GB
-			create lv using all space in vg
-				lvcreate -l 100%VG
-			create lv using all free space in vg
-				lvcreate -l 100%FREE
-	5.	create filesystem - device = /dev/a4/lvol0
-	6.	mount 
-
-Commands {{{2
-
+vg - volume group
+    collection of Logical Volumes and Physical Volumes into one administrative unit
 
 PV/physical volume
-    usually a partition
+    partition or disk
 
-    Create physical volume
-        pvcreate <disk or partition>
-        if using whole disk, wipe partition table
-            dd if=/dev/zero of=PhysicalVolume bs=512 count=1
+lv - logical volume
+    visible as a standard block device
+    equivalent to a partition
+extents: smallest possible allocation size
+    pe - physical extents
+    le	logical extent - will be same size as pe's for vg
+
+Snapshot
+- Used mainly as ro backup of changing original.  Data copied to snapshot before changed in original 
+
+Thinly-Provisioned Snapshot Volumes
+- snapshots without preset size
+
+steps {{{2
+
+Initialize a disk or partition to use in a physical vol.
+    pvcreate <dev> [<dev> ...]
 
 VG/volume group
     composed of 1 or more PV's, optionally already initialized with pvcreate
 
     Create
-        vgcreate my_volume_group /dev/hda1 /dev/hdb
+        vgcreate vg_name /dev/hda1 /dev/hdb
 
     Extend existing vg
-        vgextend my_volume_group /dev/hdc1
+        vgextend vgname pvdevpath  
+
+Activate vg 
+    'vgchange -a y' or reboot
+
+Create Logical Volume
+    lvcreate [-n name] [-L size(kmg) -l sizeLE] vgName [vgpath]
+        size
+            -l	size in Physical Extents
+            -L	size in MB or GB
+        create lv using all space in vg
+            -l 100%VG
+        create lv using all free space in vg
+            -l 100%FREE
+        snapshot
+            -s origin [name|path]
+        thin vols
+            -T --thin
+            -V --virtualsize    
+
+
+Remove pv from vg:
+vgreduce
+
+LV resize
+    lvextend -r -L +3GB /dev/atomicos/root
 
 Show info
+    pgs
+    lvs
 	pvscan
 	vgscan
 	fdisk -l    shows lv sizes
     pvdisplay --maps
         shows physical layout of volume
 
-Create Logical Volume
-	lvcreate -L size -n name vgname
+create filesystems 
+    device name: /dev/a4/lvol0
 
 Access LVM on disk from rescue disk
 	vgscan
 	vgchange -ay
 
-Rearranging partitions example:
-http://microdevsys.com/wp/linux-lvm-resizing-partitions/
-
 utilities {{{2
+
+Shows pv's in vg
+    pvs --partial --verbose
+
 	vgdisplay
 	vg/lvremove
 	e2fsadm
 		must umount fs
 		resizes ext2/3 filesystems and lv's in one command
 		combines functions of lvextend & resize2fs
-	resize_reiserfs
-		resize offline or online ('-f' switch) 
-	
 	show partitions
 		ls /dev/<vgname>/		
 
 
-	new 2.6 device mapper crypt
-		 http://www.saout.de/misc/dm-crypt/ 	
-		 module dm-crypt
 
 more LVM {{{2
 
