@@ -188,6 +188,14 @@ VG/volume group
 Activate vg 
     'vgchange -a y' or reboot
 
+Info
+	pvscan
+	vgscan
+	fdisk -l    shows lv sizes
+    pvdisplay --maps
+        shows physical layout of volume
+
+
 Create Logical Volume
     lvcreate [-n name] [-L size(kmg) -l sizeLE] vgName [vgpath]
         size
@@ -213,11 +221,6 @@ LV resize
 Show info
     pgs
     lvs
-	pvscan
-	vgscan
-	fdisk -l    shows lv sizes
-    pvdisplay --maps
-        shows physical layout of volume
 
 create filesystems 
     device name: /dev/a4/lvol0
@@ -254,7 +257,7 @@ Changing volumes
 	LVM
 		pvresize - resize vg on a device
 
-Mounting & Permissions 
+Mounting & Permissions  {{{1
 
 mount
 	attaches a filesystem on a device to a point in unix filesystem tree.
@@ -280,24 +283,4 @@ allow umounting
 	recommended options
 		/		defaults,relatime,errors=remount-ro
 		/home	nodev,nosuid,relatime
-
-restricting access
-	Colin Watson
-		There should be no need to apply the restrictive permissions to
-		subdirectories too, because once execute permission is withheld on
-		a parent directory you can't get to the subdirectories anyway 
-	in /home - chmod * 700
-	in adduser.conf
-		DIR_MODE=700
-
-
-automount
-	docs
-		HOWTO - very good intro to network filesystems 
-			http://www.Linux-Consulting.com/Amd_AutoFS/autofs.html
-
-	requirements
-		amd automount daemon - userspace
-		autofs - kernel support needed -
-			cat /proc/filesystems -> autofs
 

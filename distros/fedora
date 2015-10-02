@@ -24,6 +24,9 @@ Packages - can use globbing in pkg name
 Package Groups
     group info, list, install 
 
+    Show packages in a group
+        group info 'Basic Desktop'
+
 
 History
     list
