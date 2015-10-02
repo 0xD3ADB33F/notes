@@ -42,6 +42,29 @@ cd to dir with one word different in path (two variations):
     cd <old> <new>
     cd ${PWD/3.4/2.7} 
 
+<<<<<<< HEAD
+Parameters {{{1  
+
+set by:
+    parameter_name=value - No space before or after '='
+    Get value (parameter expansion) with $parameter_name
+    $ character introduces parameter/brace expansion
+    ${name} - braces are optional
+
+Configuration {{{1
+Startup Files {{{2
+	zprofile: 
+		only run by login shells (called with -l) or su -.  Use for env vars used by
+		applications, e.g. MAI
+	zshenv: 
+		only startup that is always run.  Best place for environment
+	variables
+	zshrc
+	zlogin: 
+		runs after zshrc.  Purpose really just equivalent of Bourne-type
+		shells /etc/profile and csh login (?).
+=======
+>>>>>>> 0eca88aa4ae429ddcbfd85412c6f0bea77ce718c
 
 CD stack
 	cp file ~1 - copy file to first dir in stack 
@@ -64,7 +87,9 @@ Expansions {{{1
 
 
 shortcuts
-	<cmd> M-p / M-n	
+	M-.			last argument - repeat to cycle backwards
+	
+    <cmd> M-p / M-n	
 		search hist for cmds starting with <cmd>
 
 event selection:
@@ -76,12 +101,12 @@ event selection:
 	!str        last command starting with str
 	!?str[?]    last command containing str
 
-    word selection: 
-	number	- 0 is cmd
-	* - all args
-	$ - last arg
-	x-  Arguments from #x to $ (last arg)
-		ex. !!0-  Command + all args except last 
+word selection: 
+    number	- 0 is cmd
+    * - all args
+    $ - last arg
+    x-  Arguments from #x to $ (last arg)
+        ex. !!0-  Command + all args except last 
 
 
 
@@ -232,11 +257,12 @@ Processes {{{1
 Programming {{{1 
 
 Loops {{{2
-	for file in `ls -lh` | echo $file
 
-	for file in `ls -lh` ; do
-		echo $file
+for file in `ls -lh` ; do
+    echo $file
+done
 
+for file in **/*(.); do mv $file{,.sh}; done
 
 
 Startup Files {{{1

@@ -108,3 +108,7 @@ examples:
 Container as service - must be in /var/lib/machines
 systemctl start systemd-nspawn@mycontainer.service
 
+
+xhost +local:
+echo $DISPLAY
+export DISPLAY=:0
