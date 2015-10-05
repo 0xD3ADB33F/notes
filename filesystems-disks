@@ -15,6 +15,7 @@ lsblk -f	shows tree of disks and parts, labels, UUIDs, mount points
 blkid		shows UUID's and types
 sfdisk -l
 udevadm info -n /dev/sdb -q all
+findmnt
 
 gpart
 	find lost partitions
@@ -230,6 +231,9 @@ LV/logical volume {{{3
                 -T --thin
                 -V --virtualsize    
 
+    Show info
+        lvs
+
     Resize - -r option reszies fs using fsadm
         lvextend -r -L +3GB /dev/atomicos/root
         lvreduce
@@ -254,10 +258,6 @@ Check pool usage: lvdisplay pool, 'Allocated pool data'
 
 
 Info / utilities {{{2
-
-Show info
-    pvs
-    lvs
 
 ls /dev/<vgname>/		
 
