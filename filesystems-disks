@@ -1,5 +1,5 @@
 
-General info {{{1
+General {{{1
     MBR
         512 bytes long, stored at sector 0
         contains boot loader e.g Grub and partition table (primary & extended but not logical)
@@ -10,73 +10,41 @@ General info {{{1
 
 Disk, Partition Info {{{1
 
-
-lsblk -f	shows tree of disks and parts, labels, UUIDs, mount points
-blkid		shows UUID's and types
-sfdisk -l
-udevadm info -n /dev/sdb -q all
-
-gpart
-	find lost partitions
-
-Partitions {{{1
-Partitioning utilities {{{2 
-
-compatibility
-	don't use both PQMagic and Linux fdisk to create partitions
-	on the same drive.  Instead, use PQM exclusively.
-
-partition writable by users
-	fstab options: rw - no need for uid option in fs types that preserve ownership
-	create directory in partition writable by user
-cfdisk
-	said (by the fdisk man page) to be reliable and better
-	than fdisk
-	'maximize' option creates incompatibility with Windows?
-	print/sector command shows partitions in hd order
-
-parted (qtparted and nparted on Knoppix)
-	can resize ext2 & 3 partitions but start point can't move.
-	gparted can move start point
-	has lost partition rescue feature
-	
-
-sfdisk - partition table reporting
-	-s  [<device - partition or disk>]    
-		show disk/partition size
-	-l [options] <dev>
-	-D  DOS compatibility - free 512 free at part beginning
-	-L  ignore irrelevant to Linux
-
-testdisk
-	haven't tried yet
-
-Partition copy & backup {{{2
-
-partimage utility on knoppix
-	partimage imginfo <img-file> 
-		show size, original device, etc.
-	No way to restore parts of image file
-dd
-	exact copy of entire partition including MBR
-		dd if=/dev/part of=/dev/anotherpart
-
-Labels/Naming {{{1
-
 https://wiki.archlinux.org/index.php/Persistent_block_device_naming
 
-Using Labels and much else:
-http://ubuntuforums.org/showthread.php?t=283131
+lsblk -f	tree of disks, parts, labels, UUIDs, mount points
+            no partlabel
+
+blkid		shows UUID's and types
+    -po udev <dev>  show partition details
+
+gdisk, cgdisk
+    like parted/cfdisk for gpt disks
+    change partition labels
+    no lvm info
+
+partx
+    show paritions with sector info
+    tell kernel about partitions
+
+sfdisk -l
+udevadm info -n /dev/sdb -q all
 
 change labels
 	e2label / e2fsprogs		for extX
 	btrfs filesystem label /dev/XXX <label> 
 	swaplabel -L <label> /dev/XXX
 
+Lost partition recovery
+gpart
+testdisk
+    http://www.cgsecurity.org/wiki/TestDisk_Step_By_Step
 
-Filesystems {{{1
 
-Info {{{2
+
+FS Info {{{1
+
+df
 
 findmnt     show mounted filesystems
     --df/-D     show space used
@@ -85,10 +53,11 @@ findmnt     show mounted filesystems
     --target/-T <dir>   show only for mount dir
     -l          list format output
 
-Space Used:
-du -hs * | sort -h - sort by human readable size
-du -schx /*	shows disk space used by subdirs
+du 
+    -hs * | sort -h - sort by human readable size
+    -schx /*	shows disk space used by subdirs
 
+Filesystems {{{1
 Attributes {{{2	
 change times
 	atime

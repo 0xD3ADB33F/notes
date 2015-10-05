@@ -6,6 +6,18 @@ Top for systemd slices
 Show contents of cgroups
     systemd-cgls
 
+journalctl
+Filtering on field 
+    <field name>=<val> [ <field name>=<val> ]
+    Same field name specified more than once = OR
+    Different field names = AND
+
+    journalctl _UID=70 (AND) _SYSTEMD_UNIT=avahi-daemon.service (OR) _SYSTEMD_UNIT=crond.service
+    PRIORITY=3
+    _UID=1000
+    _SYSTEMD_UNIT
+
+
 
 Old {{{1
 

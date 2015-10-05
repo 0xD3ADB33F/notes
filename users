@@ -8,9 +8,9 @@ Modify user and groups
 			add user to group <groupname>
 		addgroup
 	Fedora:
-		useradd 
 		usermod
 			<username> -aG <comma sep list of groupnames>	append group to existing
+		useradd 
 		groupmod
 		userdel
 		groupdel
