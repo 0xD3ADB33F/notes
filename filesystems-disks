@@ -1,5 +1,5 @@
 
-General info {{{1
+General {{{1
     MBR
         512 bytes long, stored at sector 0
         contains boot loader e.g Grub and partition table (primary & extended but not logical)
@@ -10,8 +10,10 @@ General info {{{1
 
 Disk, Partition Info {{{1
 
+https://wiki.archlinux.org/index.php/Persistent_block_device_naming
 
-lsblk -f	shows tree of disks and parts, labels, UUIDs, mount points
+lsblk -f	tree of disks, parts, labels, UUIDs, mount points
+            no partlabel
 blkid		shows UUID's and types
 sfdisk -l
 udevadm info -n /dev/sdb -q all
@@ -52,32 +54,37 @@ sfdisk - partition table reporting
 testdisk
 	haven't tried yet
 
-Partition copy & backup {{{2
 
-partimage utility on knoppix
-	partimage imginfo <img-file> 
-		show size, original device, etc.
-	No way to restore parts of image file
-dd
-	exact copy of entire partition including MBR
-		dd if=/dev/part of=/dev/anotherpart
+blkid		shows UUID's and types
+    -po udev <dev>  show partition details
 
-Labels/Naming {{{1
+gdisk, cgdisk
+    like parted/cfdisk for gpt disks
+    change partition labels
+    no lvm info
 
-https://wiki.archlinux.org/index.php/Persistent_block_device_naming
+partx
+    show paritions with sector info
+    tell kernel about partitions
 
-Using Labels and much else:
-http://ubuntuforums.org/showthread.php?t=283131
+sfdisk -l
+udevadm info -n /dev/sdb -q all
 
 change labels
 	e2label / e2fsprogs		for extX
 	btrfs filesystem label /dev/XXX <label> 
 	swaplabel -L <label> /dev/XXX
 
+Lost partition recovery
+gpart
+testdisk
+    http://www.cgsecurity.org/wiki/TestDisk_Step_By_Step
 
-Filesystems {{{1
 
-Info {{{2
+
+FS Info {{{1
+
+df
 
 findmnt     show mounted filesystems
     --df/-D     show space used
@@ -86,10 +93,11 @@ findmnt     show mounted filesystems
     --target/-T <dir>   show only for mount dir
     -l          list format output
 
-Space Used:
-du -hs * | sort -h - sort by human readable size
-du -schx /*	shows disk space used by subdirs
+du 
+    -hs * | sort -h - sort by human readable size
+    -schx /*	shows disk space used by subdirs
 
+Filesystems {{{1
 Attributes {{{2	
 change times
 	atime

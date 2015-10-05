@@ -13,6 +13,18 @@ unit commands
     show (properties)
     kill <name>
 
+    Lists units pulled in by a given target.
+        systemctl show -p "Wants" multi-user.target 
+
+    Show dependent services & other targets
+         systemctl show -p "After" sshd.service     
+
+    Lists the targets that will include the service
+         ls /etc/systemd/system/*.wants/sshd.service
+
+    List running services & their status
+        systemctl list-units -t service --all 
+
 unit fle commands
     edit <unit>
         creates 'override.conf' in /etc/systemd/system/<unit name>
@@ -25,6 +37,7 @@ system commands
     switch-root 
     set/get-default  <target name>
     isolate <target name>   switch immmediately to other target
+
 
 list-machines
 

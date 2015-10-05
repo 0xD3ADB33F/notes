@@ -14,6 +14,11 @@ linux          /boot/vmlinuz-4.1.6-200.fc22.x86_64
 initrd         /boot/initramfs-4.1.6-200.fc22.x86_64.img
 options        root=/dev/mapper/fedora-root ro rd.lvm.lv=fedora/root rhgbi resume=/dev/sda5 quiet 
 
+title          Arch Linux
+linux          /vmlinuz-linux
+initrd         /initramfs-linux.img
+options        root=PARTUUID=14420948-2cea-4de7-b042-40f67c618660 rw rootflags=subvol=ROOT
+
 
 Grub {{{1
 
