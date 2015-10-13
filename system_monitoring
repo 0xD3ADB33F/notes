@@ -1,5 +1,8 @@
 
 
+Boot speed stats
+    systemd-analyze
+
 Top for systemd slices
     systemd-cgtop
 

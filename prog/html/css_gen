@@ -6,8 +6,13 @@ Selectors
     <name> Element name
 	.<name>	class
 	#<name>	id
+    [class*="blah-"]    class name starts with 'blah-'
 
 
 Colours
 	tomato
+
+Fonts
+    indicate size with rem unit.
+
 

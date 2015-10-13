@@ -23,6 +23,9 @@ Packages - can use globbing in pkg name
 
 Package Groups
     group info, list, install 
+    group name
+        case insensitive
+        format: 'Fedora Blah' fedora-blah @fedora-blah (don't need 'group' in cmd)
 
     Show packages in a group
         group info 'Basic Desktop'

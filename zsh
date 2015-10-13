@@ -1,4 +1,5 @@
 http://www.rayninfo.co.uk/tips/zshtips.html
+Man page shortcut: Esc+H
 
 Builtins {{{1
 
@@ -36,6 +37,13 @@ fc:
 	fc <pat>    edit most recent command starting with <pat>
 	fc -l <pat> display, dont edit
 
+shortcuts
+	M-.			last argument - repeat to cycle backwards
+	
+    <cmd> M-p / M-n	
+		search hist for cmds starting with <cmd>
+
+
 Navigation {{{1
 
 cd to dir with one word different in path (two variations):
@@ -43,14 +51,6 @@ cd to dir with one word different in path (two variations):
     cd ${PWD/3.4/2.7} 
 
 <<<<<<< HEAD
-Parameters {{{1  
-
-set by:
-    parameter_name=value - No space before or after '='
-    Get value (parameter expansion) with $parameter_name
-    $ character introduces parameter/brace expansion
-    ${name} - braces are optional
-
 Configuration {{{1
 Startup Files {{{2
 	zprofile: 
@@ -77,20 +77,15 @@ set by:
     Get value (parameter expansion) with $parameter_name
 
 expansion  - see zshparam
-    $ character introduces parameter/brace expansion
-    ${name} - braces are optional
-    Ctrl+/ to undo an expansion
-
 
 
 Expansions {{{1
 
+Ctrl+/ to undo an expansion
 
-shortcuts
-	M-.			last argument - repeat to cycle backwards
-	
-    <cmd> M-p / M-n	
-		search hist for cmds starting with <cmd>
+parameter expansion
+    $ character introduces parameter/brace expansion
+    ${name} - braces are optional
 
 event selection:
 	!           start history expansion

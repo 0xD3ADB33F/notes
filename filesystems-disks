@@ -141,8 +141,11 @@ Mount subvolume
 Make snapshot
 	btrfsctl -s /mnt/btrfs/snapshot_of_root /mnt/btrfs 
 
+btrfs balance - distribute data after new vol added
+    start /
+
 btrfs device
-    add <dev> <dev> | <mount point of existing fs>
+    add <dev> <dev> | <mount point of existing fs e.g. '/'>
 
 btrfs subvolume 
     list <path>
@@ -150,10 +153,16 @@ btrfs subvolume
 btrfs filesystem 
     label /dev/XXX <label> 
 
-    balance - distribute data after new vol added
+        
+
+    df
+        usage info
 
     resize
         resize <size> | max <mounted fs>
+
+    show
+        shows usage info maybe more accurate than df
 
 Repair - fs umounted
 	btrfs check --repair
@@ -201,6 +210,8 @@ Initialize a disk or partition to use in a physical vol.
     pvdisplay --maps
         shows physical layout of volume
 
+    pvremove
+
 	pvscan
 	vgscan
 	fdisk -l    shows lv sizes
@@ -215,7 +226,9 @@ VG/volume group {{{3
         Extend existing vg
             vgextend vgname pvdevpath  
         Remove pv
-            vgreduce 
+            vgchange -a n vg_name
+            vgremove  
+            pvremove
 
     Info
         vgdisplay
