@@ -20,7 +20,7 @@ origin      default name of remote branch
             Can then c/o with 'co <name>'.  Remote is 'upstream'
 
 remote 
-    show        <b>	
+    show origin  
     add         <remote add <name> <url>
     clone		create new local repo, remote tracking branch is auto-created
     fetch		pull remote changes to remote tracking branch
@@ -61,15 +61,18 @@ Show files in working tree & index.
 	ls-files
         --abbrv --stage     Show index (includes all files)
 
-Show remote commit
-    ls-remote
-
 Commit {{{1
 
 Index includes snapshot of all files, not just staged.
+Tip commit      most recent commit on a branch
+Merge commtits  multiple parents
 
 commit -v			show diff in commit message
 commit -a			commit all tracked files
+
+Show remote commit
+    ls-remote
+
 
 Revert
 	reset				unstages all 
@@ -80,15 +83,10 @@ Revert
 	rebase	?	 
 
 
-	commit -v			show diff in commit message
-	commit -a			commit all tracked files
-
 Branches {{{1
 
 Branch          collection of commits, all points reachable from named commit
-Tip commit      most recent commit on a branch
 Master          default name of first branch
-Merge commtits  multiple parents
 HEAD            Normally symbolic ref to /refs/heads/<branch name>
                 This defines which branch is on
                 If earlier commit checked out, is hard link to commit ID.
@@ -96,27 +94,33 @@ HEAD            Normally symbolic ref to /refs/heads/<branch name>
 
 branch <name>	create new branch but don't switch to it	    	   
 checkout -b <name>	create new branch <name> and switch to it
-show-branch show all changes in branch
-branch -r	show remote tracking branches
-branch -a	show local and remote tracking branches
+
+Options
+    -r	show remote tracking branches
+    -a	show local and remote tracking branches
+    -d  delete <branch>
+    -rd delete remote <remote>/<branch>
 
 Checkout:
     Change the HEAD symref to point to the new  branch 
     Reset the index to match the tip of the new branch 
     Update the working tree to match the index
 
-git branch -rd <remote>/<branch>
-			Remove remote branch if error
+git symbolic-ref HEAD
 
 
+Set upstream branch
+    push --set-upstream origin gh-pages
+
+show-branch show all changes in branch
 
 Submodules
 	Repo independent of parent, harder to merge parent with child.  
 	Tracked in .gitmodules file.  Composed from a gitlink tree entry in main repo that points to particular commit 
 	Add
-		submodule add [--name name] <remote repo> [path from cwd]/local_repo_name
+		submodule add [--name name] <repo URL> [relative path in parent repo]
+		if path given, logical name is tail unless --name specified
 		if no local name given, repo cloned into cwd/<final part of repo path>
-		if given, path is logical name unless --name specified
 	Delete
 		submodule deinit
 		git rm -f <dir>

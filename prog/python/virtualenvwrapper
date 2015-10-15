@@ -3,7 +3,8 @@ Commands
 
 Create envs & projects
 mkvirtualenv -p <path to python ver>
-mkproject
+mkproject <dest dir>
+setvirtualenvproject <virt env path> <project path>  (default current dir & env)
 mktmpenv
 
 Naviation:

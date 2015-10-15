@@ -34,8 +34,9 @@ splitext
 fnmatch - pattern matching in path names
    http://www.dabeaz.com/generators/genfind.py
 
-running executables {{{2
----------------------
+Shell & running executables {{{1
+
+Run external programs {{{2
 
 subprocess module (new in 2.4)
    replaces
@@ -66,12 +67,10 @@ Controlling an interactive program like ftp:
    
 
 Arguments {{{2
-----------
 
-Optparse
-
-    new in 2.3
-    prefered to getopt
+   argparse - preferred
+   not in stdlib: Click
+   Optparse - new in 2.3,  prefered to getopt
 
 
 zipfile
