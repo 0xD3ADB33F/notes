@@ -14,6 +14,46 @@ https://wiki.archlinux.org/index.php/Persistent_block_device_naming
 
 lsblk -f	tree of disks, parts, labels, UUIDs, mount points
             no partlabel
+blkid		shows UUID's and types
+sfdisk -l
+udevadm info -n /dev/sdb -q all
+findmnt
+
+gpart
+	find lost partitions
+
+Partitions {{{1
+Partitioning utilities {{{2 
+
+compatibility
+	don't use both PQMagic and Linux fdisk to create partitions
+	on the same drive.  Instead, use PQM exclusively.
+
+partition writable by users
+	fstab options: rw - no need for uid option in fs types that preserve ownership
+	create directory in partition writable by user
+cfdisk
+	said (by the fdisk man page) to be reliable and better
+	than fdisk
+	'maximize' option creates incompatibility with Windows?
+	print/sector command shows partitions in hd order
+
+parted (qtparted and nparted on Knoppix)
+	can resize ext2 & 3 partitions but start point can't move.
+	gparted can move start point
+	has lost partition rescue feature
+	
+
+sfdisk - partition table reporting
+	-s  [<device - partition or disk>]    
+		show disk/partition size
+	-l [options] <dev>
+	-D  DOS compatibility - free 512 free at part beginning
+	-L  ignore irrelevant to Linux
+
+testdisk
+	haven't tried yet
+
 
 blkid		shows UUID's and types
     -po udev <dev>  show partition details
@@ -101,8 +141,11 @@ Mount subvolume
 Make snapshot
 	btrfsctl -s /mnt/btrfs/snapshot_of_root /mnt/btrfs 
 
+btrfs balance - distribute data after new vol added
+    start /
+
 btrfs device
-    add <dev> <dev> | <mount point of existing fs>
+    add <dev> <dev> | <mount point of existing fs e.g. '/'>
 
 btrfs subvolume 
     list <path>
@@ -110,10 +153,16 @@ btrfs subvolume
 btrfs filesystem 
     label /dev/XXX <label> 
 
-    balance - distribute data after new vol added
+        
+
+    df
+        usage info
 
     resize
         resize <size> | max <mounted fs>
+
+    show
+        shows usage info maybe more accurate than df
 
 Repair - fs umounted
 	btrfs check --repair
@@ -161,6 +210,8 @@ Info
     pvdisplay --maps
         shows physical layout of volume
 
+    pvremove
+
 	pvscan
 	vgscan
 	fdisk -l    shows lv sizes
@@ -168,6 +219,7 @@ Info
 pvresize - resize vg on a device
 
 
+<<<<<<< HEAD
 VG/volume group {{{2
 
 composed of 1 or more PV's, optionally already initialized with pvcreate
@@ -181,9 +233,13 @@ Change
     Remove pv
         vgreduce vgname pvpath
         pvremove 
+        or?
+        vgchange -a n vg_name
+        vgremove  
 
 Info
     vgdisplay
+    
 
 Activate vg 
     'vgchange -a y' or reboot
@@ -240,6 +296,11 @@ Check pool usage:
 
 Info / utilities {{{2
 
+<<<<<<< HEAD
+=======
+ls /dev/<vgname>/		
+
+>>>>>>> 7475e94f868c445edd3ec19497f61c587f2517bb
 Access LVM on disk from rescue disk
 	vgscan
 	vgchange -ay

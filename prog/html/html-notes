@@ -56,7 +56,12 @@ Flex Item properties
 
 Media Queries {{{1
 
+Device width depends on orientation
 @media only screen and (max-width: 500px) {
+min-width   True if screen at least x
+            Minimum width at which these styles are shown
+max-width   True if screen no bigger than x
+            Maximum width at which these styles are shown
 
 
 Semantic elements {{{1

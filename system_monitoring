@@ -7,41 +7,42 @@ Show contents of cgroups
     systemd-cgls
 
 journalctl {{{1
-	--no-pager don't pipe to pager
-	-f			follow
-    -r          reverse (newest entries first)
-    -n x        newest 10 or x
 
-    filters:
-	-b / -b -1		this boot only / last boot
-    -k          kernel output
-    -p err      priority - show at this level or above
-                emerg, altert, crit, err, warning, notice, info, debug
-	-u sshd		show logs for unit name sshd
-	-r /usr/sbin/sshd	same with path to exec
+--no-pager don't pipe to pager
+-f			follow
+-r          reverse (newest entries first)
+-n x        newest 10 or x
 
-    filter by date/time
-    --since "1 hour ago" | today 
-    --until "2015-01-11 03:00"
+filters:
+-b / -b -1		this boot only / last boot
+-k          kernel output
+-p err      priority - show at this level or above
+            emerg, altert, crit, err, warning, notice, info, debug
+-u sshd		show logs for unit name sshd
+-r /usr/sbin/sshd	same with path to exec
 
-    manage logs:
-    --disk-usage    show size
-    --vacuum-size=1G
-    --vacuum-time=1year
+filter by date/time
+--since "1 hour ago" | today 
+--until "2015-01-11 03:00"
 
-    config: /etc/systemd/journald.conf
-    SystemMaxUse=   max disk usage
+manage logs:
+--disk-usage    show size
+--vacuum-size=1G
+--vacuum-time=1year
+
+config: /etc/systemd/journald.conf
+SystemMaxUse=   max disk usage
 
 
 Filtering on field 
-    <field name>=<val> [ <field name>=<val> ]
-    Same field name specified more than once = OR
-    Different field names = AND
+<field name>=<val> [ <field name>=<val> ]
+Same field name specified more than once = OR
+Different field names = AND
 
-    journalctl _UID=70 (AND) _SYSTEMD_UNIT=avahi-daemon.service (OR) _SYSTEMD_UNIT=crond.service
-    PRIORITY=3
-    _UID=1000
-    _SYSTEMD_UNIT
+journalctl _UID=70 (AND) _SYSTEMD_UNIT=avahi-daemon.service (OR) _SYSTEMD_UNIT=crond.service
+PRIORITY=3
+_UID=1000
+_SYSTEMD_UNIT
 
 
 
@@ -67,4 +68,13 @@ Virtual Memory
 ps list
     Processes in [[ ]] have been swaped out due to inactivity
     Status Codes: S - sleeping, R - running
+
+Boot speed stats
+    systemd-analyze
+
+Top for systemd slices
+    systemd-cgtop
+
+Show contents of cgroups
+    systemd-cgls
 

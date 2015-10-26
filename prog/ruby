@@ -1,3 +1,12 @@
+Install gems:
+    install ruby
+    download tgz from https://rubygems.org/pages/download
+    ruby setup.rb --destdir = (root of /usr/bin).  
+    gem executable in <dest dir>/usr/bin.  Move to ~/bin
+    gem install <gem name>.  Gem executable in ~/.bin
+
+
+
 statement modifiers
 	puts 'Somethign' if condition == true
 	square = val*val while val < 1000

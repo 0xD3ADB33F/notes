@@ -1,3 +1,5 @@
+Pattern matching with regex, not shell syntax
+Will match anywhere on a liine
 
 Find alternatives:
 grep 'str1\|str2' filename
