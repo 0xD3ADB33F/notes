@@ -148,15 +148,15 @@ Snapshot
 Thinly-Provisioned Snapshot Volumes
 - snapshots without preset size
 
-steps {{{2
 
-PV/physical volume {{{3
+PV/physical volume {{{2
 
 Initialize a disk or partition to use in a physical vol.
     pvcreate <dev> [<dev> ...]
 
-    Shows pv's in vg
-        pvs --partial --verbose
+Info
+    pvs --partial --verbose
+        Shows pv's in vg
 
     pvdisplay --maps
         shows physical layout of volume
@@ -165,47 +165,61 @@ Initialize a disk or partition to use in a physical vol.
 	vgscan
 	fdisk -l    shows lv sizes
 
-VG/volume group {{{3
-    composed of 1 or more PV's, optionally already initialized with pvcreate
-
-    Create - also makes devices into pv's if not already
-        vgcreate vg_name /dev/hda1 /dev/hdb
-
-    Change
-        Extend existing vg
-            vgextend vgname pvdevpath  
-        Remove pv
-            vgreduce 
-
-    Info
-        vgdisplay
-
-    Activate vg 
-        'vgchange -a y' or reboot
-
-LV/logical volume {{{3
-    Create 
-        lvcreate [-n name] [-L size(kmg) -l sizeLE] vgName [vgpath]
-            size
-                -l	size in Physical Extents
-                -L	size in MB or GB
-            create lv using all space in vg
-                -l 100%VG
-            create lv using all free space in vg
-                -l 100%FREE
-            snapshot
-                -s origin [name|path]
-            thin vols
-                -T --thin
-                -V --virtualsize    
-
-    Resize - -r option reszies fs using fsadm
-        lvextend -r -L +3GB /dev/atomicos/root
-        lvreduce
-        lvresize
+pvresize - resize vg on a device
 
 
-Thin Volumes {{{3
+VG/volume group {{{2
+
+composed of 1 or more PV's, optionally already initialized with pvcreate
+
+Create - also makes devices into pv's if not already
+    vgcreate vg_name /dev/hda1 /dev/hdb
+
+Change
+    Extend existing vg
+        vgextend vgname pvdevpath  
+    Remove pv
+        vgreduce vgname pvpath
+        pvremove 
+
+Info
+    vgdisplay
+
+Activate vg 
+    'vgchange -a y' or reboot
+
+LV/logical volume {{{2
+
+Create 
+    lvcreate [-n name] [-L size(kmg) -l sizeLE] vgName [vgpath]
+        size
+            -l	size in Physical Extents
+            -L	size in MB or GB
+        create lv using all space in vg
+            -l 100%VG
+        create lv using all free space in vg
+            -l 100%FREE
+        snapshot
+            -s origin [name|path]
+        thin vols
+            -T --thin
+            -V --virtualsize    
+
+Info
+    lvs
+
+Resize  
+    lvextend
+            -r option resizes fs using fsadm (not for btrfs)
+            -r -L +3GB /dev/atomicos/root
+            -r -l +100%FREE 
+    lvreduce
+    lvresize
+
+
+Thin Volumes {{{2
+
+man lvmthin
 
 Create pool
     lvcreate -T -L3G extra_vg/thin_pool1
@@ -214,21 +228,17 @@ Create pool & vol
     lvcreate -T -L3G extra_vg/thin_pool1 -V2G --name thin_vol1
 
 Create vol in existing pool
-    lvcreate -V1G  extra_vg/thin_pool1 --name thin_vol1
+    lvcreate -n ThinLV -V VirtualSize --thinpool VG/ThinPoolLV
 
 Snapshot
-lvcreate -s vg1/thin_vol1 --name thin_snapshot1
+    lvcreate -n SnapLV -s VG/ThinLV (do not spec. size)
 
-Check pool usage: lvdisplay pool, 'Allocated pool data'
+Check pool usage: 
+    lvdisplay pool, 'Allocated pool data'
+    lvs 
 
 
 Info / utilities {{{2
-
-Show info
-    pvs
-    lvs
-
-ls /dev/<vgname>/		
 
 Access LVM on disk from rescue disk
 	vgscan
@@ -237,17 +247,6 @@ Access LVM on disk from rescue disk
 
 
 
-more LVM {{{2
-
-Changing volumes
-	with ext2 filesystems
-		e2fsadm - 
-			resize physical or LVM volumes and filesystems (using lvextend and
-			ext2online)
-		ext2online - resize online (mounted) ext2 fs. Requires kernel patch. 
-		ext2resize - resize offline ext2 fs.
-	LVM
-		pvresize - resize vg on a device
 
 Mounting & Permissions  {{{1
 

@@ -6,7 +6,33 @@ Top for systemd slices
 Show contents of cgroups
     systemd-cgls
 
-journalctl
+journalctl {{{1
+	--no-pager don't pipe to pager
+	-f			follow
+    -r          reverse (newest entries first)
+    -n x        newest 10 or x
+
+    filters:
+	-b / -b -1		this boot only / last boot
+    -k          kernel output
+    -p err      priority - show at this level or above
+                emerg, altert, crit, err, warning, notice, info, debug
+	-u sshd		show logs for unit name sshd
+	-r /usr/sbin/sshd	same with path to exec
+
+    filter by date/time
+    --since "1 hour ago" | today 
+    --until "2015-01-11 03:00"
+
+    manage logs:
+    --disk-usage    show size
+    --vacuum-size=1G
+    --vacuum-time=1year
+
+    config: /etc/systemd/journald.conf
+    SystemMaxUse=   max disk usage
+
+
 Filtering on field 
     <field name>=<val> [ <field name>=<val> ]
     Same field name specified more than once = OR
