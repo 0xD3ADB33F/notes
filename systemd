@@ -10,6 +10,11 @@ Subcommands
 unit commands
     list-units --type=[target | unit type]  #this is default command
     start, restart, stop, restart, reload, status <runtime> [service | socket]
+    
+    isolate <target name>   
+        switch immmediately to other target
+        stop all other processes
+
     show (properties)
     kill <name>
 
@@ -36,7 +41,6 @@ system commands
     suspend, hibernate, reboot, halt
     switch-root 
     set/get-default  <target name>
-    isolate <target name>   switch immmediately to other target
 
 
 list-machines

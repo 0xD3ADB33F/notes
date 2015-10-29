@@ -1,12 +1,5 @@
 
-Tools {{{1
-
-In libguestfs-tools:
-    guestfish
-
-
 Create a rootfs {{{1
-
 
 Create rootfs excluding system generated files
     excludes file:
@@ -25,112 +18,26 @@ Filesystem => image file
 Block device => image file
     qmeu-img convert /dev/x output.img 
 
+In libguestfs-tools:
+    guestfish
 
-LibVirt {{{1
 
+storage {{{1
 
-Install {{{2 
-libvirt-bin - libvirt binaries
-python-libvirt - python bindings for libvirt
-virtinstall 
-virt-manager
-Add users to 'libvirt' group
+lvm-based 
+    Benefits vs image-based: less disk i/o & may use lvm snapshots
 
-storage {{{2
-http://libvirt.org/storage.html
-http://fedoraproject.org/wiki/Test_Day:2009-09-17_Virtualization_qcow2
+    Use a volume group with unallocated space
+    Create a logical volume
+        lvcreate -L20G -n vm11 vg0
+    Use with virt-install
+        --disk path=/dev/vg0/vm11
 
-image file
-	formats include raw & qcow2
+    Convert image to lv of same size
+        qemu-img convert ~/vm10.qcow2 -O raw /dev/vg0/vm10
 
-Storage
-	pool-create-as
+virt-install {{{1
 
-Increase size
-	http://wiki.libvirt.org/page/Tips
-Snapshots with img files tips
-	http://fedoraproject.org/wiki/Test_Day:2009-09-17_Virtualization_qcow2
-
-Save snapshot - kvm, not qemu
-	virsh save vmname filename
-	virsh restore filename
-
-Snapshot mode
-#!/bin/sh
-exec /usr/bin/qemu "$@" -snapshot
-END
-Change emulator element to point to script with above
-
-pool {{{3
-
-Create:
-# virsh pool-dumpxml vm
-<pool type='dir'>
-  <name>vm</name>
-  <source>
-  </source>
-  <target>
-    <path>/home/andmalc/vm</path>
-  </target>
-</pool>
-
-virsh pool-create <file>
-pool-refresh, pool-list
-
-disk {{{3
-
-1G = 1068708864
-
-vol-create, 
-vol-list, 
-
-vol-delete
-	deletes physical volume
-	--pool poolname volname
-
-# cat demo-disk.xml
-<volume>
-  <name>demo.qcow2</name>
-  <capacity>5368709120</capacity>
-  <target>
-    <format type='qcow2'/>
-    <encryption format='qcow'>
-      <secret type='passphrase' uuid='0a81f5b2-8403-7b23-c8d6-21ccc2f80d6f'/>
-    </encryption>
-  </target>
-</volume>
-
-virsh vol-create/vol-delete default new.xml
-
-Disk with backing file:
-<volume>
-  <name>new.img</name>
-  <capacity>1000000000</capacity>
-  <allocation>0</allocation>
-  <target>
-    <format type='qcow2'/>
-  </target>
-  <backingStore>
-    <path>/var/lib/libvirt/images/youroriginal.img</path>
-  </backingStore>
-</volume>
-
-lvm-based storage {{{3
-
-Benefits vs image-based: less disk i/o & may use lvm snapshots
-
-Use a volume group with unallocated space
-Create a logical volume
-	lvcreate -L20G -n vm11 vg0
-Use with virt-install
-	--disk path=/dev/vg0/vm11
-
-Convert image to lv of same size
-	qemu-img convert ~/vm10.qcow2 -O raw /dev/vg0/vm10
-	do remaining steps at
-		http://www.howtoforge.com/virtualization-with-kvm-on-a-debian-lenny-server-p3
-
-virt-install {{{2
 	--virt-type 
 		kvm, qemu, xen, or kqemu
 	--disk opt=val, 
@@ -211,124 +118,16 @@ virt-install \
     --os-variant debiansqueeze
 
 
-management with virtsh {{{2
+virsh {{{1
 
 virsh --connect qemu:///system <cmd> <guestname>
+	list --all
+        list running & inactive domains
+
 virt-viewer --connect qemu+ssh://root@play.malcolmson.ca/system demo2
 	start
 	shutdown
 	destroy - force shutdown
 	suspend
 	resume
-
-list running & inactive domains
-	list
-
-console
-
-change domain settings
-	virsh edit <domain>
-
-Other virsh edit,dumpxml cmds:
-   * Virtual Networks: net-edit, net-dumpxml
-   * Storage Pools: pool-edit, pool-dumpxml
-   * Storage Volumes: vol-edit, vol-dumpxml
-   * Interfaces: iface-edit, iface-dumpxml
-
-Misc {{{2
-
-libguestfs
-	http://libguestfs.org/
-	http://honk.sigxcpu.org/con/Libguestfs__Virtual_Machine_Image_Swiss_Army_Knife.html
-	Utilities for working with guest images
-		resize img, access files, 
-
-
-Create image, instal Grub {{{1
-
-$ qemu-img create -f raw lenny-base.raw 5G
-
--P  scan for partitions
--f  find unused loopback device
-
- emu-system-x86_64 -drive format=raw,file=coreos.raw Now, create a loopback device for it: # losetup /dev/loop0 lenny-base.raw Partition the loopback device using fdisk. I use a single primary partition in this article.  # fdisk /dev/loop0 
-Now we need to create device-mapper entries for each of the partitions on the loopback device:
-
-# kpartx -a /dev/loop0
-
-If you made a single partition on /dev/loop0, there will now be a device-mapper block device at /dev/mapper/loop0p1, which you can go ahead and make a filesystem on and bootstrap to whatever flavour of Debian/Ubuntu you’d like. You’ll also want to remember the UUID of the root filesystem for later. For example,
-
-# mke2fs -j /dev/mapper/loop0p1
-# vol_id --uuid /dev/mapper/loop0p1 > target.uuid
-# mkdir /mnt/target
-# mount /dev/mapper/loop0p1 /mnt/target
-# debootstrap lenny /mnt/target http://ftp.nz.debian.org/debian
-
-At this point, the bootstrapped filesystem will need some manual setting up. In particular you’ll need to
-
-    Set up /etc/hostname
-    Set up /etc/hosts
-    Set up /etc/fstab (you’ll want to use the UUID you saved before)
-    Enable serial getty in /etc/inittab (important, we’ll use this for initial login)
-
-Copy the following into the target’s /etc/kernel-img.conf:
-
-do_symlinks = yes
-relative_links = yes
-do_bootfloppy = no
-do_initrd = yes
-link_in_boot = no
-postinst_hook = update-grub
-postrm_hook = update-grub
-do_bootloader = no
-
-Now we need to install a kernel and set up the boot-loader.
-
-# chroot /mnt/target
-target # apt-get install linux-image-amd64 grub
-target # mkdir -p /boot/grub
-target # cp /usr/lib/grub/x86_64-pc/* /boot/grub
-
-Exit from the target’s chroot. Now we’re back in the host, we need to install grub into the MBR of the disk image. You’ll need that UUID for the root filesystem from before. This step requires the host’s /dev to be bind-mounted into the target’s filesystem
-
-# mount --bind /dev /mnt/target/dev
-# echo "(hd0) lenny-base.raw" >> device.map
-# grub --device-map=device.map
-grub>root (hd0,0)
-grub>setup (hd0)
-grub>quit
-# echo "(hd0) UUID=UUID of target root fs goes here" >> /mnt/target/boot/grub/device.map
-# chroot /mnt/target
-target # update-grub
-
-update-grub will have written a basic menu.lst, but because it’s using the host’s /dev it will be pointing to the wrong place. Edit the target’s /boot/grub/menu.lst to use the UUID of the filesystem and not use the loop0 device. So, open up the target’s /boot/grub/menu.lst, search for the line:
-
-# kopt_2_6 root=/dev/mapper/loop0p1 ro
-
-and replace /dev/mapper/loop0p1 with
-
-UUID=the uuid of the root filesystem
-
-so it will look something like (make sure the # is still at the start of the line):
-
-# kopt_2_6 root=UUID=81af6388-cca5-4bf2-99dc-a47c81c00445 ro
-
-Also, replace the line groot=(loop0p1) with groot=(hd0,0). Again, it’s “commented out”. Now we need to update grub again.
-
-# chroot /mnt/target
-target # update-grub
-target # exit
-
-Almost done… At this point check that you’ve enabled the serial getty in the target’s /etc/inittab file as we’re going to boot the VM and use the serial console to do the initial login. Of course, you could install SSH in the chroot, set up networking and forget about the serial console, but it’s interesting none the less. The other alternative is to use VNC to connect to the console, but that’s the easy way out, though you will get boot messages, so if something goes wrong you’ll get to see why.
-
-Unmount everything:
-
-# umount /mnt/target/dev
-# umount /mnt/target
-# kpartx -d /dev/loop0
-# losetup -d /dev/loop0
-
-Now boot your shiny new VM:
-
-# kvm -nographic -serial pty -drive file=lenny-base.raw,if=virtio,index=0,boot=on -daemonize
 

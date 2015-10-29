@@ -63,7 +63,7 @@ gdisk, cgdisk
     change partition labels
     no lvm info
 
-partx
+partx -v -a <disk>
     show paritions with sector info
     tell kernel about partitions
 
@@ -293,14 +293,12 @@ Check pool usage:
     lvdisplay pool, 'Allocated pool data'
     lvs 
 
+lvm.conf
+    thin_pool_autoextend_threshold = 100 disables
+    
 
 Info / utilities {{{2
 
-<<<<<<< HEAD
-=======
-ls /dev/<vgname>/		
-
->>>>>>> 7475e94f868c445edd3ec19497f61c587f2517bb
 Access LVM on disk from rescue disk
 	vgscan
 	vgchange -ay

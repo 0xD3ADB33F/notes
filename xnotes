@@ -1,4 +1,23 @@
 
+X copy paste
+	terms
+		primary selection
+			whatever selected in a standard X app but not in Mozilla
+			meant to immediate paste
+		cut buffers
+			added by an explicit copy command
+			xlipboard will add after each copy
+	utilities
+        xclip
+            -o > file   #paste clipboard to file
+            xclip -o | tee <file>   #paste clipboard
+
+		xcb
+		xcutsel *
+	tips
+		Middle-click in Mozilla - loads a URL in the X Primary
+
+
 Startup Process
 
 Xsession man page: http://www.wlug.org.nz/Xsession%285%29

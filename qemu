@@ -1,4 +1,29 @@
 
+Create, manage image files {{{1
+
+Create img/qcow 
+    virt-builder
+
+guestfish shell - from libguestfstools
+
+Create raw format image file
+	no size needed
+	use base image option to get only differences saved
+
+	qemu-img create xp.raw 3G
+
+Convert an image file to a block device => big files
+	qemu-img convert root.qcow2 -O raw /dev/sdb
+
+Create img file from block device
+	qemu-img convert /dev/blah root.qcow2 -O raw
+
+Backup an image file - size is < 1/3
+	tar c --sparse -f img.bak.tar img.img 
+
+Size on disk
+    qemu-img info 
+
 Booting images {{{1
 
 qemu-system-x86_64 \
@@ -31,25 +56,28 @@ Graphical boot of iso to install on raw disk image
  qemu-system-x86_64  -machine accel=kvm --enable-kvm --cdrom /opt/coreos.iso -boot d  -m 4096 -net nic,model=e1000  -net user,hostfwd=tcp:127.0.0.1:6666-:22 -name coreos -localtime -no-reboot -drive format=raw,file=/opt/coreos.raw
 
 
-Create, manage image files {{{1
 
-Create img/qcow 
-    virt-builder
+Snapshots/base images {{{1
 
-guestfish shell - from libguestfstools
+base_image
+    qemu-img create -f qcow2 -b <base-img> <out-file>
+	base-image is not modified until 'commit' in monitor or 'qemu-image commit fn'
+	may create a new derived image based on existing derived
 
-Create raw file
-	qemu-img create xp.raw 3G
+    Commit changes back to base
+        qemu-img commit clone.img
+    Convert clone to be a base
+        qemu-img convert clone.img -O qcow2 newclone.img
 
-Convert an image file to a block device => big files
-	qemu-img convert root.qcow2 -O raw /dev/sdb
+    'commit' in monitor
 
-Create img file from block device
-	qemu-img convert /dev/blah root.qcow2 -O raw
-
-Backup an image file - size is < 1/3
-	tar c --sparse -f img.bak.tar img.img 
-
+snapshot
+    run qemu with -snapshot option
+    changes written to temp files
+    write changes to image with 'C-a s'
+	in monitor
+		info snapshots
+		commit (all | device)
 
 
 console/serial {{{1
@@ -77,35 +105,6 @@ Display monitor
 
 Access monitor		Ctrl+Alt 2
 Back to guest		Ctrl+Alt 1
-
-
-Versioning {{{1
-
-	base_image
-		qemu-img create -b <base-img> <out-file>
-		base-image is not modified until 'commit' in monitor
-
-	snapshot
-		run qemu with -snapshot option
-		changes written to temp files
-		write changes to image with 'C-a s'
-
-Base image method {{{2
-
-Create clone from base img
- qemu-img create -b <base img> -f <outformat> clone.img
-Now boot from clone img
-Commit changes back to base
-	qemu-img commit clone.img
-Convert clone to be a base
-	qemu-img convert clone.img -O qcow2 newclone.img
-
-Snapshots {{{2
-
-	run with -snapshot
-	in monitor
-		info snapshots
-		commit (all | device)
 
 
 Networking {{{1
@@ -253,76 +252,6 @@ From Debian Readme kvm-qemu
 	a 2.6.24 kernel.  However, using a 2.6.28 or more later kernel is highly
 	recommended.
 
-Monitor commands {{{2
-
-Display monitor
-	-monitor stdio
-
-Access monitor		Ctrl+Alt 2
-Back to guest		Ctrl+Alt 1
-
-images {{{2
-
-Create Image 
-	use raw, no size needed
-	use base image option to get only differences saved
-
-Usage
-	qemu-img create xp.raw 3G
-	qemu -hda xp.raw -cdrom /dev/cdrom -boot d -net user -m 256
-
-Convert an image file to a block device => big files
-	qemu-img convert root.qcow2 -O raw /dev/sdb
-
-Backup an image file - size is < 1/3
-	tar c --sparse -f img.bak.tar img.img 
-
-Create and mount partitioned image file
-	http://www.wand.net.nz/~smr26/wordpress/2008/08/28/kvm-the-hard-way/
-
-Mount partitions in qcow format image
-	qemu-diskp http://www.saulsbury.org/software/virtualization.html
-
-image versioning {{{2
-
-http://www.linux-kvm.com/content/how-you-can-use-qemukvm-base-images-be-more-productive-part-1
-
-Base image method {{{3
-
-Create derived image from base img
-	qemu-img create -b <base img> -f qcow2 today.img
-	base-image is not modified until 'commit' in monitor or 'qemu-image commit fn'
-	may create a new derived image based on existing derived
-
-Commit changes back to base
-	qemu-img commit clone.img
-Convert clone to be a base
-	qemu-img convert clone.img -O qcow2 newclone.img
-
-Snapshots {{{3
-
-run with -snapshot
-
-file format must be qcow2 (?)
-
-Manage snapshots
-
-qemu-img snapshot [options snapshotname] imagefile
-	-l		list
-	-a <sn>	apply to image ?
-	-c <sn>	create
-	-d <sn>	delete
-
-in monitor
-	info snapshots
-	write changes to image with 'C-a s'
-	commit (all | device)
-	in monitor: savevm my_snapshot
-	loadvm my_snapshot (can also run from cmd line)
-	delvm
-
-
-
 startup {{{2
 
 Boot from CD or iso
@@ -455,12 +384,6 @@ http://alien.slackbook.org/dokuwiki/doku.php?id=slackware:qemu
 
 
 
-USB {{{2
-
-Use USB devices
-	usb_add in monitor
-		info usbhost
-		usb_add host:<device id as shown in previous>
 Xorg.conf for guest {{{2
 
 Section "Monitor"

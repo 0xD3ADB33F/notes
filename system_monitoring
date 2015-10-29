@@ -1,4 +1,6 @@
 
+Show monitored services, sorted by system, client slices
+    systemctl status
 
 Top for systemd slices
     systemd-cgtop

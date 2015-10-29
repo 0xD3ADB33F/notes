@@ -3,6 +3,11 @@ Shell Options
 	shopt	        set shell options command ie 'shopt -s histreedit'
 	cdable_vars	    cd to non-dir assumed to be value of a variable
 
+Quick write to file
+    tee myfile <<< blahblah
+    tee -a myfile <<< xxx #appends
+
+
 Key Binding {{{1
 
 Notation:
