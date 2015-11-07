@@ -47,6 +47,12 @@ _UID=1000
 _SYSTEMD_UNIT
 
 
+Utilites {{{1
+
+journal-brief
+    http://cyberelk.net/tim/2015/10/19/journal-brief/
+
+
 
 Old {{{1
 
