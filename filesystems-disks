@@ -8,7 +8,8 @@ General {{{1
     GPT GUID Partition Table
         Stores partition info as GUID's (= UUID in Linux) instead of by order
 
-Disk, Partition Info {{{1
+Block devices, Disks, Partitions {{{1
+Info {{{2
 
 https://wiki.archlinux.org/index.php/Persistent_block_device_naming
 
@@ -22,7 +23,6 @@ findmnt
 gpart
 	find lost partitions
 
-Partitions {{{1
 Partitioning utilities {{{2 
 
 compatibility
@@ -80,6 +80,32 @@ gpart
 testdisk
     http://www.cgsecurity.org/wiki/TestDisk_Step_By_Step
 
+
+Loopback files, images {{{2
+
+
+file for use as loop devices - img
+	create file 
+		qemu-img
+		dd if=/dev/zero of=/home/you/cryptfile bs=1M count=500
+        truncate -s 10G lvm.img
+
+	create a device from file
+		losetup <dev> <file>
+        losetup -f --show lvm.img
+
+
+	mount a partition
+        kpartx  - create device mapper entries for partitions in a device file
+
+		print partition table
+			 fdisk -l -u file.img
+		multiply starting cyclinder number * 512, e.g. 63 * 512 = 32256
+		mount -o loop,offset=32256 image.img mnt	
+
+    create lvm vg in file
+        pvcreate /dev/loop0
+        vgcreate lxc /dev/loop0
 
 
 FS Info {{{1
@@ -280,6 +306,9 @@ man lvmthin
 Create pool
     lvcreate -T -L3G extra_vg/thin_pool1
 
+Create pool, leaving 5% for metadata
+    lvcreate -T -l 95%FREE  vg/thinpool
+
 Create pool & vol
     lvcreate -T -L3G extra_vg/thin_pool1 -V2G --name thin_vol1
 
@@ -295,7 +324,10 @@ Check pool usage:
 
 lvm.conf
     thin_pool_autoextend_threshold = 100 disables
-    
+
+Free space after files in vol deleted
+    fstrim -v <mount point>
+
 
 Info / utilities {{{2
 
@@ -308,6 +340,8 @@ Access LVM on disk from rescue disk
 
 
 Mounting & Permissions  {{{1
+
+setfacl -m 'u:andmalc:rwx' /var/lib/machines 
 
 mount
 	attaches a filesystem on a device to a point in unix filesystem tree.
