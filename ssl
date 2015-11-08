@@ -1,25 +1,17 @@
 
 docs
-	Securing book
-		http://www.faqs.org/docs/securing/netencrypt.html
 	Openssl.org - Config file format
 		http://www.openssl.org/docs/apps/req.html#CONFIGURATION_FILE_FORMAT
-	a guide
-		http://vhcs.net/new/modules/newbb/print.php?form=1&topic_id=2237&forum=17&order=ASC&start=0
-	another guide
-		http://myrddin.org/howto/debian-apache-sslcert.php
+    Postfix TLS guide
+        http://www.postfix.org/TLS_README.html
 
-	re ssl, apache site
-		http://httpd.apache.org/docs-2.0/ssl/ssl_intro.html
-	
 files
-	openssl.conf
-		default name for settings file
-	privkey.pem
-		default name for private keY
-	*.csr
-		certificate request file
+    Maybe together in pem file or separate:
+        Certificate - identifies host, self-signed or by public CA
+        Private key - restrict access
 
+Test validity of cert file:
+    openssl verify -purpose sslserver <file>
 
 generate private key
 	- RSA keys do encryption + signing, DSA signing only
@@ -39,6 +31,7 @@ OR/ gen priv key and request cert in one step
 info
 	show a server's cert
 		openssl s_client -port 443 -host your.server
+
 utilities
 	ssl-cert package 
 	- wrapper for openssl req

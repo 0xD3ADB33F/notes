@@ -26,8 +26,20 @@ Options
 Change passphrase
 	ssh-keygen -t <type> -p
 
+Export to PEM
+	ssh-keygen -e -m pem 
+
+
 Display fingerprint
 	ssh-kehgen -f <pub key file name> -l
+
+Key formats:
+MD5 32 bit  41:0e:07:a1:5d:89:32:e1:42:30:70:ff:91:6e:d4:1f
+SHA 40 bit  2048 SHA256:gfno3KCYssX6XgdaJki/VbDcQpgiUM9+Qzgn+uJsbI8 
+
+Convert public key to MD5 fingerprint:
+    Echo <content of public key> | base64 -d | md5sum
+
 
 escapes {{{1
 
