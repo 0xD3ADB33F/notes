@@ -1,3 +1,34 @@
+Admin {{{1
+
+adduser is link to useradd
+
+Groups:
+    adduser -g wheel -m andmalc
+    usermod -a -G group user
+    gpasswd -a sammy wheel
+
+Setup {{{1
+
+Packages {{{2
+Console {{{3
+
+visudo
+tmux, git, zsh, mlocate
+
+Other {{{3
+
+
+android-tools for adb, fastboot
+
+Fonts:
+Monospaced:
+* hack-fonts
+* levien-inconsolata-fonts
+* adobe-source-code-pro-fonts
+mozilla-fira-mono-fonts
+dejavu-sans-mono-fonts
+
+
 
 Dnf {{{1
 
