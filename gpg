@@ -24,7 +24,9 @@ Sign documents
 	
 Manage keys in keychain
 	Master key is for creating signatures and collects signatures of others who have confirmed my identity.  
-	gpg --edit-key name
+	gpg 
+        --edit-key name
+        --list-keys
 	uid <name>
 		select a uid for editing
 		> sign
