@@ -57,8 +57,10 @@ Override escape			~ (i.e. ~~)
 Port Forwarding  {{{1
 
 http://unix.stackexchange.com/questions/46235/how-does-reverse-ssh-tunneling-work
+https://help.ubuntu.com/community/SSH/OpenSSH/PortForwarding
 
--R listens on remote side, delivers to local
+-L Answer on local side, deliver to local
+-R answer on remote side, delivers to local
 -R <remote port>:localhost:<local port>
 
 Config

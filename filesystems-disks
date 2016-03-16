@@ -30,93 +30,25 @@ findmnt
 gpart
 	find lost partitions
 
-Utils {{{1
 
 
-dd
-    http://www.noah.org/wiki/Dd_-_Destroyer_of_Disks 
-	exact copy of entire partition including MBR
-		dd if=/dev/part of=/dev/anotherpart
 
 
-Mounting & Permissions (edit needed) {{{1
 
-mount
-	attaches a filesystem on a device to a point in unix filesystem tree.
-	defaults options 
-		rw, suid, dev, exec, auto, nouser, async
-
-mount partition in a loopback file
-	http://wiki.edseek.com/guide:mount_loopback
-	http://www.unix.com/filesystems-disks-memory/24366-can-loopback-filesystem-partitioned.html
-	install grub
-		http://www.usenet-forums.com/linux-general/95580-install-grub-hdd-image.html
-
-
-allow umounting
-	Running 'exec /bin/sh' eliminates last processes.
-	fuser: show what processes are using which files.
-	cat /proc/mounts
-
-automount
-	docs
-		HOWTO - very good intro to network filesystems 
-			http://www.Linux-Consulting.com/Amd_AutoFS/autofs.html
-
-	requirements
-		amd automount daemon - userspace
-		autofs - kernel support needed -
-			cat /proc/filesystems -> autofs
-
-attributes
-	ownership
-		user & users imply noexec, nosuid, & nodev unless subsequently
-		overriden 
-			e.g. -o user[s],exec,suid
-		"auto, uid=500, gid=100" 
-			take all ownership of files in mounted partition.
-restricting access
-	Colin Watson
-		There should be no need to apply the restrictive permissions to
-		subdirectories too, because once execute permission is withheld on
-		a parent directory you can't get to the subdirectories anyway 
-	in /home - chmod * 700
-	in adduser.conf
-		DIR_MODE=700
-
-		
-change times
-	atime
-		access time
-		time of read (including backups) 
-		permissions changes don't affect
-	mtime   
-		change to file data
-	ctime   
-		change to file data, permissions, or ownership (most
-		inclusive)
-
-Changing volumes
-	with ext2 filesystems
-		e2fsadm - 
-			resize physical or LVM volumes and filesystems (using lvextend and
-			ext2online)
-		ext2online - resize online (mounted) ext2 fs. Requires kernel patch. 
-		ext2resize - resize offline ext2 fs.
-	LVM
-		pvresize - resize vg on a device
-
-
-Partitions {{{1
-Partitioning utilities {{{2 
+Utilities {{{2 
 
 compatibility
-	don't use both PQMagic and Linux fdisk to create partitions
-	on the same drive.  Instead, use PQM exclusively.
+    dd - bs=2048 for compatibility with desktop disk utilities like Gnome Disks
 
 partition writable by users
 	fstab options: rw - no need for uid option in fs types that preserve ownership
 	create directory in partition writable by user
+
+dd
+    http://www.noah.org/wiki/Dd_-_Destroyer_of_Disks 
+	exact copy of entire partition including MBR
+		dd bs=2048 if=/dev/part of=/dev/anotherpart
+
 cfdisk
 	said (by the fdisk man page) to be reliable and better
 	than fdisk
@@ -278,6 +210,74 @@ btrfs filesystem
 Repair - fs umounted
 	btrfs check --repair
 
+
+
+Mounting & Permissions (edit needed) {{{2
+
+mount
+	attaches a filesystem on a device to a point in unix filesystem tree.
+	defaults options 
+		rw, suid, dev, exec, auto, nouser, async
+
+mount partition in a loopback file
+	http://wiki.edseek.com/guide:mount_loopback
+	http://www.unix.com/filesystems-disks-memory/24366-can-loopback-filesystem-partitioned.html
+	install grub
+		http://www.usenet-forums.com/linux-general/95580-install-grub-hdd-image.html
+
+
+allow umounting
+	Running 'exec /bin/sh' eliminates last processes.
+	fuser: show what processes are using which files.
+	cat /proc/mounts
+
+automount
+	docs
+		HOWTO - very good intro to network filesystems 
+			http://www.Linux-Consulting.com/Amd_AutoFS/autofs.html
+
+	requirements
+		amd automount daemon - userspace
+		autofs - kernel support needed -
+			cat /proc/filesystems -> autofs
+
+attributes
+	ownership
+		user & users imply noexec, nosuid, & nodev unless subsequently
+		overriden 
+			e.g. -o user[s],exec,suid
+		"auto, uid=500, gid=100" 
+			take all ownership of files in mounted partition.
+restricting access
+	Colin Watson
+		There should be no need to apply the restrictive permissions to
+		subdirectories too, because once execute permission is withheld on
+		a parent directory you can't get to the subdirectories anyway 
+	in /home - chmod * 700
+	in adduser.conf
+		DIR_MODE=700
+
+		
+change times
+	atime
+		access time
+		time of read (including backups) 
+		permissions changes don't affect
+	mtime   
+		change to file data
+	ctime   
+		change to file data, permissions, or ownership (most
+		inclusive)
+
+Changing volumes
+	with ext2 filesystems
+		e2fsadm - 
+			resize physical or LVM volumes and filesystems (using lvextend and
+			ext2online)
+		ext2online - resize online (mounted) ext2 fs. Requires kernel patch. 
+		ext2resize - resize offline ext2 fs.
+	LVM
+		pvresize - resize vg on a device
 
 
 LVM {{{1
