@@ -73,11 +73,22 @@ commit -a			commit all tracked files
 Show remote commit
     ls-remote
 
+Reverting / Resetting {{{1
 
-Revert
-	reset				unstages all 
+https://www.atlassian.com/git/tutorials/undoing-changes
+
+revert <commit>
+    Generate a new commit that undoes changes in <commit>, applies that to the current branch.    
+    Preferred over Reset because preserves history
+
+
+Reset
+    Usually used to undo changes in staging and working dir.  Not for shared commits
+    Permanent undo - potential to lose work
+
+	reset				Unstages all, no effect on files 
+	reset --hard <commit>	unstages, reverts changes in working dir
 	reset -- <path>		unstages <path>
-	reset --hard HEAD	revert all changes incl. working dir. Staged files => untracked.
 	reset -p			unstage interactively
 	
 	rebase	?	 
@@ -220,4 +231,4 @@ Git Config {{{1
    pager = less -r
 [status]
 	showUntrackedFiles = no
-~
+a

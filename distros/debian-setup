@@ -1,29 +1,40 @@
 
 Installation {{{1
 Sources {{{2
-	 http://gulus.usherbrooke.ca/debian/
-	http://debian.yorku.ca/debian/
-	apt.conf
-		APT::Default-Release "stable";
-	Google
-		deb http://dl.google.com/linux/deb/ stable non-free
-		deb http://dl.google.com/linux/deb/ testing non-free
 
-	#deb http://www.deb-multimedia.org squeeze main
-	deb http://www.deb-multimedia.org testing main
+http://gulus.usherbrooke.ca/debian/
+http://debian.yorku.ca/debian/
+
+apt.conf
+/etc/apt/apt.conf or /etc/apt/apt.conf.d/something
+    APT::Default-Release "stable";
+    APT::Install-Recommends "0";
+    APT::Install-Suggests "0";
+
+
+UnofficialRepositories
+    Google
+        deb http://dl.google.com/linux/deb/ stable non-free
+        deb http://dl.google.com/linux/deb/ testing non-free
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+
+#deb http://www.deb-multimedia.org squeeze main
+
+Debian Multimedia
+deb http://www.deb-multimedia.org testing main
 
 
 
 
 general setup {{{1
-packages {{{2	
-	essential
-		sudo zsh vim rsync screen tree rdate yafc pmount bzip2
-		zsh-static, openssh-server (w/o Recommends)
-		unison
 
-/etc/apt/apt.conf or /etc/apt/apt.conf.d/something
-	Aptitude::Recommends-Important "false";
+packages {{{2	
+
+essential
+    sudo zsh vim rsync screen tree rdate yafc pmount bzip2
+    zsh-static, openssh-server (w/o Recommends)
+    unison
+
 
 rcconf, 
 netselect-apt,sshfs, htop, 
