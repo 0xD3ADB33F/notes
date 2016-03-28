@@ -1,6 +1,8 @@
 http://www.rayninfo.co.uk/tips/zshtips.html
 Man page shortcut: Esc+H
 
+http://reasoniamhere.com/2014/01/11/outrageously-useful-tips-to-master-your-z-shell/
+
 Builtins {{{1
 
 

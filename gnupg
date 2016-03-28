@@ -1,4 +1,15 @@
 
+http://www.pps.univ-paris-diderot.fr/~jch/software/pgp-validating.html
+
+Create key
+    gpg2 –full-gen-key
+
+Show keys 
+    --list-keys
+
+Send key to server
+    gpg2 --keyserver keys.fedoraproject.org --send-key 5D50C86C
+
 
 Encrypt a document
 	for specific user
