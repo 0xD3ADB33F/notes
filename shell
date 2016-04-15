@@ -11,6 +11,15 @@ Python in shell
 https://github.com/Russell91/pythonpy
 
 
+xargs 
+    takes a newline separated list and maps the list to a command
+    under zsh use zargs
+        autoload -U zargs
+        zargs **/*~ -- rm
+
+
+
+
 Key Binding {{{1
 
 Notation:
