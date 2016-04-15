@@ -7,6 +7,9 @@ Quick write to file
     tee myfile <<< blahblah
     tee -a myfile <<< xxx #appends
 
+Python in shell
+https://github.com/Russell91/pythonpy
+
 
 Key Binding {{{1
 

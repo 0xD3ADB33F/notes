@@ -1,33 +1,29 @@
 
-psql
-	which user to run as
-		sudo su - postgres
-		or createuser and run as that, either by being logged in as that user
-		or with -U option, or set PGUSER
+Commands
+    createdb/dropdb
+    createuser
 
-	\' commands
-		l       list databases
-		c       change to a new db
+psql
+    db user
+        sudo su - postgres
+        or createuser andmalc 
+        or with -U option, or set PGUSER
+
+	\x commands
+        \x  Expanded display 
+        \c[onnect] [DBNAME|- USER|- HOST|- PORT|-]
+
+        list (append + for more details):
+            l       list databases
+            dn      list schemas
+            dt      list tables
+
 		g or ;			end input
 		o       send query results to a file or pipe
-		d {t/i/s/v}  list tables/views/indexes/sequences
 		H       toggle HTML mode
 
 Table design
     Timestamp:      colname TIMESTAMP DEFAULT now()
-
-Serial Type
-	Used to create unique identifiers for table entries
-
-	  CREATE TABLE mytable (
-		 myid    SERIAL  PRIMARY KEY,
-		 ...
-	  )
-
-	then:
-		INSERT INTO mytable (col1, col2,...) VALUES (value1, value2,...)
-	
-	If update as above, Serial value created automatically (per README.Debian)
 
 Datatypes
 	boolean, bool - value may be unquoted true/false
