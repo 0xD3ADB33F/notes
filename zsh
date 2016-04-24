@@ -256,6 +256,11 @@ done
 
 for file in **/*(.); do mv $file{,.sh}; done
 
+Delete zero length files
+ls -l  **/*(L0) | while read file; do
+    rm $file;
+done
+
 
 Startup Files {{{1
 	zprofile: 

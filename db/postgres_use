@@ -1,4 +1,8 @@
 
+Deeper into Postgres 9.5 - New Group By Options for Aggregation
+https://compose.io/articles/deeper-into-postgres-9-5-new-group-by-options-for-aggregation
+
+
 psql
 	which user to run as
 		sudo su - postgres

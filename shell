@@ -8,6 +8,15 @@ Quick write to file
     tee -a myfile <<< xxx #appends
 
 
+xargs 
+    takes a newline separated list and maps the list to a command
+    under zsh use zargs
+        autoload -U zargs
+        zargs **/*~ -- rm
+
+
+
+
 Key Binding {{{1
 
 Notation:
