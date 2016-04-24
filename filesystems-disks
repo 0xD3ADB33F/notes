@@ -48,6 +48,15 @@ dd
     http://www.noah.org/wiki/Dd_-_Destroyer_of_Disks 
 	exact copy of entire partition including MBR
 		dd bs=2048 if=/dev/part of=/dev/anotherpart
+        bs=4M said faster
+
+    Add progress viewer with pv or dc3dd
+        pv < /dev/sda > /dev/sdb
+         dd if=/dev/foo bs=4M | pv -s 20G | sudo dd of=/dev/baz bs=4M
+   
+        dc3dd if=/dev/sda of=/dev/sdb
+
+
 
 cfdisk
 	said (by the fdisk man page) to be reliable and better

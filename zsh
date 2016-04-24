@@ -52,7 +52,6 @@ cd to dir with one word different in path (two variations):
     cd <old> <new>
     cd ${PWD/3.4/2.7} 
 
-<<<<<<< HEAD
 Configuration {{{1
 Startup Files {{{2
 	zprofile: 
@@ -65,8 +64,6 @@ Startup Files {{{2
 	zlogin: 
 		runs after zshrc.  Purpose really just equivalent of Bourne-type
 		shells /etc/profile and csh login (?).
-=======
->>>>>>> 0eca88aa4ae429ddcbfd85412c6f0bea77ce718c
 
 CD stack
 	cp file ~1 - copy file to first dir in stack 
@@ -208,8 +205,6 @@ timestamp
 	combining qualifiers
 		files are owned by me and less than 5k or not world writable
 			*(ULk-5,^W) 
-
-flags {{{2
 
 (#i) - case insensitive matching within pattern
     in effect until end of pattern or as delimited by ()
