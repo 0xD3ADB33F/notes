@@ -10,6 +10,12 @@ Groups:
 
 Setup {{{1
 
+Set locale
+    localectl 
+       list-locales 
+       set-locale LANG=locale
+
+
 Packages {{{2
 Console {{{3
 
@@ -43,6 +49,7 @@ Packages - can use globbing in pkg name
             show pkg version, repo, if installed or available
             if no arg, lists installed then avail packages
             does not sync metadata
+            see also repoquery plugin
     list [installed | available]
             list all available and installed [just installed | avail & not installed]
 
@@ -84,8 +91,8 @@ http://dnf-plugins-core.readthedocs.org/en/latest/index.html
     provides <fn>
         shows which packages a file was installed by
 
-    repoquery
-
+    repoquery <key word>
+        search repos for packages
 
 Repos {{{1
 

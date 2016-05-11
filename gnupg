@@ -1,19 +1,50 @@
 
+http://www.pps.univ-paris-diderot.fr/~jch/software/pgp-validating.html
+https://fedoramagazine.org/gpg-using-your-key/
+
+
+Verify only recipient can read:
+    Encrypt the file or message with the recipient's public key
+
+I want the recipient to be able to verify it came from me
+    sign the file or message with your private key
+
+I want to verify the identity of a person who apparently sent a file or message
+    Verify the signature using the sender's public key.
+
+I want someone to send me a message or file only I can view.
+    Have the sender encrypt the file or message with your public key
+
+
+    
+Create key
+    gpg2 –full-gen-key
+
+Show keys 
+    --list-keys
+
+Send key to server
+    gpg2 --keyserver keys.fedoraproject.org --send-key 5D50C86C
+
 
 Encrypt a document
 	for specific user
-        gpg -r recipient -e <data>
+        gpg2 -r recipient --encrypt | -e <data>
 	conventional or symetric, w/o public key
-		gpg -c <filename>
+		gpg --symmetric  <filename>
 
 Decrypt a document
 	needed: private key to which doc was encrypted
-        gpg -d <fn>
+        gpg <input fn>
+        gpg2 -o - <input fn>    Output to std
+        gpg2 -o <output fn> <input fn>    Output to file, specify name
+
 
 Export key
     Binary format:
         gpg --output <fn> --export <ID>
     ASCII Armor format
+        Allows gpg format message to be copied/pasted in plain text
         gpg --armor --export <ID>
 
 
