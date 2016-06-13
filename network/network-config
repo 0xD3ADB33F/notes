@@ -36,7 +36,7 @@ Connection
 ip - iproute {{{1
 
 Debian package iproute2
-can supercede ifconfig, route, arp, though essential when > 1 route
+can supercede net-tools apps ifconfig, route, arp, though essential when > 1 route
 
 http://teknixx.com/new-linux-networking-commands/
 

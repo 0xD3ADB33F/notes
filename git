@@ -34,18 +34,12 @@ Info {{{1
 
 Status 
 	-sb				short form
-					left column is staged, right column is modified
+					Red is changed or untracked
+                    Green is staged
 
-Log
-	-#				number of commits to show
-	 -p				show diffs	
-	 --grep			matching string
-	 --stat			short summary of files and changes
-	 --decorate --graph --oneline --all
-	 <path>			show commits with this file
 
-Diff
-	no arg			changed but not staged
+Diff - shows changes to working tree
+	no arg			changes to tracked files not staged
 	--cached		changes staged
 	--staged		same as --cached
     HEAD            staged vs. current commit
@@ -54,18 +48,29 @@ Diff
 	-- <file>		working tree vs. commit
 	HEAD\^ HEAD		show diffs between last two commits
 					prefix noglob in zsh for no ^ escape needed
-
 	difftool			show diff in vim etc.
 
-Show files in working tree & index.  
-	ls-files
-        --abbrv --stage     Show index (includes all files)
+Log - shows commit history
+	-#				number of commits to show
+	 -p				show diffs	
+	 --grep			matching string
+	 --stat			short summary of files and changes
+	 --decorate --graph --oneline --all
+	 <path>			show commits with this file
 
-Commit {{{1
+ls-files
+    Show tracked files in working tree & index.  
+    --abbrv --stage     Show index (includes all files)
+
+
+Add & Commit {{{1
+
+add <path spec>
+    -i  interactive
 
 Index includes snapshot of all files, not just staged.
 Tip commit      most recent commit on a branch
-Merge commtits  multiple parents
+Merge commits  multiple parents
 
 commit -v			show diff in commit message
 commit -a			commit all tracked files
@@ -80,6 +85,9 @@ https://www.atlassian.com/git/tutorials/undoing-changes
 revert <commit>
     Generate a new commit that undoes changes in <commit>, applies that to the current branch.    
     Preferred over Reset because preserves history
+
+    revert HEAD~1
+        new commit undoing changes from last commit
 
 
 Reset

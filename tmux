@@ -3,6 +3,7 @@ Startup
 -c      start dir
 
 Windows
+l       last window
 n/p     switch to next/previous window
 arrow   move to other window or pane
 ,       rename window

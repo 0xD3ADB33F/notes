@@ -29,15 +29,9 @@ Windows/ui/Interface {{{1
 Windows 
 
 Opening
-		[n]sp[lit] [+cmd] [fn]	^ws				
-				Split window into two parts with current file open in both.  New window is n high.	Run cmd after file is loaded.
-		[N]new		Split horiz, windows hight N, edit new file
-		[N]vne[w]	Split window vertically N wide, edit empty file
-		vne[w]		vertical split new
-		C-W		n - new win horiz. / s - existing file horiz
-		s/v			
-				Split current window horizentally/vertically
-				edit current file.
+    sv      vertical split
+    vs      horizontal split
+    sb      split buffer
 
 
 Moving Between
@@ -104,7 +98,6 @@ e +		open at end
 r		read in file
 
 bro[wse] {command} [dir name] for commands including :e & :w, open a file browser.
-vertical split \~  split window and open a file explorer
 
 
 
@@ -122,7 +115,6 @@ BUFFER LIST COMMANDS
 	:bdelete x y z			delete buffers x,y,&z
 	:b[bn | fn]		edit buffer # or file_name. Use :sb for split & edit in same way.
 	:bad[d] fn		add fn to file list
-	:bm, :sbm		Edit/ split window & edit next modified buffer.
 	:x[it]	Write file if changed and exit.  Hides current buffer if more windows(?)
 	:q!		Quits but does not abandon changed hidden buffers (use :quall! for this)
 	:[range]wq[!] [file]	write & quit, but only write the lines in [range].
