@@ -149,6 +149,10 @@ du
     -hs * | sort -h - sort by human readable size
     -schx /*	shows disk space used by subdirs
 
+ncdu
+    curses disk usage
+
+
 Filesystems {{{1
 Attributes {{{2	
 change times

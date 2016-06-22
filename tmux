@@ -1,6 +1,16 @@
 Startup
+Options
+
+-L <socketname>	
+	use to force non-default server, useful for testing config changes
+	e.g. tmux -f tmuxtemp -L myapp new-session
+
+
 -n      name
 -c      start dir
+Commands 
+	new-session         -s  create session with <name>
+    attach to target    a  -t
 
 Windows
 l       last window
@@ -33,8 +43,6 @@ s   choose from list
 
 startup
     list sessions       ls
-    new-session         -s  create session with <name>
-    attach to target    a  -t
 
 
 Redraw on bigger screen

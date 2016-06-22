@@ -65,12 +65,12 @@ ls-files
 
 Add & Commit {{{1
 
-add <path spec>
-    -i  interactive
-
 Index includes snapshot of all files, not just staged.
 Tip commit      most recent commit on a branch
 Merge commits  multiple parents
+
+add <path spec>
+    -i  interactive
 
 commit -v			show diff in commit message
 commit -a			commit all tracked files
@@ -101,6 +101,8 @@ Reset
 	
 	rebase	?	 
 
+Restore one file from earlier commit.  WD is altered.
+	checkout <commit ID> <file path>
 
 Branches {{{1
 
@@ -111,14 +113,16 @@ HEAD            Normally symbolic ref to /refs/heads/<branch name>
                 If earlier commit checked out, is hard link to commit ID.
                 Then in detached HEAD mode, not on branch
 
-branch <name>	create new branch but don't switch to it	    	   
+
 checkout -b <name>	create new branch <name> and switch to it
 
-Options
+branch 
     -r	show remote tracking branches
     -a	show local and remote tracking branches
     -d  delete <branch>
     -rd delete remote <remote>/<branch>
+<name>	create new branch but don't switch to it	    	   
+
 
 Checkout:
     Change the HEAD symref to point to the new  branch 

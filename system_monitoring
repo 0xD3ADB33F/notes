@@ -10,18 +10,19 @@ Show contents of cgroups
 
 journalctl {{{1
 
---no-pager don't pipe to pager
 -f			follow
 -r          reverse (newest entries first)
 -n x        newest 10 or x
+-e          open at end/most recent entries of log
+--no-pager  don't pipe to pager
 
 filters:
 -b / -b -1		this boot only / last boot
 -k          kernel output
 -p err      priority - show at this level or above
             emerg, altert, crit, err, warning, notice, info, debug
--u sshd		show logs for unit name sshd
 -r /usr/sbin/sshd	same with path to exec
+-u sshd		show logs for unit name sshd
 
 filter by date/time
 --since "1 hour ago" | today 
