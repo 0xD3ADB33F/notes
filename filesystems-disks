@@ -25,14 +25,9 @@ sfdisk - partition table reporting
 	-L  ignore irrelevant to Linux
 
 udevadm info -n /dev/sdb -q all
-findmnt
 
 gpart
 	find lost partitions
-
-
-
-
 
 
 Utilities {{{2 
@@ -96,11 +91,6 @@ partx -v -a <disk>
 sfdisk -l
 udevadm info -n /dev/sdb -q all
 
-change labels
-	e2label / e2fsprogs		for extX
-	btrfs filesystem label /dev/XXX <label> 
-	swaplabel -L <label> /dev/XXX
-
 Lost partition recovery
 gpart
 testdisk
@@ -134,7 +124,8 @@ file for use as loop devices - img
         vgcreate lxc /dev/loop0
 
 
-FS Info {{{1
+Filesystems {{{1
+FS Info {{{2
 
 df
 
@@ -144,12 +135,18 @@ findmnt     show mounted filesystems
     -S <dev>    show on device
     --target/-T <dir>   show only for mount dir
     -l          list format output
+    e.g. -s -D  list mounted by fstab, show space used
 
 du 
     -hs * | sort -h - sort by human readable size
     -schx /*	shows disk space used by subdirs
 
-Filesystems {{{1
+Labels {{{2
+
+e2label / e2fsprogs		for extX
+btrfs filesystem label /dev/XXX <label> 
+swaplabel -L <label> /dev/XXX
+
 Attributes {{{2	
 change times
 	atime
