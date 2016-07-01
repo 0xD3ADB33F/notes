@@ -23,15 +23,16 @@ Options
 		AllowXForwarding must be 'yes' in remote sshd_config
 	a	forward local connection to authentication agent to remote
 
+Keys {{{1
+
 Change passphrase
 	ssh-keygen -t <type> -p
 
-Export to PEM
-	ssh-keygen -e -m pem 
-
 
 Display fingerprint
-	ssh-kehgen -f <pub key file name> -l
+	ssh-keygen -lf <pub key file name>  # SHA256 format - new
+	ssh-keygen -E md5 -lf <pub key file name>  # MD5 format - old
+
 
 Key formats:
 MD5 32 bit  41:0e:07:a1:5d:89:32:e1:42:30:70:ff:91:6e:d4:1f
@@ -39,6 +40,9 @@ SHA 40 bit  2048 SHA256:gfno3KCYssX6XgdaJki/VbDcQpgiUM9+Qzgn+uJsbI8
 
 Convert public key to MD5 fingerprint:
     Echo <content of public key> | base64 -d | md5sum
+
+Export to PEM
+	ssh-keygen -e -m pem 
 
 
 escapes {{{1
@@ -91,8 +95,11 @@ Disable root login except for restrictions
 utils {{{1
 
 ssh-agent
-	run: eval `ssh-agent`
-	kill and unset env vars: eval `ssh-agent -k`
+	run: 
+        ssh-agent zsh
+        eval `ssh-agent` (old)
+	kill and unset env vars: 
+        eval `ssh-agent -k`
 
 ssh-add
 	run: ssh-add <key>
