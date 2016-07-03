@@ -13,26 +13,21 @@ Info {{{2
 
 https://wiki.archlinux.org/index.php/Persistent_block_device_naming
 
+
 lsblk -f	tree of disks, parts, labels, UUIDs, mount points
             no partlabel
 blkid		shows UUID's and types
 
 sfdisk - partition table reporting
-	-s  [<device - partition or disk>]    
-		show disk/partition size
+	-s  [<device - partition or disk>]    show disk/partition size
 	-l [options] <dev>
 	-D  DOS compatibility - free 512 free at part beginning
 	-L  ignore irrelevant to Linux
 
 udevadm info -n /dev/sdb -q all
-findmnt
 
 gpart
 	find lost partitions
-
-
-
-
 
 
 Utilities {{{2 
@@ -96,11 +91,6 @@ partx -v -a <disk>
 sfdisk -l
 udevadm info -n /dev/sdb -q all
 
-change labels
-	e2label / e2fsprogs		for extX
-	btrfs filesystem label /dev/XXX <label> 
-	swaplabel -L <label> /dev/XXX
-
 Lost partition recovery
 gpart
 testdisk
@@ -134,7 +124,8 @@ file for use as loop devices - img
         vgcreate lxc /dev/loop0
 
 
-FS Info {{{1
+Filesystems {{{1
+FS Info {{{2
 
 df
 
@@ -144,6 +135,7 @@ findmnt     show mounted filesystems
     -S <dev>    show on device
     --target/-T <dir>   show only for mount dir
     -l          list format output
+    e.g. -s -D  list mounted by fstab, show space used
 
 du 
     -hs * | sort -h - sort by human readable size
@@ -152,8 +144,13 @@ du
 ncdu
     curses disk usage
 
+Labels {{{2
 
-Filesystems {{{1
+e2label / e2fsprogs		for extX
+btrfs filesystem label /dev/XXX <label> 
+swaplabel -L <label> /dev/XXX
+
+
 Attributes {{{2	
 change times
 	atime
@@ -465,4 +462,5 @@ allow umounting
 	recommended options
 		/		defaults,relatime,errors=remount-ro
 		/home	nodev,nosuid,relatime
+
 
